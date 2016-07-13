@@ -1,0 +1,13 @@
+### node etc ###
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+## NPM ##
+node_modules/
