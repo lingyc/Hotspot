@@ -10,7 +10,7 @@ serverConfig(app, express);
 
 // Render the main splash page upon arrival
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/../build/index.html'));
+  res.sendFile(path.join(__dirname, './server-test/index.html'));
 });
 
 // Respond to login requests
@@ -19,7 +19,7 @@ app.post('/', login);
 // RESTFUl API for retrieving spots from the db
 app.get('/api/spots', db.getAllSpots);
 app.get('/api/spots/:id', db.getSingleSpot);
-app.post('/api/spots', upload, db.createSpot);
+app.post('/api/spots', db.createSpot);
 app.put('/api/spots/:id', db.updateSpot);
 app.delete('/api/spots/:id', db.removeSpot);
 
