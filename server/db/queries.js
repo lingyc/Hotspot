@@ -32,25 +32,26 @@ const createSpot = function(req, res, next) {
   query({
     queryString: `insert into spots (name, description, latitude, longitude, image, spots_users_id) \
                   values (${spot.name}, ${spot.description}, ${spot.latitude}, \
-                 ${spot.longitude}, ${spot.image}, ${spot.spots_users_id})`,
+                 ${spot.longitude}, ${spot.image}, ${spot.spots_users_id});`,
     res: res,
     next: next,
     message: 'created a new spot'
   });
 };
 
+// updates take an entire spot's worth of data
 const updateSpot = function(req, res, next) {
-  const spot = getSpotById(req.params.id);
+  const spot = req.body;
+  console.log(spot);
   query({
-    queryString: 'update spots \
-                  set name = ${name}, \
-                  description = ${description}, \
-                  latitude = ${latitude}, \
-                  longitude = ${longitude}, \
-                  image = ${image}, \
-                  spots_users_id = ${spots_users_id} \
-                  where id = ${id}',
-    args: spot,
+    queryString: `update spots \
+                  set name = '${spot.name}', \
+                  description = '${spot.description}', \
+                  latitude = ${spot.latitude}, \
+                  longitude = ${spot.longitude}, \
+                  image = '${spot.image}', \
+                  spots_users_id = ${spot.spots_users_id} \
+                  where id = ${req.params.id};`,
     res: res,
     next: next,
     message: 'updated a spot'
