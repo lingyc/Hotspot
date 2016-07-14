@@ -2,23 +2,25 @@
 
 ## Functionality ##
 **Required Functionality**
-1. Search by name in search box
-2. Search by address in search box
-3. Search by pin location / clicked on map
-4. Additional data desired back from API
+
+* Search by name in search box
+* Search by address in search box
+* Search by pin location / clicked on map
+* Additional data desired back from API
   * Name if not searched
   * Picture of location / other identifying photo
   * Map coordinates
-5. Custom icons for location pins
+* Custom icons for location pins
   * :thumbsup:
   * :thumbsdown:
-6. Client library in JS
-7. Sufficient free usage ability prior to scaling
+* Client library in JS
+* Sufficient free usage ability prior to scaling
 
 **Optional Functionality**
-1. Preferences to current geographic location
-2. Routing features
-3. Autocomplete searches (provides suggestions)
+
+* Preferences to current geographic location
+* Routing features
+* Autocomplete searches (provides suggestions)
 
 ## External Providers Available ##
 **Final Choice**
@@ -28,14 +30,14 @@
 **Considered but Ultimately Passed On**
 * Google Maps
 * Yelp
-* OpenStreet Maps
+* OpenStreet Maps (Mapbox sources mapping from OpenStreet)
 
 ## Mapping Overlays ##
 **Final Choice**
 Can use Leaflet for additional functionality. Initial version will utilize Mapbox only.
 
 ## Grabbing a Users Location ##
-* Supported by HTML 5 on most browsers, including mobile
+* Supported by HTML 5 on most browsers, including mobile. Please see below for detail.
 
 ## Useful Links ##
 **Signups**
