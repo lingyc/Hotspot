@@ -2,10 +2,8 @@ import promise from 'bluebird';
 const pgp = require('pg-promise')({
   promiseLib: promise
 });
-
 const connectionString = 'postgres://localhost:5432/hotspots';
 const db = pgp(connectionString);
-
 
 // add query functions
 const getAllSpots = function(req, res, next) {
@@ -42,7 +40,6 @@ const createSpot = function(req, res, next) {
 // updates take an entire spot's worth of data
 const updateSpot = function(req, res, next) {
   const spot = req.body;
-  console.log(spot);
   query({
     queryString: `update spots \
                   set name = '${spot.name}', \
@@ -61,10 +58,8 @@ const updateSpot = function(req, res, next) {
 
 
 const removeSpot = function(req, res, next) {
-  const spot = getSpotById(req.params.id);
   query({
-    queryString: 'delete from spots where id = ${spot.id}',
-    args: spot,
+    queryString: `delete from spots where id = ${req.params.id}`,
     res: res,
     next: next,
     message: 'deleted spot'
@@ -85,12 +80,12 @@ function query(params) {
    });
 }
 
-function getSpotById(spotId) {
-  return query('select * from spots where id = ${spotId}', {spotId: spotId})
-    .then((spot) => {
-      return spot;
-    });
-}
+// function getSpotById(spotId) {
+//   return query('select * from spots where id = ${spotId}', {spotId: spotId})
+//     .then((spot) => {
+//       return spot;
+//     });
+// }
 
 module.exports = {
   getAllSpots: getAllSpots,
