@@ -3,25 +3,30 @@
 ## by Tremendous Thumb Engineering ##
 
 ## Market ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  > For those hungry and on-the-go - we don't have time to think about these things.
+
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  > HotSpot gives users the power to store all of their favorite locations in the way they've always wanted. With a few simple clicks, new restaurant and other location information is stored and readily available so that you can experience your favorite places over and over.
 
 ## Problem ##
-  > Describe the problem your product solves.
+> When a person wants to find a location to do X, they typically use multiple apps (ie. Yelp) and google searches to find what they need.
+
+>This delays decision making and results in unnecessary frustration with the applications and people around them.
 
 ## Solution ##
-  > Describe how your product elegantly solves the problem.
+> HotSpot gives you the power to have insanely fast access to your favorite locations.
 
 ## Quote from You ##
-  > A quote from a spokesperson in your company.
+  > "A one-click solution for deciding where to go"
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
+  > It's very easy to get started. Just start saving locations. Every time you forget about that cool new restaurant or at a loss for where to go, pull up the app and enjoy a life of easy decision making.
 
-## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+<br>
 
-## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > "I love that my friends and I always know exactly where to go"
+
+<br>
+
+Sign up for an account today and start enjoying a life by design.
