@@ -1,7 +1,7 @@
 # Shifted Maps – Are there networks in maps?
 One-click solution for personalized results.
 
-## Installaion
+## Installation
 TODO
 
 ## Running dev server
