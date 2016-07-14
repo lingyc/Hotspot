@@ -8,14 +8,15 @@ const port = process.env.PORT || 8000;
 
 serverConfig(app, express);
 
-// Render the main splash page
+// Render the main splash page upon arrival
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/../build/index.html'));
 });
 
+// Respond to login requests
 app.post('/', login);
 
-// RESTFUl API
+// RESTFUl API for retrieving spots from the db
 app.get('/api/spots', db.getAllSpots);
 app.get('/api/spots/:id', db.getSingleSpot);
 app.post('/api/spots', upload, db.createSpot);
