@@ -1,0 +1,30 @@
+{
+  "name": "hotspot",
+  "version": "1.0.0",
+  "description": "<br> ##Introduction## ###Situation### > When a person wants to find a location to do X, they typically use multiple apps (ie. Yelp) and google searches to find what they need.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server/server.js --exec babel-node --presets es2015",
+    "resetdb": "psql -f server/db/setuphotspotdb.sql",
+    "serverdb": "npm run server & npm run startdb"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tremendous-Thumb/Hotspot.git"
+  },
+  "author": "Alex Stark",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tremendous-Thumb/Hotspot/issues"
+  },
+  "homepage": "https://github.com/Tremendous-Thumb/Hotspot#readme",
+  "dependencies": {
+    "babel-core": "^6.10.4",
+    "babel-preset-es2015": "^6.9.0",
+    "bluebird": "^3.4.1",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "pg-promise": "^5.1.3"
+  }
+}
