@@ -25,6 +25,7 @@ CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   username VARCHAR,
   password VARCHAR,
+  salt VARCHAR,
   spots_users_id INT REFERENCES spots_users(id)
 );
 
@@ -40,10 +41,10 @@ INSERT INTO spots_users (userId, spotId)
 INSERT INTO spots_users (userId, spotId)
   VALUES (2, 3);
 
-INSERT INTO users (username, password, spots_users_id)
+INSERT INTO users (username, password, salt, spots_users_id)
   VALUES ('alex', 'password', 1);
 
-INSERT INTO users (username, password, spots_users_id)
+INSERT INTO users (username, password, salt, spots_users_id)
   VALUES ('ryan', 'password', 2);
 
 INSERT INTO spots (name, description, latitude, longitude, image, spots_users_id)

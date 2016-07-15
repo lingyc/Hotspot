@@ -1,39 +1,22 @@
-import User from './db/userQueries';
+// import User from './db/userQueries';
 import bcrypt from 'bcrypt-nodejs';
 import Promise from 'bluebird';
 import passport from 'passport';
-import {Strategy} as JwtStrategy from 'passport-jwt';
-import {ExtractJwt} from 'passport-jwt';
+import { Strategy as JwtStrategy } from 'passport-jwt';
+import { ExtractJwt } from 'passport-jwt';
 
-// middleware on protected routes passport.authenticate('jwt', { session: false })
-passport.use(new JwtStrategy({
-  secretOrKey: 'i like turtles',
-  jwtFromRequest: ExtractJwt.fromAuthHeader()},
-  function(jwt, done) {
-
-    User.findOne({ id: jwt.sub }).fetch()
-    .then((user) => {
-      if (user && user.checkPassword(user.attributes.password)) {
-        done(null, user);
-      } else {
-        done(null, false);
-      }
-    })
-  .catch((err) => done(err, false));
-}));
-
-const hashPassword = function(user, attrs, options) {
+export const hashPassword = function(user) {
   return new Promise(function(resolve, reject) {
     bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(model.attributes.password, salt, null, function(err, hash) {
-        model.set('password', hash);
-        model.set('salt', salt);
-        resolve(hash);
+      bcrypt.hash(user, password, salt, null, function(err, hash) {
+        user.password = hash;
+        user.salt = salt;
+        resolve(user);
       });
     });
   });
 
-const checkPassword = function(providedPass) {
+export const checkPassword = function(user, providedPass) {
   const passInTheDB = 'placholder' // TODO fix this
   return new Promise((resolve, reject) => {
     bcrypt.compare(providedPass, passInTheDB, function(err, results) {
@@ -47,4 +30,23 @@ const checkPassword = function(providedPass) {
       }
     });
   });
-}
+};
+
+export const passportJwtConfig = function () {
+  passport.use(new JwtStrategy({
+    secretOrKey: 'i like turtles',
+    jwtFromRequest: ExtractJwt.fromAuthHeader()},
+    function(jwt, done) {
+      User.findOne({ id: jwt.sub })
+      .then((user) => {
+        if (user) {
+          done(null, user);
+        } else {
+          done(null, false);
+        }
+      })
+    .catch((err) => done(err, false));
+  }));
+
+  export const isAuthenticated = passport.authenticate('jwt', { session : false });
+};
