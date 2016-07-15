@@ -14,7 +14,4 @@ export default function(db, pg) {
     return pg.query(`delete from spots where id = (select id from users where email = ${email})`);
   };
 
-  db.console = function() {
-    console.log('it works!');
-  };
 }
