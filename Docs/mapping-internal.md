@@ -6,12 +6,12 @@
 * [Gather User Location](#gathering-user-location)
 * [Request Map Tilesets - Mapbox](#request-map-tilesets-\--mapbox)
 * [Overlay Custom Styling - Mapbox & Leaflet](#overlay-custom-styling-\--mapbox-and-leaflet)
-* [Searching and Grabbing Click Locations](#searching-and-grabbind-click-locations)
+* [Searching and Grabbing Click Locations](#searching-and-grabbing-click-locations)
 * [Gather Photos Data and Other Destination Information - Yelp](#gather-photo-data-and-other-destination-information-\--yelp)
 
 ### Other Information ###
 
-* [License Requirements and Usage Limits](*license-requirements-and-usage-limits)
+* [License Requirements and Usage Limits](#license-requirements-and-usage-limits)
 * [Useful Links](#useful-links)
 
 # Core Usage #
