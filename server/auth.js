@@ -1,4 +1,3 @@
-// import User from './db/userQueries';
 import bcrypt from 'bcrypt-nodejs';
 import Promise from 'bluebird';
 import passport from 'passport';

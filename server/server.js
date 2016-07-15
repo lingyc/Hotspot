@@ -1,8 +1,7 @@
 import express from 'express';
 import path from 'path';
 import serverConfig from './server-config';
-import Spot from './db/spotQueries';
-import User from './db/userQueries';
+import db from './db/db';
 import passport from 'passport';
 import { passportJwtConfig } from './auth';
 import auth from './auth';
@@ -14,12 +13,12 @@ serverConfig(app, express, passportJwtConfig);
 
 // Render the main splash page upon arrival
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, './server-test-views/splash.html'));
+  res.sendFile(path.join(__dirname, './views/splash.html'));
 });
 
 // Route to signup page
 app.get('/signup', function(req, res) {
-  res.sendFile(path.join(__dirname, './server-test-views/signup.html'));
+  res.sendFile(path.join(__dirname, './views/signup.html'));
 });
 
 // create new users
@@ -27,8 +26,8 @@ app.post('/signup', function(req, res) {
   // do server-side check of inputs
 
   // hash the password, store the user, redirect to /spots
-  User.hashPassword(req.body.password)
-    .then((userToStore) => User.createUser(userToStore))
+  auth.hashPassword(req.body.password)
+    .then((userToStore) => db.createUser(userToStore))
     .then((results) => res.redirect('/spots'))
     .catch((err) => res.send('error!'));
 
@@ -36,7 +35,7 @@ app.post('/signup', function(req, res) {
 
 // Navigate to login
 app.get('/login', function(req, res) {
-  res.sendFile(path.join(__dirname, './server-test-views/login.html'));
+  res.sendFile(path.join(__dirname, './views/login.html'));
 });
 
 app.post('/login', auth.isAuthenticated(), (req, res) => {
@@ -48,15 +47,12 @@ app.get('/spots', function(req, res) {
   res.render('spots');
 });
 
-
-// Log users out
-
 // RESTFUl API for retrieving spots from the db
-app.get('/api/spots', Spot.getAllSpots);
-app.get('/api/spots/:id', Spot.getSingleSpot);
-app.post('/api/spots', Spot.createSpot);
-app.put('/api/spots/:id', Spot.updateSpot);
-app.delete('/api/spots/:id', Spot.removeSpot);
+app.get('/api/spots', db.getAllSpots);
+app.get('/api/spots/:id', db.getSingleSpot);
+app.post('/api/spots', db.createSpot);
+app.put('/api/spots/:id', db.updateSpot);
+app.delete('/api/spots/:id', db.removeSpot);
 
 
 app.listen(port, () => {
