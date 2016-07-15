@@ -8,7 +8,7 @@ import {facebookAuthConfig} from './auth';
 const app = express();
 const port = process.env.PORT || 8000;
 
-serverConfig(app, express, passportJwtConfig);
+serverConfig(app, express);
 facebookAuthConfig(db.findUser, db.createUser);
 // Render the main splash page upon arrival
 app.get('/', (req, res) => {

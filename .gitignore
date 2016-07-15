@@ -13,4 +13,4 @@ pids
 node_modules/
 
 ## API KEYS ##
-server/apikeys.js
+auth/fb.js

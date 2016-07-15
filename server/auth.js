@@ -8,13 +8,18 @@ export const facebookAuthConfig = function(findUser, createUser) {
     clientSecret: FACEBOOK_APP_SECRET,
     callbackURL: FACEBOOK_CALLBACK
   },
-  function(accessToken, refreshToken, profile, cb) {
-    findUser({})
-    
-    createUser({
-      facebookId: profile.id,
-      facebookAccessToken: accessToken,
-      email: profile.emails[0].value
+  function(accessToken, refreshToken, profile, done) {
+    findUser({facebookId: profile.id})
+    .then((user) => {
+      if (user) {
+        done(null, user);
+      } else {
+        return createUser({
+          facebookId: profile.id,
+          facebookAccessToken: accessToken,
+          email: profile.emails[0].value
+        });
+      }
     })
     .then((user) => done(null, user))
     .catch((err) => done(err, null));
