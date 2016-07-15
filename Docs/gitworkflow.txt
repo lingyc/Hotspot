@@ -1,0 +1,17 @@
+#Git Work Flow#
+FIRST: rebase master branch
+
+SECOND: Do your work on seperate branch, make sure to label your branch with prefix
+    such as: feature/whateverYourFeaetureIs, Docs/whateverItis, Chore/nonrelatedUI, Fix/WhateverBug
+
+THIRD: Add and commit often
+
+FOURTH: If there is a merge on main repo, make sure to rebase on current branch
+
+FIFTH: When you feel that your code is ready, Push to branch master and submit a pull
+      request with a close tag "closes #yourwafflenumber". Tag the person or more you feel like you need to review with before merging.
+
+SIXTH: DO NOT MERGE YOUR OWN CODE
+
+SEVENTH: DO NOT MAKE CHANGES TO MAIN REPO CODE OR ANY CODE THAT CAN AFFECT THE MAIN REPO CODE.Unless
+    it is something necessary to make your code work, make sure to let team members know.
