@@ -8,6 +8,7 @@ passport.use(new JwtStrategy({
   secretOrKey: 'keyboard cat',
   jwtFromRequest: ExtractJwt.fromAuthHeader()},
   function(jwt, done) {
+    
     User.where({ id: jwt.sub }).fetch()
     .then((user) => {
       if (user && user.checkPassword(user.attributes.password)) {
