@@ -1,7 +1,6 @@
-var Collection = (props) => (
+var CollectionModel = (props) => (
   <div className='restaurant'>
     <div className='restaurantName'>
-      props.restaurant name here
     </div>
     <div className=''>
 
@@ -9,4 +8,4 @@ var Collection = (props) => (
   </div>
 );
 
-window.Collection = Collection;
+window.CollectionModel = CollectionModel;

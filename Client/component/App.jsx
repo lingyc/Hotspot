@@ -1,5 +1,6 @@
+
 class App extends React.Component {
-  components(props) {
+  constructor(props) {
     super(props);
     this.state = {
       panel: null,
@@ -39,7 +40,7 @@ class App extends React.Component {
 
 }
 
-modules.exports(App);
+window.App = App;
 
 ReactDOM.render(<App/>,
 document.getElementById('app'));

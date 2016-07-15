@@ -6,7 +6,6 @@ var Panel = (props) => (
 
     <div className='panelBody'>
       <div className='data'>
-        { props.data }
         <CollectionModel />
       </div>
 

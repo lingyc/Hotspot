@@ -1,4 +1,4 @@
-var Nav = (props) => (
+var Navigation = (props) => (
     <nav className="navbar">
       <div className='collectionPanel'>
         <button onClick={() => props.panel('collection')}> </button>
@@ -9,4 +9,4 @@ var Nav = (props) => (
     </nav>
 );
 
-window.Nav = Nav;
+window.Navigation = Navigation;
