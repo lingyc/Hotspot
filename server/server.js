@@ -3,7 +3,7 @@ import path from 'path';
 import serverConfig from './server-config';
 import db from './db/db';
 import passport from 'passport';
-import { passportJwtConfig } from './auth';
+// import { passportJwtConfig } from './auth';
 import auth from './auth';
 
 const app = express();

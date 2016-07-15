@@ -11,3 +11,6 @@ pids
 
 ## NPM ##
 node_modules/
+
+## API KEYS ##
+server/apikeys.js

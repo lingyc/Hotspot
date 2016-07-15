@@ -4,8 +4,7 @@ export default function(db, pg) {
   };
 
   db.createUser = function(userObj) {
-    return
-    pg.query(`insert into users (username, password, salt) \
+    return pg.query(`insert into users (username, password, salt) \
       values (${userObj.username}, ${userObj.password}, ${userObj.salt})`);
   };
 
@@ -15,5 +14,5 @@ export default function(db, pg) {
 
   db.console = function() {
     console.log('it works!');
-  }
+  };
 }
