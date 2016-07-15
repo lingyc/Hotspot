@@ -1,10 +1,9 @@
 import express from 'express';
 import path from 'path';
 import serverConfig from './server-config';
-import db from './db/queries';
+import db from './db/spotQueries';
 const app = express();
 const port = process.env.PORT || 8000;
-
 
 serverConfig(app, express);
 
@@ -13,8 +12,21 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './server-test/index.html'));
 });
 
-// Respond to login requests
+
+// Create users
+router.get('/signup', function(req, res) {
+  res.render('signup');
+});
+
+// Navigate to login
+router.get('/login', function(req, res) {
+  res.render('login');
+});
+
+
 app.post('/', login);
+
+// Log users out
 
 // RESTFUl API for retrieving spots from the db
 app.get('/api/spots', db.getAllSpots);
