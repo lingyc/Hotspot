@@ -3,14 +3,13 @@ import path from 'path';
 import serverConfig from './server-config';
 import db from './db/db';
 import passport from 'passport';
-// import { passportJwtConfig } from './auth';
-import auth from './auth';
+import {facebookAuthConfig} from './auth';
 
 const app = express();
 const port = process.env.PORT || 8000;
 
 serverConfig(app, express, passportJwtConfig);
-
+facebookAuthConfig(db.findUser, db.createUser);
 // Render the main splash page upon arrival
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './views/splash.html'));
@@ -22,25 +21,30 @@ app.get('/signup', function(req, res) {
 });
 
 // create new users
-app.post('/signup', function(req, res) {
-  // do server-side check of inputs
 
-  // hash the password, store the user, redirect to /spots
-  auth.hashPassword(req.body.password)
-    .then((userToStore) => db.createUser(userToStore))
-    .then((results) => res.redirect('/spots'))
-    .catch((err) => res.send('error!'));
-
-});
 
 // Navigate to login
 app.get('/login', function(req, res) {
   res.sendFile(path.join(__dirname, './views/login.html'));
 });
 
-app.post('/login', auth.isAuthenticated(), (req, res) => {
+app.post('/login', (req, res) => {
   res.redirect('/spots');
 });
+
+// route for facebook authentication and login
+// different scopes while logging in
+app.get('/login/facebook',
+  passport.authenticate('facebook', { scope: 'email' }
+));
+
+// handle the callback after facebook has authenticated the user
+app.get('/login/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect: '/spots',
+    failureRedirect: '/login'
+  })
+);
 
 // Get all of a user's spots.
 app.get('/spots', function(req, res) {

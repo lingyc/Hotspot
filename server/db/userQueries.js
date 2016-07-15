@@ -1,5 +1,5 @@
 export default function(db, pg) {
-  db.findOne = function(searchObj) {
+  db.findUser = function(searchObj) {
     return pg.query(`select * from users where id = ${searchObj.id} OR username = ${searchObj.username}`);
   };
 
