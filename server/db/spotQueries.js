@@ -3,9 +3,9 @@ const pgp = require('pg-promise')({
   promiseLib: promise
 });
 const connectionString = 'postgres://localhost:5432/hotspots';
-const db = pgp(connectionString);
+export const db = pgp(connectionString);
 
-const query = function(params) {
+export const query = function(params) {
   db.query(params.q, params.args || '')
    .then(function (data) {
      params.res.status(200)
@@ -20,7 +20,7 @@ const query = function(params) {
 };
 
 // add query functions
-const getAllSpots = function(req, res, next) {
+export const getAllSpots = function(req, res, next) {
   query({
     q: 'select * from spots',
     res: res,
@@ -29,7 +29,7 @@ const getAllSpots = function(req, res, next) {
   });
 };
 
-const getSingleSpot = function(req, res, next) {
+export const getSingleSpot = function(req, res, next) {
   const id = req.params.id;
   query({
     q: `select * from spots where id = ${id}`,
@@ -39,7 +39,7 @@ const getSingleSpot = function(req, res, next) {
   });
 };
 
-const createSpot = function(req, res, next) {
+export const createSpot = function(req, res, next) {
   const spot = req.body;
   query({
     q: `insert into spots (name, description, latitude, longitude, image, spots_users_id) \
@@ -52,7 +52,7 @@ const createSpot = function(req, res, next) {
 };
 
 // updates take an entire spot's worth of data
-const updateSpot = function(req, res, next) {
+export const updateSpot = function(req, res, next) {
   const spot = req.body;
   query({
     q: `update spots \
@@ -69,29 +69,11 @@ const updateSpot = function(req, res, next) {
   });
 };
 
-const removeSpot = function(req, res, next) {
+export const removeSpot = function(req, res, next) {
   query({
     q: `delete from spots where id = ${req.params.id}`,
     res: res,
     next: next,
     message: 'deleted spot'
   });
-};
-
-
-// function getSpotById(spotId) {
-//   return query('select * from spots where id = ${spotId}', {spotId: spotId})
-//     .then((spot) => {
-//       return spot;
-//     });
-// }
-
-module.exports = {
-  db: db,
-  getAllSpots: getAllSpots,
-  getSingleSpot: getSingleSpot,
-  createSpot: createSpot,
-  updateSpot: updateSpot,
-  removeSpot: removeSpot,
-  query: query
 };

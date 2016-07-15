@@ -1,15 +1,17 @@
-import db from './db/queries';
+import User from './db/userQueries';
 import bcrypt from 'bcrypt-nodejs';
 import Promise from 'bluebird';
 import passport from 'passport';
+import {Strategy} as JwtStrategy from 'passport-jwt';
+import {ExtractJwt} from 'passport-jwt';
 
 // middleware on protected routes passport.authenticate('jwt', { session: false })
 passport.use(new JwtStrategy({
-  secretOrKey: 'keyboard cat',
+  secretOrKey: 'i like turtles',
   jwtFromRequest: ExtractJwt.fromAuthHeader()},
   function(jwt, done) {
-    
-    User.where({ id: jwt.sub }).fetch()
+
+    User.findOne({ id: jwt.sub }).fetch()
     .then((user) => {
       if (user && user.checkPassword(user.attributes.password)) {
         done(null, user);
@@ -46,18 +48,3 @@ const checkPassword = function(providedPass) {
     });
   });
 }
-
-
-
-router.get('/create', ,
-  function(req, res) {
-    res.render('index');
-  });
-
-
-
-
-var express = require('express');
-var app = express();
-var partials = require('express-partials');
-var bodyParser = require('body-parser');
