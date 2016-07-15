@@ -14,13 +14,13 @@
     "type": "git",
     "url": "git+https://github.com/Tremendous-Thumb/Hotspot.git"
   },
-  "author": "Alex Stark",
+  "author": "Tremendous-Thumb",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Tremendous-Thumb/Hotspot/issues"
   },
   "homepage": "https://github.com/Tremendous-Thumb/Hotspot#readme",
-  "devDendencies": {
+  "devDependencies": {
     "babel-core": "^6.10.4",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-stage-1": "^6.5.0",
@@ -29,6 +29,7 @@
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
+    "eslint-config-hackreactor": "github:hackreactor-labs/eslint-config-hackreactor",
     "express": "^4.14.0",
     "passport": "^0.3.2",
     "passport-jwt": "^2.1.0",
@@ -37,7 +38,6 @@
   },
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.2",
-    "eslint-config-hackreactor": "github:hackreactor-labs/eslint-config-hackreactor",
     "jquery": "^2.2.1",
     "lodash": "^4.6.1",
     "react": "^0.14.7",
