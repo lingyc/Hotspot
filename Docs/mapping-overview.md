@@ -25,12 +25,13 @@
 ## External Providers Available ##
 **Final Choice**
 * Mapbox for mapping information
-* Foursquare for photos
+* Yelp for photos and future social and recommendation features
 
 **Considered but Ultimately Passed On**
-* Google Maps
-* Yelp
-* OpenStreet Maps (Mapbox sources mapping from OpenStreet)
+* Google Maps - for maps, photos, social features and location data.
+  * Passed due to lack of expansion ability on social and recommendation functions.
+* Foursquare for photos, social features and location data.
+* OpenStreet Maps (Mapbox sources mapping from OpenStreet but provides additional functionality)
 
 ## Mapping Overlays ##
 **Final Choice**
