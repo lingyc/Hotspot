@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 var request = require('request');
-import db from './db/db'
+import db from './db/db';
 import User from '../db/userQueries';
 
 /************************************************************/
