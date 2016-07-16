@@ -1,14 +1,13 @@
 export default function(db, pg) {
   db.findUser = function(searchObj) {
-    return pg.query(`select * from users where id = ${searchObj.id} \
-      OR email = ${searchObj.email} \
-      OR facebookId = ${searchObj.facebookId}`);
+    return pg.query(`select * from users \
+      where facebookId = ${searchObj.facebookId}`);
   };
-
+  // email = ${searchObj.email}
   db.createUser = function(userObj) {
-    console.log('attempting to create user');
-    return pg.query(`insert into users (email, facebookId, facebookAccessToken) \
-      values (${userObj.email}, ${userObj.facebookId}, ${userObj.facebookAccessToken})`);
+    console.log('attempting to create user with', userObj);
+    return pg.query(`insert into users (name, email, facebookId, facebookAccessToken) \
+      values ('${userObj.name}', '${userObj.email}', ${userObj.facebookId}, '${userObj.facebookAccessToken}')`);
   };
 
   db.deleteUser = function(email) {

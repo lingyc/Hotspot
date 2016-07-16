@@ -23,8 +23,9 @@ CREATE TABLE spots (
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
+  name VARCHAR,
   email VARCHAR,
-  facebookId VARCHAR,
+  facebookId BIGINT,
   facebookAccessToken VARCHAR,
   spots_users_id INT REFERENCES spots_users(id)
 );

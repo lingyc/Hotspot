@@ -8,25 +8,12 @@ import {facebookAuthConfig} from './auth/auth';
 const app = express();
 const port = process.env.PORT || 8000;
 
-serverConfig(app, express);
+serverConfig(app, express, passport, db);
 facebookAuthConfig(db.findUser, db.createUser);
 
 // Render the main splash page upon arrival
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './views/splash.html'));
-});
-
-// Route to signup page
-app.get('/signup', function(req, res) {
-  res.sendFile(path.join(__dirname, './views/signup.html'));
-});
-
-// create new users
-
-
-// Navigate to login
-app.get('/login', function(req, res) {
-  res.sendFile(path.join(__dirname, './views/login.html'));
 });
 
 app.post('/login', (req, res) => {
