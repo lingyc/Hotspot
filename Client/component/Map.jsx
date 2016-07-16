@@ -4,4 +4,4 @@ var Map = (props) => (
     </div>
 );
 
-window.App = App;
+window.Map = Map;
