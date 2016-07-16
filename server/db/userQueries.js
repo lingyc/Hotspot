@@ -6,6 +6,7 @@ export default function(db, pg) {
   };
 
   db.createUser = function(userObj) {
+    console.log('attempting to create user');
     return pg.query(`insert into users (email, facebookId, facebookAccessToken) \
       values (${userObj.email}, ${userObj.facebookId}, ${userObj.facebookAccessToken})`);
   };

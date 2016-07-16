@@ -3,13 +3,14 @@ import path from 'path';
 import serverConfig from './server-config';
 import db from './db/db';
 import passport from 'passport';
-import {facebookAuthConfig} from './auth';
+import {facebookAuthConfig} from './auth/auth';
 
 const app = express();
 const port = process.env.PORT || 8000;
 
 serverConfig(app, express);
 facebookAuthConfig(db.findUser, db.createUser);
+
 // Render the main splash page upon arrival
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './views/splash.html'));
@@ -34,15 +35,15 @@ app.post('/login', (req, res) => {
 
 // route for facebook authentication and login
 // different scopes while logging in
-app.get('/login/facebook',
+app.get('/auth/facebook',
   passport.authenticate('facebook', { scope: 'email' }
 ));
 
 // handle the callback after facebook has authenticated the user
-app.get('/login/facebook/callback',
+app.get('/auth/facebook/callback',
   passport.authenticate('facebook', {
     successRedirect: '/spots',
-    failureRedirect: '/login'
+    failureRedirect: '/'
   })
 );
 

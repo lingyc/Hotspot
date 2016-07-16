@@ -6,8 +6,9 @@
 </head>
 <body>
   <div>file for testing server</div>
-  <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-  </fb:login-button>
+  <!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+  </fb:login-button> -->
+  <a href="/auth/facebook">Facebook</a>
   <script>
     function statusChangeCallback(response) {
       console.log(response);
@@ -35,7 +36,7 @@
        fjs.parentNode.insertBefore(js, fjs);
      }(document, 'script', 'facebook-jssdk'));
 
-     
+
 </script>
 </body>
 </html>
