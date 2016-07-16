@@ -3,6 +3,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      map: 'map here', // can set the initial state map  here
       panel: null,
       filter: null,
       collection: null
@@ -10,7 +11,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // api function call here
+    // api function call here if needed
   }
 
   onClickslidePanel(string) {
@@ -20,6 +21,9 @@ class App extends React.Component {
     });
   }
 
+  loadMap(data) {
+    // use this callback function if needed
+  }
 
 
   render() {
@@ -32,7 +36,8 @@ class App extends React.Component {
           <Panel view={this.state.panel}/>
         </div>
         <div className='MapBody'>
-          <Map mainMap={this.state}/>
+          insert map here
+          <Map mainMap={this.state.map} />
         </div>
       </div>
     );
