@@ -1,9 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const PATHS - {
+const PATHS = {
   compiled: path.join(__dirname, 'compiled'),
-  src: path.join(__dirname, 'Client/component')
+  src: path.join(__dirname, 'Client')
 };
 
 module.exports = {
@@ -11,15 +11,26 @@ module.exports = {
     src: PATHS.src
   },
   output: {
-    path: PATHS.build,
+    path: PATHS.compiled,
     filename: 'app.bundle.js'
   },
   module: {
     loaders: [
       {
         test: /\.jsx?$/,
+        exclude: /node_modules/,
         loader: 'babel'
       }
     ]
-  }
-}
+  },
+  devServer: {
+    contentBase: PATHS.compiled,
+    historyApiFallback: true,
+    hot: true,
+    inline: true,
+    progress: true
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ]
+};
