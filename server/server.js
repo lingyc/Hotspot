@@ -51,7 +51,7 @@ app.get('/logout', function(req, res) {
 // Get all of a user's spots.
 app.get('/spots', function(req, res) {
   console.log('redirected to spots');
-  res.sendFile(path.join(__dirname, './views/spots.html'));
+  res.sendFile(path.join(__dirname, './views/spots.html')); // index.html for react app
 });
 
 // RESTFUl API for retrieving spots from the db

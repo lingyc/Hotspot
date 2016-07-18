@@ -18,6 +18,7 @@ CREATE TABLE spots (
   latitude REAL,
   longitude REAL,
   image VARCHAR
+  -- yelp_id VARCHAR finish yelp TODO
 );
 
 CREATE TABLE users (
