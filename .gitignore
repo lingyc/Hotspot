@@ -1,4 +1,4 @@
-### node etc ###
+t### node etc ###
 
 # Logs
 logs
@@ -8,6 +8,9 @@ logs
 pids
 *.pid
 *.seed
+
+## Compiled files ##
+compiled/
 
 ## NPM ##
 node_modules/

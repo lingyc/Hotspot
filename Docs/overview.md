@@ -16,13 +16,13 @@
 <em> “ One-click solution for personalized results. “ </em>
 
 ##Objective##
-###In-Scope Bare Min###
+###In-Scope Bare Minimum###
   * Custom maps
   * Restaurants
   * Personalized Ratings
   * Leveraging APIs
   * Web-First
-  
+
 ###In-Scope Future###
   * Machine learning for food recommendations
   * Friending features
@@ -47,14 +47,14 @@
   * Git Workflow
   * Role and Responsibilities
   * Timeline
-    * Bare minumums
+    * Bare minimums
     * Testing – do later
   * Meeting schedule for solo week
   * Documentation
     * Code based
     * Code review
     * Additional
-    
+
 **Personal Features**
   * 1st Priority
     * Mark location through a simple search and let user save it
@@ -63,7 +63,7 @@
   * 2nd Priority
     * Filter on map by rating
     * Allow user to click to save
-    * Current location 
+    * Current location
     * Allow user to save locations based on current location
     * Display collection of restaurants that are marked locations
     * Filter on display cards by rating
@@ -85,6 +85,17 @@
   * Add Suggestions and Machine Learning
     * Filter by suggestions
 
+###Potential Roadblocks###
+* Integrating mapping with framework
+* Integrating location (i.e. Yelp photos) data with mapping data
+* Overlaying information and functionality.
+
+###Technical Investigations###
+* React/Redux framework
+* Mapping functionality availability
+* Data available on locations from public APIs
+* How to handle authentication
+
 ##Timeline##
   * 7/13 Wed
     * Project Kick Off
@@ -93,27 +104,25 @@
   * 7/14 Thurs
   * 7/15 Fri
   * 7/16 Sat
-    * Technical Assessment - NO WORK GETS DONE 
+    * Technical Assessment - NO WORK GETS DONE
   * 7/17 Sun
   * 7/18 Mon
   * 7/19 Tues
   * 7/20 Wed
   * 7/21 Thurs
-  * 7/22 Fri 
+  * 7/22 Fri
   * 7/23 Sat
   * 7/24 Sun
     * Last feature complete
   * 7/25 Mon
-    * Finishing Touches
-  * 7/26 Tues
-    * Project Completion 
+    * Project Completion
+    * Project Presentation
 
+##Scheduling##
+* Daily - in morning - project check in.
+  * In person when in session
+  * Virtually through screenhero during solo week
+* Daily - in evening - project reflection to discuss roadblocks and interesting items discovered during the day.
 
-
-
-
-
-
-
-
-
+##Planning Tools##
+* All project tasks will be tracked in Waffle.io along with associated git pull requests if applicable.
