@@ -7,18 +7,21 @@ export const facebookAuthConfig = function(findUser, createUser) {
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
     callbackURL: FACEBOOK_CALLBACK,
+    enableProof: true,
     profileFields: ['id', 'emails', 'name']
   },
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function() {
       console.log('profileid', profile.id);
-      findUser({facebookId: profile.id})
+      return findUser({facebookId: profile.id})
       .then((user) => {
         console.log('user', user);
         console.log('emails', Object.keys(profile));
         if (user.length > 0) {
-          done(null, user);
+          console.log('user exists in DB');
+          return user;
         } else {
+          console.log('create new user');
           return createUser({
             facebookId: profile.id,
             facebookAccessToken: accessToken,

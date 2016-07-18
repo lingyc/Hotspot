@@ -13,7 +13,12 @@ facebookAuthConfig(db.findUser, db.createUser);
 
 // Render the main splash page upon arrival
 app.get('/', (req, res) => {
+  console.log('redirected back');
   res.sendFile(path.join(__dirname, './views/splash.html'));
+});
+
+app.get('/login', (req, res) => {
+  res.redirect('/');
 });
 
 app.post('/login', (req, res) => {
@@ -27,16 +32,29 @@ app.get('/auth/facebook',
 ));
 
 // handle the callback after facebook has authenticated the user
+// app.get('/auth/facebook/callback',
+//   passport.authenticate('facebook', {
+//     successRedirect: '/spots',
+//     failureRedirect: '/'
+//   })
+// );
+
 app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', {
-    successRedirect: '/spots',
-    failureRedirect: '/'
-  })
-);
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/spots');
+  });
+
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
 
 // Get all of a user's spots.
 app.get('/spots', function(req, res) {
-  res.render('spots');
+  console.log('redirected to spots');
+  res.sendFile(path.join(__dirname, './views/spots.html'));
 });
 
 // RESTFUl API for retrieving spots from the db

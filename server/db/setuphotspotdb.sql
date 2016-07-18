@@ -17,8 +17,7 @@ CREATE TABLE spots (
   rating VARCHAR,
   latitude REAL,
   longitude REAL,
-  image VARCHAR,
-  spots_users_id INT REFERENCES spots_users(id)
+  image VARCHAR
 );
 
 CREATE TABLE users (
@@ -26,6 +25,5 @@ CREATE TABLE users (
   name VARCHAR,
   email VARCHAR,
   facebookId BIGINT,
-  facebookAccessToken VARCHAR,
-  spots_users_id INT REFERENCES spots_users(id)
+  facebookAccessToken VARCHAR
 );

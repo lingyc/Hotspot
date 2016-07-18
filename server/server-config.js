@@ -3,16 +3,6 @@ import path from 'path';
 import session from 'express-session';
 
 export default function(app, express, passport, db) {
-  passport.serializeUser(function(user, done) {
-    done(null, user.id);
-  });
-
-  passport.deserializeUser(function(id, done) {
-    db.findUser(id)
-      .then((user) => done(null, user))
-      .catch((err) => done(err, null));
-  });
-
   app.use(bodyParser.urlencoded({
     extended: true
   }));
@@ -27,4 +17,14 @@ export default function(app, express, passport, db) {
   }));
   app.use(passport.initialize());
   app.use(passport.session());
+
+  passport.serializeUser(function(user, done) {
+    done(null, user[0].id);
+  });
+
+  passport.deserializeUser(function(id, done) {
+    db.findUser(id)
+      .then((user) => done(null, user))
+      .catch((err) => done(err, null));
+  });
 }
