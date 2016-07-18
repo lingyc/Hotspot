@@ -23,7 +23,7 @@ export const facebookAuthConfig = function(findUser, createUser) {
         } else {
           console.log('create new user');
           return createUser({
-            facebookId: profile.id,
+            facebookId: parseInt(profile.id),
             facebookAccessToken: accessToken,
             email: profile.emails[0].value, // fix this TODO
             name: `${profile.name.givenName} ${profile.name.familyName}`

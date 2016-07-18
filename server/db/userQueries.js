@@ -1,7 +1,13 @@
 export default function(db, pg) {
   db.findUser = function(searchObj) {
-    return pg.query(`select * from users \
-      where facebookId = ${searchObj.facebookId}`);
+    console.log('searchObj', searchObj);
+    let searchParams;
+    if (searchObj.facebookId !== undefined) {
+      searchParams = `where facebookId = ${searchObj.facebookId}`;
+    } else {
+      searchParams = `where id = ${searchObj.id}`;
+    }
+    return pg.query(`select * from users ${searchParams}`);
   };
   // email = ${searchObj.email}
   db.createUser = function(userObj) {

@@ -14,11 +14,16 @@ facebookAuthConfig(db.findUser, db.createUser);
 // Render the main splash page upon arrival
 app.get('/', (req, res) => {
   console.log('redirected back');
-  res.sendFile(path.join(__dirname, './views/splash.html'));
+  // res.sendFile(path.join(__dirname, './views/splash.html'));
+  res.render('index');
 });
 
 app.get('/login', (req, res) => {
-  res.redirect('/');
+  res.render('login');
+});
+
+app.get('/signup', (req, res) => {
+  res.render('signup');
 });
 
 app.post('/login', (req, res) => {
@@ -30,14 +35,6 @@ app.post('/login', (req, res) => {
 app.get('/auth/facebook',
   passport.authenticate('facebook', { scope: 'email' }
 ));
-
-// handle the callback after facebook has authenticated the user
-// app.get('/auth/facebook/callback',
-//   passport.authenticate('facebook', {
-//     successRedirect: '/spots',
-//     failureRedirect: '/'
-//   })
-// );
 
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
