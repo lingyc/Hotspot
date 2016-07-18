@@ -35,7 +35,7 @@ class App extends React.Component {
         <div className='Panel'>
           <Panel view={this.state.panel}/>
         </div>
-        <div className='MapBody'>
+        <div className='MapBody' id='map'>
           insert map here
           <Map mainMap={this.state.map} />
         </div>
