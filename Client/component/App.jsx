@@ -1,4 +1,3 @@
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -35,9 +34,9 @@ class App extends React.Component {
         <div className='Panel'>
           <Panel view={this.state.panel}/>
         </div>
-        <div className='MapBody'>
+        <div className='MapBody' id='map-two'>
           insert map here
-          <Map mainMap={this.state.map} />
+          <Map/>
         </div>
       </div>
     );
