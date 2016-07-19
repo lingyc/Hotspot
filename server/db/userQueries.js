@@ -1,3 +1,15 @@
+import _ from 'lodash';
+
+// user schema used to validate query information
+// if one of these fields is missing, it must be added
+const userSchema = {
+  name: true,
+  username: true,
+  password: true,
+  facebookId: true,
+  facebookAccessToken: true
+};
+
 export default function(db, pg) {
   db.findUser = function(searchObj) {
     console.log('searchObj', searchObj);
@@ -12,12 +24,42 @@ export default function(db, pg) {
   // email = ${searchObj.email}
   db.createUser = function(userObj) {
     console.log('attempting to create user with', userObj);
-    return pg.query(`insert into users (name, email, facebookId, facebookAccessToken) \
-      values ('${userObj.name}', '${userObj.email}', ${userObj.facebookId}, '${userObj.facebookAccessToken}')`);
+    // if a user wants a local account without fb access, we need to set the fields to null
+    _.each(userSchema, (val, key) => {
+      if (userObj[key] === undefined) {
+        userObj[key] = null;
+      }
+    });
+    return pg.query(`insert into users (name, username, password, facebookId, facebookAccessToken) \
+      values ('${userObj.name}', '${userObj.username}', ${userObj.password}, ${userObj.facebookId}, '${userObj.facebookAccessToken}')`);
   };
 
   db.deleteUser = function(email) {
     return pg.query(`delete from spots where id = (select id from users where email = ${email})`);
   };
 
+  db.findOrCreateUser = function(searchObj, options) {
+    return db.findUser(searchObj)
+    .then((user) => {
+      if (user.length > 0) {
+        return user;
+      } else {
+        const newUser = {};
+        if (options.fb) {
+          let {profile, accessToken} = options.fb;
+          _.extend(newUser, {
+            facebookId: parseInt(profile.id),
+            facebookAccessToken: accessToken,
+            name: `${profile.name.givenName} ${profile.name.familyName}`
+          });
+        } else if (options.local) {
+          _.extend(newUser, {
+            username: local.username,
+            password: local.password
+          });
+        }
+        return db.createUser(newUser);
+      }
+    });
+  };
 }

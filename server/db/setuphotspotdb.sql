@@ -24,7 +24,8 @@ CREATE TABLE spots (
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   name VARCHAR,
-  email VARCHAR,
+  username VARCHAR,
+  password VARCHAR,
   facebookId BIGINT,
   facebookAccessToken VARCHAR
 );

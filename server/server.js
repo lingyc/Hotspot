@@ -5,13 +5,14 @@ import db from './db/db';
 import passport from 'passport';
 import {facebookAuthConfig} from './auth/fbAuth';
 import {jwtAuthConfig} from './auth/jwtAuth';
+import jwt from 'jsonwebtoken';
 // passport.authenticate('jwt', { session: false })
 const app = express();
 const port = process.env.PORT || 8000;
 
 serverConfig(app, express, passport, db);
-facebookAuthConfig(db.findUser, db.createUser);
-jwtAuthConfig(db.findUser);
+facebookAuthConfig(db.findOrCreateUser);
+jwtAuthConfig(db.findOrCreateUser);
 
 // Render the main splash page upon arrival
 app.get('/', (req, res) => {
@@ -42,7 +43,11 @@ app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { session: false, failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('/spots');
+    let token = jwt.sign(user, app.get('i like turtles'), {
+      expiresInMinutes: 1440 // expires in 24 hours
+    });
+    console.log('jwt token', token);
+    res.redirect(`/spots?auth_token=${token}`);
   });
 
 app.get('/logout', function(req, res) {
