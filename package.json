@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon server/server.js --exec babel-node --presets es2015 stage-1",
-    "start": "babel . --watch --out-dir compiled --presets=es2015,react --ignore=node_modules,compiled --source-maps inline",
+    "build": "webpack",
     "resetdb": "psql -f server/db/setuphotspotdb.sql",
     "serverdb": "npm run server & npm run startdb"
   },
