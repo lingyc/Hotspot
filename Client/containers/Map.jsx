@@ -10,7 +10,9 @@ class Map extends React.Component {
 
   componentDidMount() {
     grabLocation();
-    this.map = L.mapbox.map('map-one', 'mapbox.streets').setView(defaultCoord, 14);
+    this.map = L.mapbox.map('map-one', 'mapbox.streets')
+      .setView(defaultCoord, 14)
+      .addControl(L.mapbox.geocoderControl('mapbox.places'));
 
     var restaurantPoints = L.mapbox.featureLayer().addTo(this.map);
 
