@@ -48,6 +48,7 @@ export function toggleFilterList(panelMode) {
     type: NAV_CLICK_FILTER,
     payload: panelMode
   }
+}
 
 // Click Handler for Nav Logout button
 export function logout() {
@@ -85,6 +86,20 @@ export function toggleFilter(filter, selectedFilters, collection) {
     payload: {
       selectedFilters: selectedFilters,
       filteredRestaurants: filteredRestaurants
+export function toggleFilter(filter, appliedFilters) {
+  // Check if given filter is in filter list
+  var index = _.findIndex(appliedFilters, filter);
+  if (index === -1) { 
+    // Add it to the list if not found
+    appliedFilters.push(filter);
+  } else {
+    // remove it if it is not
+    appliedFilters.splice(index, 1);
+  }
+
+  return {
+    type: PANEL_CLICK_FILTER_ITEM,
+    payload: appliedFilters
   }
 }
 };
@@ -96,6 +111,7 @@ export function viewCollectionItem(item) {
     type: PANEL_OPEN_COLLECTION_ITEM,
     payload: item
   }
+}
 
 // Click Handler for Panel Collection closeup
 export function closeCollectionItem(item) {
