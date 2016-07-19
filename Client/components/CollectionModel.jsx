@@ -1,10 +1,11 @@
 import React from 'react';
 
-// The contets will be dependant on the form the information takes
-var CollectionModel = ({item, viewCollectionItem}) => (
+var CollectionModel = (props) => (
   <div className='restaurant'>
-    <div className='restaurantName' onClick={ () => { viewCollectionItem(item); }}>
-    {item}
+    <div className='restaurantName'>
+    </div>
+    <div className=''>
+
     </div>
   </div>
 );
