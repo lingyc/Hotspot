@@ -15,8 +15,6 @@ export const PANEL_OPEN_COLLECTION_ITEM = 'PANEL_OPEN_COLLECTION_ITEM';
 export const PANEL_CLOSE_COLLECTION_ITEM = 'PANEL_CLOSE_COLLECTION_ITEM';
 export const PANEL_DELETE_COLLECTION_ITEM = 'PANEL_DELETE_COLLECTION_ITEM';
 
-export const POPULATE_FILTER_OPTIONS = 'POPULATE_FILTER_OPTIONS';
-
 export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
 export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 
@@ -50,7 +48,6 @@ export function toggleFilterList(panelMode) {
     type: NAV_CLICK_FILTER,
     payload: panelMode
   }
-}
 
 // Click Handler for Nav Logout button
 export function logout() {
@@ -99,7 +96,6 @@ export function viewCollectionItem(item) {
     type: PANEL_OPEN_COLLECTION_ITEM,
     payload: item
   }
-}
 
 // Click Handler for Panel Collection closeup
 export function closeCollectionItem(item) {
