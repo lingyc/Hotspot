@@ -10,10 +10,10 @@ var FilterItem = ({filter, appliedFilters, toggleFilter}) => {
   return (
     <div className='filter'>
       <div className={cssClasses} onClick={ () => { toggleFilter(filter, appliedFilters) }}>
-      {item}
+      {filter}
       </div>
     </div>
   );
 }
 
-export default CollectionModel;
+export default FilterItem;
