@@ -15,5 +15,3 @@ var FilterItem = ({filter, appliedFilters, toggleFilter}) => {
     </div>
   );
 };
-
-export default FilterItem;
