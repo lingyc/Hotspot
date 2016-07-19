@@ -19,13 +19,13 @@ export default function(app, express, passport, db) {
   app.use(express.static(path.join(__dirname, '/../node_modules')));
   app.use(express.static(path.join(__dirname, './views')));
   app.use(express.static(path.join(__dirname, './server-test')));
-  app.use(session({
-    secret: 'keyboard cat',
-    saveUninitialized: true,
-    resave: true
-  }));
+  // app.use(session({
+  //   secret: 'keyboard cat',
+  //   saveUninitialized: true,
+  //   resave: true
+  // }));
   app.use(passport.initialize());
-  app.use(passport.session());
+  // app.use(passport.session());
 
   passport.serializeUser(function(user, done) {
     done(null, user[0].id);

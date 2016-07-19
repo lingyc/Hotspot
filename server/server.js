@@ -3,13 +3,15 @@ import path from 'path';
 import serverConfig from './server-config';
 import db from './db/db';
 import passport from 'passport';
-import {facebookAuthConfig} from './auth/auth';
-
+import {facebookAuthConfig} from './auth/fbAuth';
+import {jwtAuthConfig} from './auth/jwtAuth';
+// passport.authenticate('jwt', { session: false })
 const app = express();
 const port = process.env.PORT || 8000;
 
 serverConfig(app, express, passport, db);
 facebookAuthConfig(db.findUser, db.createUser);
+jwtAuthConfig(db.findUser);
 
 // Render the main splash page upon arrival
 app.get('/', (req, res) => {
@@ -33,11 +35,11 @@ app.post('/login', (req, res) => {
 // route for facebook authentication and login
 // different scopes while logging in
 app.get('/auth/facebook',
-  passport.authenticate('facebook', { scope: 'email' }
+  passport.authenticate('facebook', { session: false, scope: 'email' }
 ));
 
 app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  passport.authenticate('facebook', { session: false, failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/spots');
@@ -49,7 +51,8 @@ app.get('/logout', function(req, res) {
 });
 
 // Get all of a user's spots.
-app.get('/spots', function(req, res) {
+app.get('/spots', passport.authenticate('jwt', {session: false}),
+function(req, res) {
   console.log('redirected to spots');
   res.sendFile(path.join(__dirname, './views/spots.html')); // index.html for react app
 });
