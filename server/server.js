@@ -14,7 +14,6 @@ facebookAuthConfig(db.findOrCreateUser);
 // Render the main splash page upon arrival
 app.get('/', (req, res) => {
   console.log('redirected back');
-  // res.sendFile(path.join(__dirname, './views/splash.html'));
   res.render('index');
 });
 
@@ -37,15 +36,7 @@ app.get('/auth/facebook',
 ));
 
 app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { session: false, failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    let token = jwt.sign(user, app.get('i like turtles'), {
-      expiresInMinutes: 1440 // expires in 24 hours
-    });
-    console.log('jwt token', token);
-    res.redirect(`/spots?auth_token=${token}`);
-  });
+  passport.authenticate('facebook', { session: false, failureRedirect: '/login' }));
 
 app.get('/logout', function(req, res) {
   req.logout();
@@ -53,7 +44,7 @@ app.get('/logout', function(req, res) {
 });
 
 // Get all of a user's spots.
-app.get('/spots', passport.authenticate('jwt', {session: false}),
+app.get('/spots', 
 function(req, res) {
   console.log('redirected to spots');
   res.sendFile(path.join(__dirname, './views/spots.html')); // index.html for react app

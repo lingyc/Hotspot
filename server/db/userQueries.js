@@ -1,5 +1,5 @@
 import _ from 'lodash';
-
+import bcrypt from 'bcrypt-nodejs';
 // user schema used to validate query information
 // if one of these fields is missing, it must be added
 const userSchema = {
@@ -9,6 +9,7 @@ const userSchema = {
   facebookId: true,
   facebookAccessToken: true
 };
+
 
 export default function(db, pg) {
   db.findUser = function(searchObj) {
@@ -30,6 +31,10 @@ export default function(db, pg) {
         userObj[key] = null;
       }
     });
+
+    if (userObj.password) {
+      userObj.password = db.generateHash(password);
+    }
     return pg.query(`insert into users (name, username, password, facebookId, facebookAccessToken) \
       values ('${userObj.name}', '${userObj.username}', ${userObj.password}, ${userObj.facebookId}, '${userObj.facebookAccessToken}')`);
   };
@@ -61,5 +66,17 @@ export default function(db, pg) {
         return db.createUser(newUser);
       }
     });
+  };
+
+  db.generateHash = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+  };
+
+  db.isValidPassword = function(password, id) {
+    const pwInDB = db.findUser({id: id})
+    .then((user) => {
+      return bcrypt.compareSync(password, pwInDB);
+    })
+    .catch((err) => console.log(err));
   };
 }
