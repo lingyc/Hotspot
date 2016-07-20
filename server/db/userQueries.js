@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt-nodejs';
 // user schema used to validate query information
 // if one of these fields is missing, it must be added
 const userSchema = {
+  id: true,
   name: true,
   username: true,
   password: true,
@@ -16,7 +17,7 @@ export default function(db, pg) {
     console.log('searchObj', searchObj);
     let searchParams = convertToQParams(searchObj);
     console.log('search params', searchParams);
-    return pg.query(`select * from users where ${searchParams}`);
+    return pg.one(`select * from users where ${searchParams}`);
   };
   // email = ${searchObj.email}
   db.createUser = function(userObj) {
@@ -69,9 +70,9 @@ export default function(db, pg) {
   };
 
   db.isValidPassword = function(password, id) {
-    const pwInDB = db.findUser({id: id})
+    return db.findUser({id: id})
     .then((user) => {
-      return bcrypt.compareSync(password, pwInDB);
+      return bcrypt.compareSync(password, user.password);
     })
     .catch((err) => console.log(err));
   };
@@ -89,7 +90,7 @@ function convertToQParams(searchObj) {
       searchParams += ' OR ';
     }
     if (userSchema[key]) {
-      searchParams += `${key} = '${val}'`;
+      searchParams += `${key} = ${JSON.stringify(val).replace(/\"/g, '\'')}`;
       handleOr = true;
     }
   });

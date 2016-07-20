@@ -16,8 +16,14 @@ export default function(app, db) {
   app.set('view engine', 'hbs');
 
   passport.serializeUser(function(user, done) {
-    console.log(user);
-    done(null, user[0].id);
+    console.log('serialize user', user, typeof user);
+    let userId;
+    if (Array.isArray(user)) {
+      userId = user[0].id;
+    } else {
+      userId = user.id;
+    }
+    done(null, userId);
   });
 
   passport.deserializeUser(function(id, done) {

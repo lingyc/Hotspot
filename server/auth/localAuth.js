@@ -31,12 +31,14 @@ export default function(db) {
     passwordField: 'password',
     passReqToCallback: true
   }, function(req, username, password, done) {
-    db.findUser({username: username})
+    return db.findUser({username: username})
       .then((user) => {
         console.log('got back', user);
-        if (user.length === 0 || !db.validPassword(password)) {
+        if (!user || !db.isValidPassword(password, user.id)) {
+          console.log('bad password');
           return done(null, false);
         } else {
+          console.log('moving onto the next thing');
           return done(null, user);
         }
       })
