@@ -2,15 +2,30 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import session from 'express-session';
 import hbs from 'express-handlebars';
+import passport from 'passport';
+import express from 'express';
 
-export default function(app, express, passport, db) {
+export default function(app, db) {
   app.engine('hbs', hbs({
     extname: 'hbs',
     defaultLayout: 'splash',
-    layoutsDir: path.join(__dirname, 'views/templates/')
+    layoutsDir: path.join(__dirname, 'views/templates/'),
+    partialsDir: path.join(__dirname, 'views/partials/')
   }));
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'hbs');
+
+  passport.serializeUser(function(user, done) {
+    console.log(user);
+    done(null, user[0].id);
+  });
+
+  passport.deserializeUser(function(id, done) {
+    db.findUser({id: id })
+      .then((user) => done(null, user))
+      .catch((err) => done(err, null));
+  });
+
   app.use(bodyParser.urlencoded({
     extended: true
   }));
@@ -27,13 +42,4 @@ export default function(app, express, passport, db) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  passport.serializeUser(function(user, done) {
-    done(null, user[0].id);
-  });
-
-  passport.deserializeUser(function(id, done) {
-    db.findUser({id: id })
-      .then((user) => done(null, user))
-      .catch((err) => done(err, null));
-  });
 }

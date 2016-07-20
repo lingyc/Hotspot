@@ -1,17 +1,21 @@
-import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
-
+import passport from 'passport';
 //---------------------------Local Strategy-------------------------------------
-export default localConfig = function(db) {
+export default function(db) {
   passport.use('local-signup', new LocalStrategy({
     usernameField: 'username',
     passwordField: 'password',
     passReqToCallback: true
   }, function(req, username, password, done) {
+    console.log('sign them up!');
     process.nextTick(function() {
       if (!req.user) {
-        findOrCreateUser({username: username})
+        db.findOrCreateUser({
+          username: username,
+          password: password
+        })
           .then((user) => {
+            console.log('user to be returned', user);
             return done(null, user);
           })
           .catch((err) => done(err));
@@ -29,6 +33,7 @@ export default localConfig = function(db) {
   }, function(req, username, password, done) {
     db.findUser({username: username})
       .then((user) => {
+        console.log('got back', user);
         if (user.length === 0 || !db.validPassword(password)) {
           return done(null, false);
         } else {
@@ -37,4 +42,4 @@ export default localConfig = function(db) {
       })
       .catch((err) => done(err));
   }));
-};
+}

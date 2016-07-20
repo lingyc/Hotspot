@@ -14,13 +14,9 @@ const userSchema = {
 export default function(db, pg) {
   db.findUser = function(searchObj) {
     console.log('searchObj', searchObj);
-    let searchParams;
-    if (searchObj.facebookId !== undefined) {
-      searchParams = `where facebookId = ${searchObj.facebookId}`;
-    } else {
-      searchParams = `where id = ${searchObj.id}`;
-    }
-    return pg.query(`select * from users ${searchParams}`);
+    let searchParams = convertToQParams(searchObj);
+    console.log('search params', searchParams);
+    return pg.query(`select * from users where ${searchParams}`);
   };
   // email = ${searchObj.email}
   db.createUser = function(userObj) {
@@ -31,12 +27,12 @@ export default function(db, pg) {
         userObj[key] = null;
       }
     });
-
     if (userObj.password) {
-      userObj.password = db.generateHash(password);
+      userObj.password = db.generateHash(userObj.password);
     }
-    return pg.query(`insert into users (name, username, password, facebookId, facebookAccessToken) \
-      values ('${userObj.name}', '${userObj.username}', ${userObj.password}, ${userObj.facebookId}, '${userObj.facebookAccessToken}')`);
+    return pg.one(`insert into users (name, username, password, facebookId, facebookAccessToken) \
+      values ('${userObj.name}', '${userObj.username}', '${userObj.password}', ${userObj.facebookId}, '${userObj.facebookAccessToken}') \
+      returning *`);
   };
 
   db.deleteUser = function(email) {
@@ -50,17 +46,17 @@ export default function(db, pg) {
         return user;
       } else {
         const newUser = {};
-        if (options.fb) {
+        if (options && options.fb) {
           let {profile, accessToken} = options.fb;
           _.extend(newUser, {
             facebookId: parseInt(profile.id),
             facebookAccessToken: accessToken,
             name: `${profile.name.givenName} ${profile.name.familyName}`
           });
-        } else if (options.local) {
+        } else {
           _.extend(newUser, {
-            username: local.username,
-            password: local.password
+            username: searchObj.username,
+            password: searchObj.password
           });
         }
         return db.createUser(newUser);
@@ -79,4 +75,24 @@ export default function(db, pg) {
     })
     .catch((err) => console.log(err));
   };
+}
+
+
+function convertToQParams(searchObj) {
+  // look at search params and search by the most specific one given
+  console.log('searchObj', searchObj);
+  let searchParams = '';
+  let handleOr = false;
+  // build search params based on input
+  _.each(searchObj, (val, key) => {
+    if (handleOr) {
+      searchParams += ' OR ';
+    }
+    if (userSchema[key]) {
+      searchParams += `${key} = '${val}'`;
+      handleOr = true;
+    }
+  });
+  return searchParams;
+  console.log(searchParams);
 }

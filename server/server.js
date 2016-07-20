@@ -4,14 +4,15 @@ import serverConfig from './server-config';
 import db from './db/db';
 import passport from 'passport';
 import {facebookAuthConfig} from './auth/fbAuth';
-import {localConfig} from './auth/localAuth';
+import localAuthConfig from './auth/localAuth';
+
 // passport.authenticate('jwt', { session: false })
-const app = express.Router();
+const app = express();
 const port = process.env.PORT || 8000;
 
-serverConfig(app, express, passport, db);
-facebookAuthConfig(db.findOrCreateUser);
-localConfig(db);
+localAuthConfig(db);
+facebookAuthConfig(db);
+serverConfig(app, db);
 // Render the main splash page upon arrival
 app.get('/', (req, res) => {
   console.log('redirected back');
@@ -20,49 +21,21 @@ app.get('/', (req, res) => {
 
 app.route('/login')
   .get((req, res) => {
-    res.render('login');
+    res.render('login', {errMsg: false});
   })
-  .post((req, res, next) => {
-    passport.authenticate('local-login', function(err, user, info) {
-      if (err) {
-        return next(err); // will generate a 500 error
-      }
-      if (!user) {
-        return res.render('login', {errMsg: 'Sorry, it doesn\'t look like you\'re signed up'});
-      }
-      req.login(user, function(err) {
-        if (err) {
-          return next(err);
-        }
-        return res.redirect('/spots');
-      });
-    })(req, res, next);
-  });
+  .post(passport.authenticate('local-login', {
+    successRedirect: '/spots',
+    failureRedirect: '/login'
+  }));
 
 app.route('/signup')
   .get((req, res) => {
     res.render('signup');
   })
-  .post((req, res, next) => {
-    passport.authenticate('local-signup', function(err, user, info) {
-      if (err) {
-        return next(err); // will generate a 500 error
-      }
-      if (!user) {
-        return res.render('signup'), {errMsg: 'sorry, something went wrong with our database :('};
-      }
-      req.login(user, function(err) {
-        if (err) {
-          console.error(err);
-          return next(err);
-        }
-        return res.redirect('/spots');
-      });
-    })(req, res, next);
-  });
-
-
-
+  .post(passport.authenticate('local-signup', {
+    successRedirect: '/spots',
+    failureRedirect: '/signup'
+  }));
 
 // route for facebook authentication and login
 // different scopes while logging in
@@ -82,7 +55,7 @@ app.get('/logout', function(req, res) {
 app.get('/spots',
 function(req, res) {
   console.log('redirected to spots');
-  res.sendFile(path.join(__dirname, './views/spots.html')); // index.html for react app
+  res.sendFile(path.join(__dirname, './views/mainapp.html')); // index.html for react app
 });
 
 // RESTFUl API for retrieving spots from the db
