@@ -14,10 +14,13 @@ import * as Actions from '../actions';
 //     this.state = {};
 //   }
 
+// Globl map
+var mainMap;
+
 // Generate React map class
 var Map = React.createClass({
   componentDidMount() {
-    var mainMap = renderMap();
+    renderMap();
     getUserLocation(mainMap);
   },
 
@@ -82,6 +85,7 @@ var tastyRestaurants = [
 ////////// TEST IMAGES TODO - REMOVE FOR FINAL //////////
 var thumbDown = 'http://emojipedia-us.s3.amazonaws.com/cache/8f/32/8f32d2d9cdc00990f5d992396be4ab5a.png';
 var thumbUp = 'http://emojipedia-us.s3.amazonaws.com/cache/79/bb/79bb8226054d3b254d3389ff8c9fe534.png';
+var fistBump = 'http://emojipedia-us.s3.amazonaws.com/cache/2c/08/2c080d6b97f0416f9d914718b32a2478.png';
 var testImage = 'http://img4.wikia.nocookie.net/__cb20140321012355/spiritedaway/images/1/1f/Totoro.gif';
 
 ////////// TEMPLATES FOR GEOPOINT and GEOSET in geoJSON FORMAT //////////
@@ -137,11 +141,19 @@ export default connect(mapStateToProps, mapDispatchToProps)(Map);
 
 // Helpers for rendering mapping data
 var renderMap = () => {
-  var mainMap = L.mapbox.map('map-one', 'mapbox.streets')
-    .setView(defaultCoord, 16)
-    .addControl(L.mapbox.geocoderControl('mapbox.places', {
-      autocomplete: true
-    }));
+  mainMap = L.mapbox.map('map-one', 'mapbox.streets')
+    .setView(defaultCoord, 16);
+
+  var geocoderControl = L.mapbox.geocoderControl('mapbox.places', {
+    autocomplete: true,
+    keepOpen: true,
+    container: 'geocoder-container'
+  });
+  geocoderControl.addTo(mainMap);
+
+  geocoderControl.on('select', function(res, mainMap) {
+    foundRestaurant(res, mainMap);
+  });
 
   addPointsLayer(mainMap);
 
@@ -164,9 +176,9 @@ var addPointsLayer = (map) => {
 };
 
 // Helpers for interacting with users live location
-var getUserLocation = (map) => {
+var getUserLocation = () => {
   navigator.geolocation.getCurrentPosition(function(position) {
-    geoSuccess(position, map);
+    geoSuccess(position);
   }, geoError);
 };
 
@@ -174,8 +186,28 @@ var geoError = () => {
   alert('Our apologies, but it appears we are unable to find you');
 };
 
-var geoSuccess = (position, map) => {
-  map.setView([position.coords.latitude, position.coords.longitude]);
+var geoSuccess = (position) => {
+  mainMap.setView([position.coords.latitude, position.coords.longitude]);
+};
+
+// Helpers to handle search results
+var foundRestaurant = (res) => {
+  console.log('found a place', res.feature.text, res.feature.center); // -122, 33 long / lat
+  var pointQuery = L.mapbox.featureLayer().addTo(mainMap);
+
+  pointQuery.on('layeradd', function(point) {
+    var marker = point.layer;
+    var feature = marker.feature;
+    marker.setIcon(L.icon(feature.properties.icon));
+    var content = '<h2>' + feature.properties.title + '<\/h2>' +
+    '<img src="' + feature.properties.image + '" alt="">';
+    marker.bindPopup(content);
+  });
+
+  var coordinates = res.feature.center;
+  var pickedPlace = geoJSONPoint(coordinates[0], coordinates[1], res.feature.text, fistBump, testImage);
+
+  pointQuery.setGeoJSON(pickedPlace);
 };
 
 window.Map = Map;
