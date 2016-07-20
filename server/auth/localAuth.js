@@ -2,7 +2,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 
 //---------------------------Local Strategy-------------------------------------
-export default localConfig = function(User) {
+export default localConfig = function(db) {
   passport.use('local-signup', new LocalStrategy({
     usernameField: 'username',
     passwordField: 'password',
@@ -27,9 +27,9 @@ export default localConfig = function(User) {
     passwordField: 'password',
     passReqToCallback: true
   }, function(req, username, password, done) {
-    User.findUser({username: username})
+    db.findUser({username: username})
       .then((user) => {
-        if (user.length === 0 || !User.validPassword(password)) {
+        if (user.length === 0 || !db.validPassword(password)) {
           return done(null, false);
         } else {
           return done(null, user);
@@ -37,5 +37,4 @@ export default localConfig = function(User) {
       })
       .catch((err) => done(err));
   }));
-
 };
