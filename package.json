@@ -29,9 +29,10 @@
     "express": "^4.14.0",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.14.0",
+    "font-awesome": "^4.6.3",
     "jquery": "^2.2.1",
-    "jsonwebtoken": "^7.1.6",
     "lodash": "^4.6.1",
+    "magnific-popup": "^1.1.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-jwt": "^2.1.0",
@@ -41,7 +42,8 @@
     "react-dom": "^0.14.7",
     "react-materialize": "^0.14.4",
     "react-redux": "^4.4.5",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "scrollreveal": "^3.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",

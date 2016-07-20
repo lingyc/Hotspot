@@ -4,15 +4,12 @@ import serverConfig from './server-config';
 import db from './db/db';
 import passport from 'passport';
 import {facebookAuthConfig} from './auth/fbAuth';
-import {jwtAuthConfig} from './auth/jwtAuth';
-import jwt from 'jsonwebtoken';
 // passport.authenticate('jwt', { session: false })
 const app = express();
 const port = process.env.PORT || 8000;
 
 serverConfig(app, express, passport, db);
 facebookAuthConfig(db.findOrCreateUser);
-jwtAuthConfig(db.findOrCreateUser);
 
 // Render the main splash page upon arrival
 app.get('/', (req, res) => {
