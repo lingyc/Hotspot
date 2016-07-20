@@ -1,3 +1,5 @@
+import React from 'react';
+
 var Navigation = (props) => (
     <nav className="navbar">
       <div className='collectionPanel'>
@@ -9,4 +11,4 @@ var Navigation = (props) => (
     </nav>
 );
 
-window.Navigation = Navigation;
+export default Navigation;

@@ -1,3 +1,5 @@
+import React from 'react';
+
 var CollectionModel = (props) => (
   <div className='restaurant'>
     <div className='restaurantName'>
@@ -8,4 +10,4 @@ var CollectionModel = (props) => (
   </div>
 );
 
-window.CollectionModel = CollectionModel;
+export default CollectionModel;

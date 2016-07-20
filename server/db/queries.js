@@ -1,23 +1,13 @@
 import _ from 'lodash';
 
-const spotSchema = {
-  id: true,
-  name: true,
-  rating: true,
-  latitude: true,
-  longitude: true,
-  image: true,
-  yelp_id: true
-};
-
-export default function(db, pg) {
-  db.getAllSpots = function(req, res, next) {
-    pg.query('select * from spots')
+export default function(db, pg, schema){
+  db.getAll = function(req, res, next) {
+    pg.query('select * from ${schema.tableName}')
      .then((data) => {
        params.res.status(200)
          .json({
            data: data,
-           message: 'Retrieved all spots!'
+           message: 'Retrieved all ${schema.tableName}!'
          });
      })
      .catch(function (err) {
@@ -25,9 +15,9 @@ export default function(db, pg) {
      });
   };
 
-  db.getSingleSpot = function(req, res, next) {
+  db.getOne = function(req, res, next) {
     const id = req.params.id;
-    pg.query(`select * from spots where id = ${id}`)
+    pg.query(`select * from ${schema.tableName} where id = ${id}`)
      .then((data) => {
        params.res.status(200)
          .json({
@@ -40,11 +30,11 @@ export default function(db, pg) {
      });
   };
 
-  db.createSpot = function(req, res, next) {
+  db.create = function(req, res, next) {
     const spot = req.body;
     const convertedSpot = createValidSpotQuery(spot);
 
-    pg.query(`insert into spots (name, rating, latitude, longitude, image, yelp_id) \
+    pg.query(`insert into ${schema.tableName} (name, rating, latitude, longitude, image, yelp_id) \
               values (${convertedSpot.name}, ${convertedSpot.rating}, ${convertedSpot.latitude}, \
               ${convertedSpot.longitude}, ${convertedSpot.image}, ${convertedSpot.yelp_id});`)
      .then(function (data) {
@@ -60,10 +50,10 @@ export default function(db, pg) {
   };
 
   // updates take an entire spot's worth of data
-  db.updateSpot = function(req, res, next) {
+  db.update = function(req, res, next) {
     const spot = req.body;
     const convertedSpot = createValidSpotQuery(spot);
-    pg.query(`update spots \
+    pg.query(`update ${schema.tableName} \
         set name = '${convertedSpot.name}', \
         latitude = ${convertedSpot.latitude}, \
         longitude = ${convertedSpot.longitude}, \
@@ -83,8 +73,8 @@ export default function(db, pg) {
      });
   };
 
-  db.removeSpot = function(req, res, next) {
-    pg.query(`delete from spots where id = ${req.params.id}`)
+  db.remove = function(req, res, next) {
+    pg.query(`delete from ${schema.tableName} where id = ${req.params.id}`)
      .then(function (data) {
        params.res.status(200)
          .json({
@@ -108,4 +98,17 @@ function createValidSpotQuery(spot) {
     }
   });
   return spot;
+}
+
+
+function createInsertQuery(schema, objToInsert) {
+  let query = `insert into ${schema.tableName}`
+  _.each(schema.columns, (val, key) => {
+    if (objToInsert[key] === undefined) {
+      objToInsert[key] = null;
+    }
+    if (typeof objToInsert[key] === 'string') {
+      objToInsert[key] = `'${val}'`;
+    }
+  });
 }

@@ -58,7 +58,7 @@ app.get('/logout', function(req, res) {
 app.get('/spots', isAuthenticated,
 function(req, res) {
   console.log('redirected to spots');
-  res.sendFile(path.join(__dirname, './views/mainapp.html')); // index.html for react app
+  res.sendFile(path.join(__dirname, '/../index.html')); // index.html for react app
 });
 
 // RESTFUl API for retrieving spots from the db

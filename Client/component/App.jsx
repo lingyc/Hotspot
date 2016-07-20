@@ -1,3 +1,8 @@
+import React from 'react';
+import Navigation from './Nav.jsx';
+import Panel from './Panel.jsx';
+import Map from './map/Map.jsx';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -44,7 +49,4 @@ class App extends React.Component {
 
 }
 
-window.App = App;
-
-ReactDOM.render(<App/>,
-document.getElementById('app'));
+export default App;
