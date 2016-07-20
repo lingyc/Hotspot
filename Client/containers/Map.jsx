@@ -139,7 +139,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(Map);
 var renderMap = () => {
   var mainMap = L.mapbox.map('map-one', 'mapbox.streets')
     .setView(defaultCoord, 16)
-    .addControl(L.mapbox.geocoderControl('mapbox.places'));
+    .addControl(L.mapbox.geocoderControl('mapbox.places', {
+      autocomplete: true
+    }));
 
   addPointsLayer(mainMap);
 
