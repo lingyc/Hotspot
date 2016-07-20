@@ -1,7 +1,18 @@
+import _ from 'lodash';
+
+const spotSchema = {
+  id: true,
+  name: true,
+  rating: true,
+  latitude: true,
+  longitude: true,
+  image: true
+};
+
 export default function(db, pg) {
   db.getAllSpots = function(req, res, next) {
     pg.query('select * from spots')
-     .then(function (data) {
+     .then((data) => {
        params.res.status(200)
          .json({
            data: data,
@@ -16,7 +27,7 @@ export default function(db, pg) {
   db.getSingleSpot = function(req, res, next) {
     const id = req.params.id;
     pg.query(`select * from spots where id = ${id}`)
-     .then(function (data) {
+     .then((data) => {
        params.res.status(200)
          .json({
            data: data,
@@ -30,9 +41,11 @@ export default function(db, pg) {
 
   db.createSpot = function(req, res, next) {
     const spot = req.body;
-    pg.query(`insert into spots (name, description, latitude, longitude, image, spots_users_id) \
-              values (${spot.name}, ${spot.description}, ${spot.latitude}, \
-              ${spot.longitude}, ${spot.image}, ${spot.spots_users_id});`)
+    const convertedSpot = createValidSpotQuery(spot);
+
+    pg.query(`insert into spots (name, rating, latitude, longitude, image) \
+              values (${convertedSpot.name}, ${convertedSpot.rating}, ${convertedSpot.latitude}, \
+              ${convertedSpot.longitude}, ${convertedSpot.image});`)
      .then(function (data) {
        params.res.status(200)
          .json({
@@ -48,13 +61,13 @@ export default function(db, pg) {
   // updates take an entire spot's worth of data
   db.updateSpot = function(req, res, next) {
     const spot = req.body;
+    const convertedSpot = createValidSpotQuery(spot);
     pg.query(`update spots \
-        set name = '${spot.name}', \
-        description = '${spot.description}', \
-        latitude = ${spot.latitude}, \
-        longitude = ${spot.longitude}, \
-        image = '${spot.image}', \
-        spots_users_id = ${spot.spots_users_id} \
+        set name = '${convertedSpot.name}', \
+        latitude = ${convertedSpot.latitude}, \
+        longitude = ${convertedSpot.longitude}, \
+        rating = ${convertedSpot.rating}, \
+        image = '${convertedSpot.image}', \
         where id = ${req.params.id};`)
      .then(function (data) {
        params.res.status(200)
@@ -81,4 +94,16 @@ export default function(db, pg) {
        return params.next(err);
      });
   };
+}
+
+function createValidSpotQuery(spot) {
+  _.each(spotSchema, (val, key) => {
+    if (spot[key] === undefined) {
+      spot[key] = null;
+    }
+    if (typeof spot[key] === 'string') {
+      spot[key] = `'${val}'`;
+    }
+  });
+  return spot;
 }

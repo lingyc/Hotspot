@@ -13,7 +13,6 @@ CREATE TABLE spots_users (
 CREATE TABLE spots (
   id SERIAL PRIMARY KEY,
   name VARCHAR,
-  description VARCHAR,
   rating VARCHAR,
   latitude REAL,
   longitude REAL,
