@@ -5,6 +5,7 @@ import db from './db/db';
 import passport from 'passport';
 import {facebookAuthConfig} from './auth/fbAuth';
 import localAuthConfig from './auth/localAuth';
+import isAuthenticated from './auth/isAuthenticated';
 
 // passport.authenticate('jwt', { session: false })
 const app = express();
@@ -19,6 +20,8 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
+
+// AUTHENTICATION
 app.route('/login')
   .get((req, res) => {
     res.render('login', {errMsg: false});
@@ -52,7 +55,7 @@ app.get('/logout', function(req, res) {
 });
 
 // Get all of a user's spots.
-app.get('/spots',
+app.get('/spots', isAuthenticated,
 function(req, res) {
   console.log('redirected to spots');
   res.sendFile(path.join(__dirname, './views/mainapp.html')); // index.html for react app

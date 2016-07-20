@@ -25,7 +25,3 @@ function convertToQParams(searchObj) {
 
   console.log(searchParams);
 }
-
-findUser({
-  username: 'alex'
-});

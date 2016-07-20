@@ -14,10 +14,8 @@ const userSchema = {
 
 export default function(db, pg) {
   db.findUser = function(searchObj) {
-    console.log('searchObj', searchObj);
     let searchParams = convertToQParams(searchObj);
-    console.log('search params', searchParams);
-    return pg.one(`select * from users where ${searchParams}`);
+    return pg.query(`select * from users where ${searchParams}`);
   };
   // email = ${searchObj.email}
   db.createUser = function(userObj) {
@@ -44,7 +42,7 @@ export default function(db, pg) {
     return db.findUser(searchObj)
     .then((user) => {
       if (user.length > 0) {
-        return user;
+        return user[0];
       } else {
         const newUser = {};
         if (options && options.fb) {
@@ -72,7 +70,7 @@ export default function(db, pg) {
   db.isValidPassword = function(password, id) {
     return db.findUser({id: id})
     .then((user) => {
-      return bcrypt.compareSync(password, user.password);
+      return [bcrypt.compareSync(password, user[0].password), user];
     })
     .catch((err) => console.log(err));
   };
@@ -81,7 +79,6 @@ export default function(db, pg) {
 
 function convertToQParams(searchObj) {
   // look at search params and search by the most specific one given
-  console.log('searchObj', searchObj);
   let searchParams = '';
   let handleOr = false;
   // build search params based on input
@@ -94,6 +91,6 @@ function convertToQParams(searchObj) {
       handleOr = true;
     }
   });
+  console.log('search params', searchParams);
   return searchParams;
-  console.log(searchParams);
 }

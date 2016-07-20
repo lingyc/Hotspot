@@ -14,14 +14,11 @@ export default function(db) {
           username: username,
           password: password
         })
-          .then((user) => {
-            console.log('user to be returned', user);
-            return done(null, user);
-          })
-          .catch((err) => done(err));
+        .then((user) => done(null, user))
+        .catch((err) => done(err));
       } else {
         //user exists and is logged in
-        done(null, null);
+        done(null, false);
       }
     });
   }));
@@ -33,13 +30,17 @@ export default function(db) {
   }, function(req, username, password, done) {
     return db.findUser({username: username})
       .then((user) => {
-        console.log('got back', user);
-        if (!user || !db.isValidPassword(password, user.id)) {
-          console.log('bad password');
+        console.log('checking username and password');
+        if (user.length === 0) {
           return done(null, false);
-        } else {
-          console.log('moving onto the next thing');
+        }
+        return db.isValidPassword(password, user[0].id);
+      })
+      .then(([match, user]) => {
+        if (match) {
           return done(null, user);
+        } else {
+          return done(null, false);
         }
       })
       .catch((err) => done(err));

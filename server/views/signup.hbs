@@ -1,11 +1,11 @@
 {{>authHeader}}
-<form class="signupform" action="/signup" method="POST">
+<form class="signupform" action="/signup" method="POST" data-toggle="validator" role="form">
 <div class="row">
   <div class="col-xs-3"></div>
   <div class="col-xs-6">
     <fieldset class="form-group">
       <label for="username">Username</label>
-      <input type="text" class="form-control" name="username" id="username" placeholder="Example input">
+      <input type="text" class="form-control" name="username" id="username" placeholder="Enter your username" required>
     </fieldset>
   </div>
 </div>
@@ -14,17 +14,19 @@
   <div class="col-xs-6">
     <fieldset class="form-group">
       <label for="password">Password</label>
-      <input type="password" class="form-control" name="password" id="password" placeholder="Another input">
+      <input type="password" data-minlength="6" class="form-control" name="password" id="password" placeholder="Enter password" required>
+      <div class="help-block">Minimum of 6 characters</div>
     </fieldset>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-3"></div>
   <div class="col-xs-6">
-      <fieldset class="form-group">
-        <label for="passconfirm">Confirm Your Password</label>
-        <input type="passconfirm" class="form-control" id="passconfirm" placeholder="Another input">
-      </fieldset>
+      <div class="form-group">
+        <input type="password" class="form-control" id="passconfirm" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm Password" required>
+        <div class="help-block with-errors"></div>
+      </div>
+    </div>
   </div>
 </div>
 <button type="submit" name="button" class="btn btn-default">Submit</button>
