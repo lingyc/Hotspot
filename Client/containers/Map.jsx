@@ -66,6 +66,12 @@ var tastyRestaurants = [
     rating: 5
   },
   {
+    name: 'Réveille Coffee Co.',
+    latitude: 37.7735341,
+    longitude: -122.3942448,
+    rating: 5
+  },
+  {
     name: 'Denny\'s',
     latitude: 37.7859249,
     longitude: -122.407801,
@@ -92,8 +98,8 @@ var geoJSONPoint = (longitude, latitude, name, thumb, image) => {
       icon: {
         iconUrl: thumb,
         iconSize: [35, 35],
-        iconAnchor: [20, 20],
-        popupAnchor: [0, -15]
+        iconAnchor: [-108, 26],
+        popupAnchor: [124, -26]
       }
     }
   };
@@ -132,7 +138,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Map);
 // Helpers for rendering mapping data
 var renderMap = () => {
   var mainMap = L.mapbox.map('map-one', 'mapbox.streets')
-    .setView(defaultCoord, 14)
+    .setView(defaultCoord, 16)
     .addControl(L.mapbox.geocoderControl('mapbox.places'));
 
   addPointsLayer(mainMap);
