@@ -42,6 +42,22 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(Actions, dispatch)
   };
 }
+// Generate React Event Listener
+var OnSubmit = React.createClass({
+  submit: function(e) {
+    e.preventDefault();
+    alert('it works!');
+  },
+
+  render: function() {
+    return (
+      <form onSubmit={this.submit}>
+        <button>Thumbs!</button>
+      </form>
+    );
+  }
+});
+
 ////////// TESTING DATA - TODO REMOVE /////////
 var tastyRestaurants = [
   {
@@ -102,8 +118,8 @@ var geoJSONPoint = (longitude, latitude, name, thumb, image) => {
       icon: {
         iconUrl: thumb,
         iconSize: [35, 35],
-        iconAnchor: [-108, 26],
-        popupAnchor: [124, -26]
+        iconAnchor: [0, 0],
+        popupAnchor: [0, 0]
       }
     }
   };
@@ -200,6 +216,11 @@ var foundRestaurant = (res) => {
     var feature = marker.feature;
     marker.setIcon(L.icon(feature.properties.icon));
     var content = '<h2>' + feature.properties.title + '<\/h2>' +
+    '<form>I would<br>' +
+    '<input type="radio" name="goBack" required> Definitely and absolutely<br>' +
+    '<input type="radio" name="goBack"> Never ever ever<br>' +
+    'go back<br>' +
+    '<input type="submit" name="fistBump" value="Thumbs!"></form>' +
     '<img src="' + feature.properties.image + '" alt="">';
     marker.bindPopup(content);
   });
@@ -208,6 +229,7 @@ var foundRestaurant = (res) => {
   var pickedPlace = geoJSONPoint(coordinates[0], coordinates[1], res.feature.text, fistBump, testImage);
 
   pointQuery.setGeoJSON(pickedPlace);
+  pointQuery.openPopup();
 };
 
 window.Map = Map;
