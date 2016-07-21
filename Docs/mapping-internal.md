@@ -204,6 +204,7 @@ We are also able to set a map point after listening for a `geocoder.input`.
 * Yelp business ID for future requests
 
 # Other Information #
+## Please note Yelp authenticates using OAuth v1.0a protocol ##
 ## Yelp JSON Request and Response ##
 #### AJAX Request for Initial Yelp information ####
 * General search GET endpoint - `https://api.yelp.com/v2/`
