@@ -7,9 +7,7 @@ const PATHS = {
 };
 
 module.exports = {
-  entry: {
-    src: PATHS.src
-  },
+  entry: './Client/index.js',
   output: {
     path: PATHS.compiled,
     filename: 'app.bundle.js'
@@ -18,10 +16,13 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: 'babel'
+        // exclude: /node_modules/,
+        loader: 'babel-loader'
       }
     ]
+  },
+  resolveLoaders: {
+    modulesDirectories: ['node_modules']
   },
   resolve: { // in import statements default to these file types if none specified
     extensions: ['', '.js', '.jsx', '.css'],

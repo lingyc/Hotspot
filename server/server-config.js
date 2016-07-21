@@ -27,7 +27,7 @@ export default function(app, User) {
 
   passport.deserializeUser(function(id, done) {
     console.log('deserialize');
-    return User.getOne({id: id})
+    return User.find({id: id})
       .then((user) => done(null, user[0]))
       .catch((err) => done(err, null));
   });

@@ -5,13 +5,13 @@ import User from './db/Users';
 import {facebookAuthConfig} from './auth/fbAuth';
 import localAuthConfig from './auth/localAuth';
 import primaryRoutes from './routes/primaryRoutes';
-import isAuthenticated from './auth/isAuthenticated';
 import authRoutes from './routes/authRoutes';
 import apiRoutes from './routes/apiRoutes';
 
 const app = express();
 const port = process.env.PORT || 8000;
 
+console.log('User', User);
 // Server and auth configuration
 localAuthConfig(User);
 facebookAuthConfig(User);

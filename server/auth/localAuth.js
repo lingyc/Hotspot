@@ -14,7 +14,7 @@ export default function(User) {
           username: username,
           password: password
         })
-        .then((user) => done(null, user))
+        .then((user) => done(null, user[0]))
         .catch((err) => done(err));
       } else {
         //user exists and is logged in
@@ -28,13 +28,13 @@ export default function(User) {
     passwordField: 'password',
     passReqToCallback: true
   }, function(req, username, password, done) {
-    return db.findUser({username: username})
+    return User.find({username: username})
       .then((user) => {
         console.log('checking username and password');
         if (user.length === 0) {
           return done(null, false);
         }
-        return db.isValidPassword(password, user[0].id);
+        return [User.isValidPassword(password, user[0].id), user];
       })
       .then(([match, user]) => {
         if (match) {

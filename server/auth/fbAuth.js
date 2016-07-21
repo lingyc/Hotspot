@@ -11,13 +11,11 @@ export const facebookAuthConfig = function(User) {
     profileFields: ['id', 'emails', 'name']
   }, function(accessToken, refreshToken, profile, done) {
     process.nextTick(function() {
-      return User.findOrCreate({facebookId: profile.id},
-        {
-          fb: {
-            accessToken: accessToken,
-            profile: profile
-          }
-        })
+      return User.findOrCreate({
+        name: profile.name.givenName,
+        facebookId: profile.id,
+        facebookAccessToken: accessToken
+      })
       .then((user) => done(null, user))
       .catch((err) => done(err, null));
     });
