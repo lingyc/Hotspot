@@ -78,3 +78,22 @@ var requestYelp = (endpoint, parameters, cb) => {
     console.log('a request!!!');
   });
 };
+
+// Parse required data out of Yelp's response data
+var parseYelpData = (data) => {
+  var business = data.business[0];
+  var cuisine = business.categories[0].split(',')[0];
+  var imageUrl = business.image_url;
+  var businessId = business.id;
+  var parsed = {
+    cuisine: cuisine,
+    image: imageUrl,
+    businessId: businessId
+  };
+
+  return parsed;
+};
+
+///////// TESTING DATA //////////
+var coords = [37.781499, -122.411311]; // lat, lon
+var nameOfRest = 'The Flying Falafel';
