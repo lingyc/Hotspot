@@ -208,7 +208,7 @@ var geoSuccess = (position) => {
 
 // Helpers to handle search results
 var foundRestaurant = (res) => {
-  console.log('found a place', res.feature.text, res.feature.center); // -122, 33 long / lat
+  console.log('found a place', res, res.feature.text, res.feature.center); // -122, 33 long / lat
   var pointQuery = L.mapbox.featureLayer().addTo(mainMap);
 
   pointQuery.on('layeradd', function(point) {
