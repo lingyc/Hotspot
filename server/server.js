@@ -70,5 +70,5 @@ app.delete('/api/spots/:id', db.removeSpot);
 
 
 app.listen(port, () => {
-  console.log('server started on port');
+  console.log('server started on port: ', port);
 });
