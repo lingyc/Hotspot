@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 const PATHS = {
   compiled: path.join(__dirname, 'compiled'),
-  src: path.join(__dirname, 'Client')
+  src: path.join(__dirname, 'Client/index.js')
 };
 
 module.exports = {
@@ -22,6 +22,10 @@ module.exports = {
         loader: 'babel'
       }
     ]
+  },
+  resolve: { // in import statements default to these file types if none specified
+    extensions: ['', '.js', '.jsx', '.css'],
+    modulesDirectories: ['node_modules']
   },
   devServer: {
     contentBase: PATHS.compiled,
