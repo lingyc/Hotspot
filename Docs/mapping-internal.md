@@ -226,7 +226,7 @@ We are also able to set a map point after listening for a `geocoder.input`.
 | image_url | string | URL photo for business | Not stored |
 
 ###### AJAX Request for older stored information ######
-* GET endpoint - `https://api.yelp.com/v2//v2/business/{id}`
+* GET endpoint - `https://api.yelp.com/v2/business/{id}`
 
 | Name  | Type   | Comments                 |
 |-------|:------:|-------------------------:|
