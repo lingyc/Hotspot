@@ -433,6 +433,7 @@ We are also able to set a map point after listening for a `geocoder.input`.
 * Mapbox documentation - https://www.mapbox.com/help/#build-a-web-app
 * Mapbox example library - https://www.mapbox.com/mapbox.js/example/v1.0.0/
 * Leaflet documentation - http://leafletjs.com/
+* Yelp oAuth requirements - https://www.yelp.com/developers/documentation/v2/authentication
 
 **JS Libraries**
 * Geolocation Fallback (Generally for older browsers) https://github.com/estebanav/javascript-mobile-desktop-geolocation
