@@ -9,8 +9,8 @@ class App extends React.Component {
     return (
       <div>
         <Nav/>
-        <Map/>
-        <Panel/>
+        <Panel />
+        <Map />
       </div>
     );
   }

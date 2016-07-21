@@ -1,10 +1,9 @@
-var filteredOptions = function() {
+export default function() {
   return [
     {types: ['Mexican', 'Chinese', 'American', 'Japaense', 'Vietnamese', 'Thai', 'Indian', 'Midlle Easiern', 'Italian'],
       rating: ['good', 'bad']
     }
   ];
-};
+}
 
-export default filterOptions;
 // feel free to add more filter options

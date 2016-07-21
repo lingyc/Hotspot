@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import CollectionRestaurants from './reducers/reducer_collection_restaurants';
-import FilteredRestaurants from './reducers/reducer_filtered_restaurants';
-import FilterOptions from './reducers/filter_options';
-import FilterSelected from './reducers/filtered';
+import CollectionRestaurants from './reducer_collection_restaurants';
+import FilteredRestaurants from './reducer_filtered_restaurants';
+import FilterOptions from './reducer_filter_options';
+import FilterSelected from './reducer_filtered';
 
 const rootReducer = combineReducers({
   allRestaurants: CollectionRestaurants,
