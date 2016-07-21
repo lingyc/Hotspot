@@ -5,7 +5,7 @@ import hbs from 'express-handlebars';
 import passport from 'passport';
 import express from 'express';
 
-export default function(app, db) {
+export default function(app, User) {
   app.engine('hbs', hbs({
     extname: 'hbs',
     defaultLayout: 'splash',
@@ -27,7 +27,7 @@ export default function(app, db) {
 
   passport.deserializeUser(function(id, done) {
     console.log('deserialize');
-    return db.findUser({id: id})
+    return User.getOne({id: id})
       .then((user) => done(null, user[0]))
       .catch((err) => done(err, null));
   });
@@ -36,14 +36,16 @@ export default function(app, db) {
     extended: true
   }));
   app.use(bodyParser.json());
+
+  // STATIC DIRECTORIES
   app.use(express.static(path.join(__dirname, '/../build')));
   app.use(express.static(path.join(__dirname, '/../compiled')));
   app.use(express.static(path.join(__dirname, '/../../index.html')));
   app.use(express.static(path.join(__dirname, '/../node_modules')));
-
   app.use(express.static(path.join(__dirname, '/../Client/')));
   app.use(express.static(path.join(__dirname, './views')));
   app.use(express.static(path.join(__dirname, './server-test')));
+
   app.use(session({
     secret: 'keyboard cat',
     saveUninitialized: true,

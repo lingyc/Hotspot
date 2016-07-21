@@ -26,6 +26,10 @@ export default class DB {
      .catch((err) => next(err));
   }
 
+  findOrCreate() {
+
+  }
+
   remove(req, res, next) {
     this.pg.query(`delete from ${schema.tableName} where id = ${req.params.id}`)
      .then((data) => sendBackJSON(res, data, 'deleted'))

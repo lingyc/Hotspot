@@ -1,7 +1,7 @@
 import { Strategy as LocalStrategy } from 'passport-local';
 import passport from 'passport';
 //---------------------------Local Strategy-------------------------------------
-export default function(db) {
+export default function(User) {
   passport.use('local-signup', new LocalStrategy({
     usernameField: 'username',
     passwordField: 'password',
@@ -10,7 +10,7 @@ export default function(db) {
     console.log('sign them up!');
     process.nextTick(function() {
       if (!req.user) {
-        db.findOrCreateUser({
+        User.findOrCreate({
           username: username,
           password: password
         })
