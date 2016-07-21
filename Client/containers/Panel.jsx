@@ -14,7 +14,7 @@ class Panel extends React.Component {
       <div id='outer-container'>
         <Menu pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" } right />
         <main id="page-wrap">
-          <div className='panelBody'>
+          <div className='panelBody panel'>
             <div className='data'>
               <CollectionModel restaurant={this.props.allRestaurants.map(restaurant => restaurant)}/>
             </div>
