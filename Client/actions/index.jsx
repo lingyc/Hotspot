@@ -22,7 +22,8 @@ export const PANEL_CLICK_FILTER_ITEM = 'PANEL_CLICK_FILTER_ITEM';
 export const PANEL_OPEN_COLLECTION_ITEM = 'PANEL_OPEN_COLLECTION_ITEM';
 export const PANEL_CLOSE_COLLECTION_ITEM = 'PANEL_CLOSE_COLLECTION_ITEM';
 
-export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT'
+export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
+export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 
 // Click Handler for Nav Collection button
 export function toggleCollectionList(panelMode) {
@@ -109,5 +110,15 @@ export function clickLocationSubmit(name, lat, lon, rating) {
   return {
     type: MAP_CONFIRM_POINT
     payload: locToAdd
+  }
+}
+
+export function fetchCollection() {
+  // Query database for user's entire collection
+  // This function should only be called once on startup
+
+  return {
+    type: FETCH_COLLECTION,
+    payload: collection;
   }
 }
