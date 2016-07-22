@@ -1,7 +1,9 @@
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import passport from 'passport';
-import {inLocalEnv} from '../server-config';
-// inLocalEnv() && import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, FACEBOOK_CALLBACK } from '../config/fb';
+import inLocalEnv from '../config-public/inLocalEnv';
+import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, FACEBOOK_CALLBACK } from '../config-public/fb';
+
+//change line 4 to import from '../config/fb'
 
 const FB = {
   APP_ID: process.env.FACEBOOK_APP_ID || 0,

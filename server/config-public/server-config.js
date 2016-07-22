@@ -57,7 +57,5 @@ export default function(app, User) {
   app.use(passport.session());
 
 }
-
-export function inLocalEnv() {
-  return fs.readdirSync(path.join(__dirname)).indexOf('config') >= 0;
-}
+//
+// 

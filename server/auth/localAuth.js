@@ -1,5 +1,6 @@
 import { Strategy as LocalStrategy } from 'passport-local';
 import passport from 'passport';
+import inLocalEnv from '../config-public/inLocalEnv';
 //---------------------------Local Strategy-------------------------------------
 export default function(User) {
   passport.use('local-signup', new LocalStrategy({
