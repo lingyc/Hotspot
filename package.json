@@ -6,12 +6,12 @@
   "scripts": {
     "test": "babel-node server/server.js & mocha --compilers js:babel-register --bail --reporter nyan test/apiSpec.js; pkill -n node;",
     "server": "nodemon server/server.js --exec babel-node --presets es2015 stage-1",
-    "build": "webpack & babel ./server -d ./server/dist --presets es2015,stage-2",
-    "buildserver": "babel ./server -d ./server/dist --presets es2015,stage-2",
+    "buildserver": "babel ./server -d ./server-dist --presets es2015,stage-2 --copy-files",
+    "build": "webpack & npm run buildserver",
     "resetdb": "psql -f server/db/setuphotspotdb.sql",
     "serverdb": "npm run server & npm run startdb",
     "setupconfig": "mkdir ./server/config; cp ../hotspot-config/config/* ./server/config/",
-    "start": "node server/dist/server.js"
+    "start": "node server-dist/server.js"
   },
   "repository": {
     "type": "git",
