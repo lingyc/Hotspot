@@ -9,10 +9,10 @@ import _ from 'lodash';
 // cant import from non existant file in deployment
 import Y from '../config-public/yelpconfig';
 
-const YELP_CONSUMER_KEY = Y.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_KEY || null;
-const YELP_CONSUMER_SECRET = Y.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_SECRET || null;
-const YELP_TOKEN = Y.YELP_TOKEN || process.env.YELP_TOKEN || null;
-const YELP_TOKEN_SECRET = Y.YELP_TOKEN_SECRET || process.env.YELP_TOKEN_SECRET || null;
+const YELP_CONSUMER_KEY = Y.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_KEY || 0;
+const YELP_CONSUMER_SECRET = Y.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_SECRET || 0;
+const YELP_TOKEN = Y.YELP_TOKEN || process.env.YELP_TOKEN || 0;
+const YELP_TOKEN_SECRET = Y.YELP_TOKEN_SECRET || process.env.YELP_TOKEN_SECRET || 0;
 
 
 // Yelp Endpoints

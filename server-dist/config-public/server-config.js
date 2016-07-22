@@ -39,13 +39,12 @@ exports.default = function (app, User) {
   app.use(_bodyParser2.default.json());
 
   // STATIC DIRECTORIES
-  app.use(_express2.default.static(_path2.default.join(__dirname, '/../build')));
-  app.use(_express2.default.static(_path2.default.join(__dirname, '/../compiled')));
+  app.use(_express2.default.static(_path2.default.join(__dirname, '/../../compiled')));
   app.use(_express2.default.static(_path2.default.join(__dirname, '/../../index.html')));
-  app.use(_express2.default.static(_path2.default.join(__dirname, '/../node_modules')));
-  app.use(_express2.default.static(_path2.default.join(__dirname, '/../Client/')));
-  app.use(_express2.default.static(_path2.default.join(__dirname, './views')));
-  app.use(_express2.default.static(_path2.default.join(__dirname, './server-test')));
+  app.use(_express2.default.static(_path2.default.join(__dirname, '/../../node_modules')));
+  app.use(_express2.default.static(_path2.default.join(__dirname, '/../../Client/')));
+  app.use(_express2.default.static(_path2.default.join(__dirname, '/../views')));
+  app.use(_express2.default.static(_path2.default.join(__dirname, '/../../server-test')));
 
   app.use((0, _expressSession2.default)({
     secret: 'keyboard cat',

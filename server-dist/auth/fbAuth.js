@@ -19,13 +19,16 @@ var _fb = require('../config-public/fb');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config/fb';
+
 //change line 4 to import from '../config/fb'
 
 var FB = {
-  APP_ID: process.env.FACEBOOK_APP_ID || 0,
-  APP_SECRET: process.env.FACEBOOK_APP_SECRET || 0,
+  APP_ID: _fb.FACEBOOK_APP_ID || process.env.FACEBOOK_APP_ID || 0,
+  APP_SECRET: _fb.FACEBOOK_APP_SECRET || process.env.FACEBOOK_APP_SECRET || 0,
   CALLBACK: process.env.PORT ? 'http://localhost:' + process.env.PORT + '/auth/facebook/callback' : 'http://localhost:8000/auth/facebook/callback'
 };
+
 console.log(FB);
 var facebookAuthConfig = exports.facebookAuthConfig = function facebookAuthConfig(User) {
   _passport2.default.use(new _passportFacebook.Strategy({

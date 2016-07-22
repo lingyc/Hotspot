@@ -32,14 +32,14 @@ var _yelpconfig2 = _interopRequireDefault(_yelpconfig);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Required modules to handle Yelp's oAuth requirement
-var YELP_CONSUMER_KEY = _yelpconfig2.default.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_KEY || null;
+var YELP_CONSUMER_KEY = _yelpconfig2.default.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_KEY || 0;
 
 // Import sercet API keys (All 4 are needed)
 // cant import from non existant file in deployment
 
-var YELP_CONSUMER_SECRET = _yelpconfig2.default.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_SECRET || null;
-var YELP_TOKEN = _yelpconfig2.default.YELP_TOKEN || process.env.YELP_TOKEN || null;
-var YELP_TOKEN_SECRET = _yelpconfig2.default.YELP_TOKEN_SECRET || process.env.YELP_TOKEN_SECRET || null;
+var YELP_CONSUMER_SECRET = _yelpconfig2.default.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_SECRET || 0;
+var YELP_TOKEN = _yelpconfig2.default.YELP_TOKEN || process.env.YELP_TOKEN || 0;
+var YELP_TOKEN_SECRET = _yelpconfig2.default.YELP_TOKEN_SECRET || process.env.YELP_TOKEN_SECRET || 0;
 
 // Yelp Endpoints
 var endpointNewPlace = 'https://api.yelp.com/v2/search';
