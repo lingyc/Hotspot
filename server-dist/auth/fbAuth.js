@@ -11,11 +11,15 @@ var _passport = require('passport');
 
 var _passport2 = _interopRequireDefault(_passport);
 
-var _serverConfig = require('../server-config');
+var _inLocalEnv = require('../config-public/inLocalEnv');
+
+var _inLocalEnv2 = _interopRequireDefault(_inLocalEnv);
+
+var _fb = require('../config-public/fb');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// inLocalEnv() && import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, FACEBOOK_CALLBACK } from '../config/fb';
+//change line 4 to import from '../config/fb'
 
 var FB = {
   APP_ID: process.env.FACEBOOK_APP_ID || 0,

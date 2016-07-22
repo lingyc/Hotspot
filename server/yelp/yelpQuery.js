@@ -7,17 +7,12 @@ import _ from 'lodash';
 
 // Import sercet API keys (All 4 are needed)
 // cant import from non existant file in deployment
-import {
-  YELP_CONSUMER_KEY,
-  YELP_CONSUMER_SECRET,
-  YELP_TOKEN,
-  YELP_TOKEN_SECRET
-} from '../config-public/yelpconfig';
+import Y from '../config-public/yelpconfig';
 
-const YELP_CONSUMER_KEY = YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_KEY || null;
-const YELP_CONSUMER_SECRET = YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_SECRET || null;
-const YELP_TOKEN = YELP_TOKEN || process.env.YELP_TOKEN || null;
-const YELP_TOKEN_SECRET = YELP_TOKEN_SECRET || process.env.YELP_TOKEN_SECRET || null;
+const YELP_CONSUMER_KEY = Y.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_KEY || null;
+const YELP_CONSUMER_SECRET = Y.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_SECRET || null;
+const YELP_TOKEN = Y.YELP_TOKEN || process.env.YELP_TOKEN || null;
+const YELP_TOKEN_SECRET = Y.YELP_TOKEN_SECRET || process.env.YELP_TOKEN_SECRET || null;
 
 
 // Yelp Endpoints

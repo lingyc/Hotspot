@@ -4,7 +4,7 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
-var _serverConfig = require('./server-config');
+var _serverConfig = require('./config-public/server-config');
 
 var _serverConfig2 = _interopRequireDefault(_serverConfig);
 

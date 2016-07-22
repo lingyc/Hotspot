@@ -25,22 +25,21 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _yelpconfig = require('../config-public/yelpconfig');
+
+var _yelpconfig2 = _interopRequireDefault(_yelpconfig);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Required modules to handle Yelp's oAuth requirement
+var YELP_CONSUMER_KEY = _yelpconfig2.default.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_KEY || null;
 
 // Import sercet API keys (All 4 are needed)
 // cant import from non existant file in deployment
-// import {
-//   YELP_CONSUMER_KEY,
-//   YELP_CONSUMER_SECRET,
-//   YELP_TOKEN,
-//   YELP_TOKEN_SECRET
-// } from '../config/yelpconfig';
 
-var YELP_CONSUMER_KEY = process.env.YELP_CONSUMER_KEY || null; // Required modules to handle Yelp's oAuth requirement
-
-var YELP_CONSUMER_SECRET = process.env.YELP_CONSUMER_SECRET || null;
-var YELP_TOKEN = process.env.YELP_TOKEN || null;
-var YELP_TOKEN_SECRET = process.env.YELP_TOKEN_SECRET || null;
+var YELP_CONSUMER_SECRET = _yelpconfig2.default.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_SECRET || null;
+var YELP_TOKEN = _yelpconfig2.default.YELP_TOKEN || process.env.YELP_TOKEN || null;
+var YELP_TOKEN_SECRET = _yelpconfig2.default.YELP_TOKEN_SECRET || process.env.YELP_TOKEN_SECRET || null;
 
 // Yelp Endpoints
 var endpointNewPlace = 'https://api.yelp.com/v2/search';

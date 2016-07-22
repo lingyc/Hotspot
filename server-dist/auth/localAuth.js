@@ -66,4 +66,8 @@ var _passport = require('passport');
 
 var _passport2 = _interopRequireDefault(_passport);
 
+var _inLocalEnv = require('../config-public/inLocalEnv');
+
+var _inLocalEnv2 = _interopRequireDefault(_inLocalEnv);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
