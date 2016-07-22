@@ -1,19 +1,5 @@
 import $ from 'jquery';
 
-/*
- ===== Action List =====
-  nav-collection-toggle
-  nav-filter
-  nav-logout
-
-  panel-filter-item-toggle
-  panel-collection-item-open
-  panel-collection-item-close
-
-  map-place-point
-  map-rating
-*/
-
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
 export const NAV_CLICK_FILTER = 'NAV_CLICK_FILTER';
 export const NAV_CLICK_LOGOUT = 'NAV_CLICK_LOGOUT';
@@ -21,6 +7,8 @@ export const NAV_CLICK_LOGOUT = 'NAV_CLICK_LOGOUT';
 export const PANEL_CLICK_FILTER_ITEM = 'PANEL_CLICK_FILTER_ITEM';
 export const PANEL_OPEN_COLLECTION_ITEM = 'PANEL_OPEN_COLLECTION_ITEM';
 export const PANEL_CLOSE_COLLECTION_ITEM = 'PANEL_CLOSE_COLLECTION_ITEM';
+
+export const POPULATE_FILTER_OPTIONS = 'POPULATE_FILTER_OPTIONS';
 
 export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
 export const FETCH_COLLECTION = 'FETCH_COLLECTION';
@@ -68,20 +56,22 @@ export function logout() {
 }
 
 // Click Handler for Panel Filter item
-export function toggleFilter(filter, appliedFilters) {
+export function toggleFilter(filter, selectedFilters, collection) {
   // Check if given filter is in filter list
-  var index = _.findIndex(appliedFilters, filter);
+  var index = _.findIndex(selectedFilters, filter);
   if (index === -1) { 
     // Add it to the list if not found
-    appliedFilters.push(filter);
-  } else {
+    selectedFilters.push(filter);
+  } else {  
     // remove it if it is not
-    appliedFilters.splice(index, 1);
+    selectedFilters.splice(index, 1);
   }
 
   return {
     type: PANEL_CLICK_FILTER_ITEM,
-    payload: appliedFilters
+    payload: {
+      selectedFilters: selectedFilters,
+      filteredRestaurants: filteredRestaurants
   }
 }
 
@@ -103,13 +93,16 @@ export function closeCollectionItem(item) {
 }
 
 // Click Handler for map's submit
-export function clickLocationSubmit(name, lat, lon, rating) {
+export function clickLocationSubmit(name, lat, lon, rating, filters) {
   // Create object to make DB query
   // Add type and image from returned request
 
   return {
     type: MAP_CONFIRM_POINT
-    payload: locToAdd
+    payload: {
+      newLoc: locToAdd,
+      filters: filters
+    }
   }
 }
 
@@ -119,6 +112,9 @@ export function fetchCollection() {
 
   return {
     type: FETCH_COLLECTION,
-    payload: collection;
+    payload: {
+      collection: collection,
+      filters: filters
+    }
   }
 }
