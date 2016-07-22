@@ -7,19 +7,16 @@ const PATHS = {
 };
 
 module.exports = {
-  entry: {
-    bundle:'./Client/index.js',
-    serverbundle: './server/server.js'
-  },
+  entry: './Client/index.js',
   output: {
     path: PATHS.compiled,
-    filename: 'app.[name].js'
+    filename: 'app.bundle.js'
   },
   module: {
     loaders: [
       {
         test: /\.jsx?$/,
-        // exclude: /node_modules/,
+        exclude: /node_modules/,
         loader: 'babel-loader'
       }
     ]
