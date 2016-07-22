@@ -1,5 +1,10 @@
 import $ from 'jquery';
 
+const endpoints = {
+  logout: '/logout',
+  spots: '/api/spots'
+};
+
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
 export const NAV_CLICK_FILTER = 'NAV_CLICK_FILTER';
 export const NAV_CLICK_LOGOUT = 'NAV_CLICK_LOGOUT';
@@ -49,7 +54,8 @@ export function toggleFilterList(panelMode) {
 export function logout() {
   // Make final post request to update user's data
   // End the user's session
-
+  $.get(enpoints.logout);
+  
   return {
     type: NAV_CLICK_LOGOUT
   }
@@ -93,14 +99,21 @@ export function closeCollectionItem(item) {
 }
 
 // Click Handler for map's submit
-export function clickLocationSubmit(name, lat, lon, rating, filters) {
+export function clickLocationSubmit(name, latitude, longitude, rating, filters) {
   // Create object to make DB query
+  const locToAdd = {
+    name: name,
+    latitude: latitude,
+    longitude: longitude,
+    rating: rating
+  };
+
   // Add type and image from returned request
 
   return {
     type: MAP_CONFIRM_POINT
     payload: {
-      newLoc: locToAdd,
+      newSpot: locToAdd,
       filters: filters
     }
   }
