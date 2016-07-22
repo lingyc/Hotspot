@@ -14,46 +14,53 @@ import {
 } from '../config/yelpconfig';
 
 // Yelp Endpoints
-var endpointNewPlace = 'https://api.yelp.com/v2/search?';
+var endpointNewPlace = 'https://api.yelp.com/v2/search';
 var endpointBusID = 'https://api.yelp.com/v2/business/';
 
 // Generate parameters
 // New business
-var generateYelpNewBusParam = (name, longitude, latitude) => {
+export var generateYelpNewBusParam = function (name, longitude, latitude) {
   return {
     term: name,
-    cll: latitude + ',' + longitude,
     limit: 1,
-    sort: 0
+    ll: latitude + ',' + longitude
   };
 };
-
-// Stored business
-var generateYelpBusIDParam = (businessId) => {
-  return {
-    id: businessId
-  };
-};
+//
+// // Stored business
+// export var generateYelpBusIDParam = function (businessId) {
+//   return {
+//     id: businessId
+//   };
+// };
 
 
 // Yelp call
-var requestYelp = (endpoint, parameters, cb) => {
+export var requestYelp = function (setParameters, busId, cb) {
   var httpMethod = 'GET';
 
-  var url = endpoint;
+  if (busId) {
+    var url = endpointBusID + setParameters;
+  } else {
+    var url = endpointNewPlace;
+  }
 
   var defaultParameters = {};
 
   var requiredParameters = {
     oauth_consumer_key: YELP_CONSUMER_KEY,
     oauth_token: YELP_TOKEN,
-    oauth_signature_method: 'hmac-sha1',
-    oauth_timestamp: n().toString.substr(0, 10),
-    oauth_nonce: n(),
+    oauth_nonce: n()(),
+    oauth_timestamp: n()().toString().substr(0, 10),
+    oauth_signature_method: 'HMAC-SHA1',
     oauth_version: '1.0'
   };
 
-  var parameters = _.assign(defaultParameters, parameters, requiredParameters);
+  if (busId) {
+    var parameters = _.assign(requiredParameters);
+  } else {
+    var parameters = _.assign(setParameters, requiredParameters);
+  }
 
   var consumerSecret = YELP_CONSUMER_SECRET;
   var tokenSecret = YELP_TOKEN_SECRET;
@@ -72,17 +79,23 @@ var requestYelp = (endpoint, parameters, cb) => {
 
   var paramUrl = qs.stringify(parameters);
 
-  var apiUrl = url + paramUrl;
+  var apiUrl = url + '?' + paramUrl;
 
   request(apiUrl, function(err, res, body) {
-    console.log('a request!!!');
+    console.log('**********************************');
+    console.log('ERROR', err);
+    var data = JSON.parse(body);
+    if (busId) {
+      cb(parseYelpData(data));
+    } else {
+      cb(parseYelpData(data.businesses[0]));
+    }
   });
 };
 
 // Parse required data out of Yelp's response data
-var parseYelpData = (data) => {
-  var business = data.business[0];
-  var cuisine = business.categories[0].split(',')[0];
+export var parseYelpData = function (business) {
+  var cuisine = business.categories[0][0];
   var imageUrl = business.image_url;
   var businessId = business.id;
   var parsed = {
@@ -93,7 +106,3 @@ var parseYelpData = (data) => {
 
   return parsed;
 };
-
-///////// TESTING DATA //////////
-var coords = [37.781499, -122.411311]; // lat, lon
-var nameOfRest = 'The Flying Falafel';
