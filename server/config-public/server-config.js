@@ -11,10 +11,10 @@ export default function(app, User) {
   app.engine('hbs', hbs({
     extname: 'hbs',
     defaultLayout: 'splash',
-    layoutsDir: path.join(__dirname, 'views/templates/'),
-    partialsDir: path.join(__dirname, 'views/partials/')
+    layoutsDir: path.join(__dirname, '/../views/templates/'),
+    partialsDir: path.join(__dirname, '/../views/partials/')
   }));
-  app.set('views', path.join(__dirname, 'views'));
+  app.set('views', path.join(__dirname, '/../views'));
   app.set('view engine', 'hbs');
 
   passport.serializeUser(function(user, done) {
