@@ -4,6 +4,8 @@ import session from 'express-session';
 import hbs from 'express-handlebars';
 import passport from 'passport';
 import express from 'express';
+import fs from 'fs';
+import _ from 'lodash';
 
 export default function(app, User) {
   app.engine('hbs', hbs({
@@ -54,4 +56,8 @@ export default function(app, User) {
   app.use(passport.initialize());
   app.use(passport.session());
 
+}
+
+export function inLocalEnv() {
+  return fs.readdirSync(path.join(__dirname)).indexOf('config') >= 0;
 }

@@ -7,20 +7,22 @@ exports.facebookAuthConfig = undefined;
 
 var _passportFacebook = require('passport-facebook');
 
-var _fb = require('../config/fb');
-
 var _passport = require('passport');
 
 var _passport2 = _interopRequireDefault(_passport);
 
+var _serverConfig = require('../server-config');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// inLocalEnv() && import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, FACEBOOK_CALLBACK } from '../config/fb';
+
 var FB = {
-  APP_ID: process.env.FACEBOOK_APP_ID || _fb.FACEBOOK_APP_ID,
-  APP_SECRET: process.env.FACEBOOK_APP_SECRET || _fb.FACEBOOK_APP_SECRET,
+  APP_ID: process.env.FACEBOOK_APP_ID || 0,
+  APP_SECRET: process.env.FACEBOOK_APP_SECRET || 0,
   CALLBACK: process.env.PORT ? 'http://localhost:' + process.env.PORT + '/auth/facebook/callback' : 'http://localhost:8000/auth/facebook/callback'
 };
-
+console.log(FB);
 var facebookAuthConfig = exports.facebookAuthConfig = function facebookAuthConfig(User) {
   _passport2.default.use(new _passportFacebook.Strategy({
     clientID: FB.APP_ID,

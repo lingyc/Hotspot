@@ -1,14 +1,14 @@
 import { Strategy as FacebookStrategy } from 'passport-facebook';
-import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, FACEBOOK_CALLBACK } from '../config/fb';
 import passport from 'passport';
-
+import {inLocalEnv} from '../server-config';
+// inLocalEnv() && import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, FACEBOOK_CALLBACK } from '../config/fb';
 
 const FB = {
-  APP_ID: process.env.FACEBOOK_APP_ID || FACEBOOK_APP_ID,
-  APP_SECRET: process.env.FACEBOOK_APP_SECRET || FACEBOOK_APP_SECRET,
+  APP_ID: process.env.FACEBOOK_APP_ID || 0,
+  APP_SECRET: process.env.FACEBOOK_APP_SECRET || 0,
   CALLBACK: process.env.PORT ? `http://localhost:${process.env.PORT}/auth/facebook/callback` : 'http://localhost:8000/auth/facebook/callback'
 };
-
+console.log(FB);
 export const facebookAuthConfig = function(User) {
   passport.use(new FacebookStrategy({
     clientID: FB.APP_ID,

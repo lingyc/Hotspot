@@ -56,6 +56,8 @@ exports.default = function (app, User) {
   app.use(_passport2.default.session());
 };
 
+exports.inLocalEnv = inLocalEnv;
+
 var _bodyParser = require('body-parser');
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
@@ -80,4 +82,16 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function inLocalEnv() {
+  return _fs2.default.readdirSync(_path2.default.join(__dirname)).indexOf('config') >= 0;
+}
