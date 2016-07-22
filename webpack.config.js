@@ -7,10 +7,13 @@ const PATHS = {
 };
 
 module.exports = {
-  entry: './Client/index.js',
+  entry: {
+    bundle:'./Client/index.js',
+    serverbundle: './server/server.js'
+  },
   output: {
     path: PATHS.compiled,
-    filename: 'app.bundle.js'
+    filename: 'app.[name].js'
   },
   module: {
     loaders: [
