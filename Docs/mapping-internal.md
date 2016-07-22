@@ -204,6 +204,7 @@ We are also able to set a map point after listening for a `geocoder.input`.
 * Yelp business ID for future requests
 
 # Other Information #
+## Please note Yelp authenticates using OAuth v1.0a protocol ##
 ## Yelp JSON Request and Response ##
 #### AJAX Request for Initial Yelp information ####
 * General search GET endpoint - `https://api.yelp.com/v2/`
@@ -225,7 +226,7 @@ We are also able to set a map point after listening for a `geocoder.input`.
 | image_url | string | URL photo for business | Not stored |
 
 ###### AJAX Request for older stored information ######
-* GET endpoint - `https://api.yelp.com/v2//v2/business/{id}`
+* GET endpoint - `https://api.yelp.com/v2/business/{id}`
 
 | Name  | Type   | Comments                 |
 |-------|:------:|-------------------------:|
@@ -432,6 +433,7 @@ We are also able to set a map point after listening for a `geocoder.input`.
 * Mapbox documentation - https://www.mapbox.com/help/#build-a-web-app
 * Mapbox example library - https://www.mapbox.com/mapbox.js/example/v1.0.0/
 * Leaflet documentation - http://leafletjs.com/
+* Yelp oAuth requirements - https://www.yelp.com/developers/documentation/v2/authentication
 
 **JS Libraries**
 * Geolocation Fallback (Generally for older browsers) https://github.com/estebanav/javascript-mobile-desktop-geolocation
