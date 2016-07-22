@@ -6,12 +6,19 @@ import qs from 'querystring';
 import _ from 'lodash';
 
 // Import sercet API keys (All 4 are needed)
-import {
-  YELP_CONSUMER_KEY,
-  YELP_CONSUMER_SECRET,
-  YELP_TOKEN,
-  YELP_TOKEN_SECRET
-} from '../config/yelpconfig';
+// cant import from non existant file in deployment
+// import {
+//   YELP_CONSUMER_KEY,
+//   YELP_CONSUMER_SECRET,
+//   YELP_TOKEN,
+//   YELP_TOKEN_SECRET
+// } from '../config/yelpconfig';
+
+const YELP_CONSUMER_KEY = process.env.YELP_CONSUMER_KEY || null;
+const YELP_CONSUMER_SECRET = process.env.YELP_CONSUMER_SECRET || null;
+const YELP_TOKEN = process.env.YELP_TOKEN || null;
+const YELP_TOKEN_SECRET = process.env.YELP_TOKEN_SECRET || null;
+
 
 // Yelp Endpoints
 var endpointNewPlace = 'https://api.yelp.com/v2/search';

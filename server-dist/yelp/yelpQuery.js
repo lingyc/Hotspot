@@ -25,16 +25,25 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _yelpconfig = require('../config/yelpconfig');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// Yelp Endpoints
-// Required modules to handle Yelp's oAuth requirement
-var endpointNewPlace = 'https://api.yelp.com/v2/search';
-
 // Import sercet API keys (All 4 are needed)
+// cant import from non existant file in deployment
+// import {
+//   YELP_CONSUMER_KEY,
+//   YELP_CONSUMER_SECRET,
+//   YELP_TOKEN,
+//   YELP_TOKEN_SECRET
+// } from '../config/yelpconfig';
 
+var YELP_CONSUMER_KEY = process.env.YELP_CONSUMER_KEY || null; // Required modules to handle Yelp's oAuth requirement
+
+var YELP_CONSUMER_SECRET = process.env.YELP_CONSUMER_SECRET || null;
+var YELP_TOKEN = process.env.YELP_TOKEN || null;
+var YELP_TOKEN_SECRET = process.env.YELP_TOKEN_SECRET || null;
+
+// Yelp Endpoints
+var endpointNewPlace = 'https://api.yelp.com/v2/search';
 var endpointBusID = 'https://api.yelp.com/v2/business/';
 
 // Generate parameters
@@ -68,8 +77,8 @@ var requestYelp = exports.requestYelp = function requestYelp(setParameters, busI
   var defaultParameters = {};
 
   var requiredParameters = {
-    oauth_consumer_key: _yelpconfig.YELP_CONSUMER_KEY,
-    oauth_token: _yelpconfig.YELP_TOKEN,
+    oauth_consumer_key: YELP_CONSUMER_KEY,
+    oauth_token: YELP_TOKEN,
     oauth_nonce: (0, _nonce2.default)()(),
     oauth_timestamp: (0, _nonce2.default)()().toString().substr(0, 10),
     oauth_signature_method: 'HMAC-SHA1',
@@ -82,8 +91,8 @@ var requestYelp = exports.requestYelp = function requestYelp(setParameters, busI
     var parameters = _lodash2.default.assign(setParameters, requiredParameters);
   }
 
-  var consumerSecret = _yelpconfig.YELP_CONSUMER_SECRET;
-  var tokenSecret = _yelpconfig.YELP_TOKEN_SECRET;
+  var consumerSecret = YELP_CONSUMER_SECRET;
+  var tokenSecret = YELP_TOKEN_SECRET;
 
   // Call Yelp servers for a signature (only good for 300 sec)
   var signature = _oauthSignature2.default.generate(httpMethod, url, parameters, consumerSecret, tokenSecret, { encodeSignature: false });
