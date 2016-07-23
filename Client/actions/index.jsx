@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import request from 'superagent';
 
 const endpoints = {
   logout: '/logout',
@@ -55,7 +55,7 @@ export function logout() {
   // Make final post request to update user's data
   // End the user's session
   $.get(enpoints.logout);
-  
+
   return {
     type: NAV_CLICK_LOGOUT
   }
@@ -101,7 +101,7 @@ export function closeCollectionItem(item) {
 // Click Handler for map's submit
 export function clickLocationSubmit(name, latitude, longitude, rating, filters) {
   // Create object to make DB query
-  const locToAdd = {
+  const spotToAdd = {
     name: name,
     latitude: latitude,
     longitude: longitude,
@@ -109,19 +109,21 @@ export function clickLocationSubmit(name, latitude, longitude, rating, filters) 
   };
 
   // Add type and image from returned request
+  const data = request.post(endpoints.spots).send(spotToAdd);
 
   return {
     type: MAP_CONFIRM_POINT
     payload: {
-      newSpot: locToAdd,
+      newSpot: data,
       filters: filters
     }
   }
 }
 
 export function fetchCollection() {
-  // Query database for user's entire collection
   // This function should only be called once on startup
+  // Query database for user's entire collection
+  const collection = request.get(endpoints.spots)
 
   return {
     type: FETCH_COLLECTION,
