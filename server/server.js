@@ -1,5 +1,5 @@
 import express from 'express';
-import serverConfig from './config-public/server-config';
+import serverConfig from './server-config';
 import Spot from './db/Spots';
 import User from './db/Users';
 import {facebookAuthConfig} from './auth/fbAuth';

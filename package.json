@@ -9,8 +9,8 @@
   "scripts": {
     "dev:test": "babel-node server/server.js & mocha --compilers js:babel-register --bail --reporter nyan test/apiSpec.js; pkill -n node;",
     "dev:resetdb": "psql -f server/db/setuphotspotdb.sql",
-    "dev:startdb": "postgres -D /usr/local/var/postgres",
-    "dev:start": "npm run dev:buildclient; nodemon server/server.js --exec babel-node --presets es2015 stage-1 & npm run dev:startdb",
+    "dev:startdb": "kill -INT `head -1 /usr/local/var/postgres/postmaster.pid`; postgres -D /usr/local/var/postgres",
+    "dev:start": "nodemon ./server/server.js --exec babel-node --presets es2015 stage-1",
     "dev:buildclient": "webpack",
     "dev:config": "mkdir ./server/config; cp ../hotspot-config/config/* ./server/config/",
     "prod:buildserver": "babel ./server -d ./server-dist --presets es2015,stage-2 --copy-files",

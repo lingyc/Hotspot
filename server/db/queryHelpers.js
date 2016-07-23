@@ -46,7 +46,7 @@ export const createSelectQuery = function(schema, findObj) {
   return `${query} ${params}`
 };
 
-export const sendBackJSON = function (rest, data, message){
+export const sendBackJSON = function (res, data, message){
   return res.status(200)
     .json({
       data: data,

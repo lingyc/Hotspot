@@ -24,6 +24,7 @@ export default class DB {
   }
   //TODO HERE I WAS
   findOrCreate(obj) {
+    console.log('make this', obj);
     return this.find(obj)
     .then((foundObj) => {
       if (foundObj.length > 0) {
