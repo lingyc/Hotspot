@@ -1,4 +1,5 @@
 import request from 'superagent';
+import _ from 'lodash';
 
 const endpoints = {
   logout: '/logout',
@@ -103,6 +104,7 @@ export function deleteCollectionItem(item) {
   // delete the collection item from the db
   const collection = request.del(endpoints.spots + '/' + item.id);
   // update the collection and filters
+  const filters = filterOrganizer(collection);
 
   return {
     type: PANEL_DELETE_COLLECTION_ITEM,
@@ -125,6 +127,7 @@ export function clickLocationSubmit(name, latitude, longitude, rating, filters) 
 
   // Add type and image from returned request
   const data = request.post(endpoints.spots).send(spotToAdd);
+  filters = filterOrganizer([data], filters);
 
   return {
     type: MAP_CONFIRM_POINT
@@ -138,7 +141,8 @@ export function clickLocationSubmit(name, latitude, longitude, rating, filters) 
 export function fetchCollection() {
   // This function should only be called once on startup
   // Query database for user's entire collection
-  const collection = request.get(endpoints.spots)
+  const collection = request.get(endpoints.spots);
+  const filters = filterOrganizer(collection);
 
   return {
     type: FETCH_COLLECTION,
@@ -147,4 +151,16 @@ export function fetchCollection() {
       filters: filters
     }
   }
+}
+
+function filterOrganizer(collection, filters) => {
+  filters = filters || [];
+
+  _.map(collection, (value) => {
+    if (_.findIndex(filters, value) === -1) {
+      filters.push(value);
+    }
+  })
+
+  return filters;
 }
