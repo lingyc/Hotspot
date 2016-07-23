@@ -40,7 +40,7 @@ exports.default = function (User) {
     return User.find({ username: username }).then(function (user) {
       console.log('checking username and password');
       if (user.length === 0) {
-        done(null, false);
+        return [false, user];
       } else {
         return [User.isValidPassword(password, user[0].id), user];
       }
