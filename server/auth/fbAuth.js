@@ -10,7 +10,7 @@ import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config-public/fb';
 const FB = {
   APP_ID: FACEBOOK_APP_ID || process.env.FACEBOOK_APP_ID || 0,
   APP_SECRET: FACEBOOK_APP_SECRET || process.env.FACEBOOK_APP_SECRET || 0,
-  CALLBACK: 'https://hotspot-app.herokuapp.com/auth/facebook/callback'
+  CALLBACK: `https://hotspot-app.herokuapp.com/auth/facebook/callback`
 };
 
 console.log(FB);
