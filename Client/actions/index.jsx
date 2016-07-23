@@ -66,7 +66,7 @@ export function logout() {
 // Click Handler for Panel Filter item
 export function toggleFilter(filter, selectedFilters, collection) {
   // Check if given filter is in filter list
-  var index = _.findIndex(selectedFilters, filter);
+  const index = _.findIndex(selectedFilters, filter);
   if (index === -1) { 
     // Add it to the list if not found
     selectedFilters.push(filter);
@@ -74,6 +74,14 @@ export function toggleFilter(filter, selectedFilters, collection) {
     // remove it if it is not
     selectedFilters.splice(index, 1);
   }
+
+  // make a list of the restaurants that match the filter
+  const filteredRestaurants = {};
+  _.map(collection, (spot) => {
+    if (_.findIndex(selectedFilters, spot.type) > -1) {
+      filteredRestaurants.push(spot);
+    }
+  })
 
   return {
     type: PANEL_CLICK_FILTER_ITEM,
