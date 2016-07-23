@@ -1,8 +1,8 @@
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import passport from 'passport';
 import inLocalEnv from '../config-public/inLocalEnv';
-// import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config-public/fb';
-import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config/fb';
+import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config-public/fb';
+// import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config/fb';
 
 //change line 4 to import from '../config/fb'
 

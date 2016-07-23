@@ -15,9 +15,11 @@ var _inLocalEnv = require('../config-public/inLocalEnv');
 
 var _inLocalEnv2 = _interopRequireDefault(_inLocalEnv);
 
-var _fb = require('../config/fb');
+var _fb = require('../config-public/fb');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config/fb';
 
 //change line 4 to import from '../config/fb'
 
@@ -26,8 +28,6 @@ var FB = {
   APP_SECRET: _fb.FACEBOOK_APP_SECRET || process.env.FACEBOOK_APP_SECRET || 0,
   CALLBACK: process.env.PORT ? 'http://localhost:' + process.env.PORT + '/auth/facebook/callback' : 'http://localhost:8000/auth/facebook/callback'
 };
-// import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config-public/fb';
-
 
 console.log(FB);
 var facebookAuthConfig = exports.facebookAuthConfig = function facebookAuthConfig(User) {

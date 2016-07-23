@@ -12,7 +12,8 @@
     "resetdb": "psql -f server/db/setuphotspotdb.sql",
     "serverdb": "npm run server & npm run startdb",
     "setupconfig": "mkdir ./server/config; cp ../hotspot-config/config/* ./server/config/",
-    "start": "node server-dist/server.js"
+    "start": "node server-dist/server.js",
+    "deploy": "npm run buildserver; git add -A; git commit -m 'deploy'; git push origin master"
   },
   "repository": {
     "type": "git",
