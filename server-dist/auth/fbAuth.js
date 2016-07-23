@@ -22,7 +22,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config/fb';
 
 //change line 4 to import from '../config/fb'
-var cb = 'https://hotspot-app.herokuapp.com:' + process.env.PORT + '/auth/facebook/callback';
+var cb = 'https://hotspot-app.herokuapp.com/auth/facebook/callback';
 // : 'http://localhost:8000/auth/facebook/callback';
 var FB = {
   APP_ID: _fb.FACEBOOK_APP_ID || process.env.FACEBOOK_APP_ID || 0,
