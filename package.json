@@ -15,7 +15,9 @@
     "dev:config": "mkdir ./server/config; cp ../hotspot-config/config/* ./server/config/",
     "prod:buildserver": "babel ./server -d ./server-dist --presets es2015,stage-2 --copy-files",
     "start": "node server-dist/server.js",
-    "deploy": "npm run prod:buildserver; git add -A; git commit -m process.env.npm_package_config_m; git push origin master"
+    "predeploy": "npm run prod:buildserver; git add -A",
+    "deploy": "git commit -m",
+    "postdeploy": "git push origin master"
   },
   "repository": {
     "type": "git",
