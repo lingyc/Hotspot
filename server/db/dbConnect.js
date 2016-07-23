@@ -11,8 +11,10 @@ let connectionString = 'postgres://localhost:5432/hotspots';
 // }
 
 if (process.env.DATABASE_URL) {
-  connectionString = process.env.DATABASE_URL
+  connectionString = process.env.DATABASE_URL;
 }
+
+console.log(connectionString);
 
 const pg = pgp(connectionString);
 
