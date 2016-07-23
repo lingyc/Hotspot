@@ -7,11 +7,10 @@
     "test": "babel-node server/server.js & mocha --compilers js:babel-register --bail --reporter nyan test/apiSpec.js; pkill -n node;",
     "server": "nodemon server/server.js --exec babel-node --presets es2015 stage-1",
     "build": "webpack",
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "start": "babel-node server/server.js",
     "resetdb": "psql -f server/db/setuphotspotdb.sql",
     "serverdb": "npm run server & npm run startdb",
-    "setupconfig": "mkdir ./server/config; cp ../hotspot-config/config/* ./server/config/",
-    "start": "babel-node server/server.js"
+    "setupconfig": "mkdir ./server/config; cp ../hotspot-config/config/* ./server/config/"
   },
   "repository": {
     "type": "git",
@@ -56,6 +55,7 @@
     "redux-promise": "^0.5.3",
     "request": "^2.73.0",
     "scrollreveal": "^3.2.0",
+    "superagent": "^2.1.0",
     "tether": "^1.3.3"
   },
   "devDependencies": {
