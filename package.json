@@ -37,6 +37,7 @@
     "font-awesome": "^4.6.3",
     "hbs": "^4.0.0",
     "jquery": "^2.2.4",
+    "jquery-easing": "0.0.1",
     "lodash": "^4.6.1",
     "magnific-popup": "^1.1.0",
     "nonce": "^1.0.4",
