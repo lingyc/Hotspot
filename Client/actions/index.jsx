@@ -12,6 +12,7 @@ export const NAV_CLICK_LOGOUT = 'NAV_CLICK_LOGOUT';
 export const PANEL_CLICK_FILTER_ITEM = 'PANEL_CLICK_FILTER_ITEM';
 export const PANEL_OPEN_COLLECTION_ITEM = 'PANEL_OPEN_COLLECTION_ITEM';
 export const PANEL_CLOSE_COLLECTION_ITEM = 'PANEL_CLOSE_COLLECTION_ITEM';
+export const PANEL_DELETE_COLLECTION_ITEM = 'PANEL_DELETE_COLLECTION_ITEM';
 
 export const POPULATE_FILTER_OPTIONS = 'POPULATE_FILTER_OPTIONS';
 
@@ -95,6 +96,20 @@ export function closeCollectionItem(item) {
   // close the current panel view back to the collection
   return {
     type: PANEL_CLOSE_COLLECTION_ITEM
+  }
+}
+
+export function deleteCollectionItem(item) {
+  // delete the collection item from the db
+  const collection = request.del(endpoints.spots + '/' + item.id);
+  // update the collection and filters
+
+  return {
+    type: PANEL_DELETE_COLLECTION_ITEM,
+    payload: {
+      collection: collection,
+      filters: filters
+    }
   }
 }
 
