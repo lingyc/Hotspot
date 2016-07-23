@@ -40,9 +40,10 @@ exports.default = function (User) {
     return User.find({ username: username }).then(function (user) {
       console.log('checking username and password');
       if (user.length === 0) {
-        return done(null, false);
+        done(null, false);
+      } else {
+        return [User.isValidPassword(password, user[0].id), user];
       }
-      return [User.isValidPassword(password, user[0].id), user];
     }).then(function (_ref) {
       var _ref2 = _slicedToArray(_ref, 2);
 

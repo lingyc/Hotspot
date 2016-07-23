@@ -33,9 +33,10 @@ export default function(User) {
       .then((user) => {
         console.log('checking username and password');
         if (user.length === 0) {
-          return done(null, false);
+          return [false, user];
+        } else {
+          return [User.isValidPassword(password, user[0].id), user];
         }
-        return [User.isValidPassword(password, user[0].id), user];
       })
       .then(([match, user]) => {
         if (match) {
