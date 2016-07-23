@@ -28,7 +28,7 @@ export default function(app) {
   ));
 
   app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/login' }));
+    passport.authenticate('facebook', { successRedirect: '/spots', failureRedirect: '/login' }));
 
   app.get('/logout', function(req, res) {
     req.logout();

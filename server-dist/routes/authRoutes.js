@@ -23,7 +23,7 @@ exports.default = function (app) {
   // different scopes while logging in
   app.get('/auth/facebook', _passport2.default.authenticate('facebook', { npscope: 'email' }));
 
-  app.get('/auth/facebook/callback', _passport2.default.authenticate('facebook', { failureRedirect: '/login' }));
+  app.get('/auth/facebook/callback', _passport2.default.authenticate('facebook', { successRedirect: '/spots', failureRedirect: '/login' }));
 
   app.get('/logout', function (req, res) {
     req.logout();
