@@ -12,24 +12,3 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
-
-
-state = {
-  PanelMode: 'filter', // or 'collectin'
-    // if its collection then this.state.CollectionRestaurants.collection
-    // if its filter then this.state.CollectionRestaurants.filterOptions and this.state.CollectionRestaurants.collection
-
-
-  CollectionRestaurants: {
-    collection: [],
-    filterOptions: []
-  },
-
-  CollectionFilters: {
-    filtersSelected: [],
-    filteredRestaurants: []
-  },
-
-  PanelSelect: {}//single restaurant
-
-};
