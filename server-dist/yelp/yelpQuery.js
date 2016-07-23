@@ -25,7 +25,7 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _yelpconfig = require('../config-public/yelpconfig');
+var _yelpconfig = require('../config/yelpconfig');
 
 var _yelpconfig2 = _interopRequireDefault(_yelpconfig);
 
@@ -36,6 +36,7 @@ var YELP_CONSUMER_KEY = _yelpconfig2.default.YELP_CONSUMER_KEY || process.env.YE
 
 // Import sercet API keys (All 4 are needed)
 // cant import from non existant file in deployment
+// import Y from '../config-public/yelpconfig';
 
 var YELP_CONSUMER_SECRET = _yelpconfig2.default.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_SECRET || 0;
 var YELP_TOKEN = _yelpconfig2.default.YELP_TOKEN || process.env.YELP_TOKEN || 0;

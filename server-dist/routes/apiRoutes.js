@@ -53,4 +53,6 @@ var _Spots2 = _interopRequireDefault(_Spots);
 
 var _queryHelpers = require('../db/queryHelpers');
 
+var _yelpQuery = require('../yelp/yelpQuery');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

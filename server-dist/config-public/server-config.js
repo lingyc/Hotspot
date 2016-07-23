@@ -8,10 +8,10 @@ exports.default = function (app, User) {
   app.engine('hbs', (0, _expressHandlebars2.default)({
     extname: 'hbs',
     defaultLayout: 'splash',
-    layoutsDir: _path2.default.join(__dirname, 'views/templates/'),
-    partialsDir: _path2.default.join(__dirname, 'views/partials/')
+    layoutsDir: _path2.default.join(__dirname, '/../views/templates/'),
+    partialsDir: _path2.default.join(__dirname, '/../views/partials/')
   }));
-  app.set('views', _path2.default.join(__dirname, 'views'));
+  app.set('views', _path2.default.join(__dirname, '/../views'));
   app.set('view engine', 'hbs');
 
   _passport2.default.serializeUser(function (user, done) {

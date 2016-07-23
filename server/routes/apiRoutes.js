@@ -1,5 +1,6 @@
 import Spot from '../db/Spots';
 import { sendBackJSON } from '../db/queryHelpers';
+import {generateYelpNewBusParam, generateYelpBusIDParam, requestYelp, parseYelpData} from '../yelp/yelpQuery';
 
 export default function(app){
   // RESTFUl API for retrieving spots from the db

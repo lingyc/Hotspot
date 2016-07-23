@@ -7,7 +7,8 @@ import _ from 'lodash';
 
 // Import sercet API keys (All 4 are needed)
 // cant import from non existant file in deployment
-import Y from '../config-public/yelpconfig';
+// import Y from '../config-public/yelpconfig';
+import Y from '../config/yelpconfig';
 
 const YELP_CONSUMER_KEY = Y.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_KEY || 0;
 const YELP_CONSUMER_SECRET = Y.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_SECRET || 0;

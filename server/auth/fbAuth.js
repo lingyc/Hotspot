@@ -9,7 +9,7 @@ import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config-public/fb';
 const FB = {
   APP_ID: FACEBOOK_APP_ID || process.env.FACEBOOK_APP_ID || 0,
   APP_SECRET: FACEBOOK_APP_SECRET || process.env.FACEBOOK_APP_SECRET || 0,
-  CALLBACK: process.env.PORT ? `http://localhost:${process.env.PORT}/auth/facebook/callback` : 'http://localhost:8000/auth/facebook/callback'
+  CALLBACK: process.env.PORT ? 'http://localhost:' + process.env.PORT + '/auth/facebook/callback' : 'http://localhost:8000/auth/facebook/callback'
 };
 
 console.log(FB);

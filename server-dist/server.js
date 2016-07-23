@@ -34,8 +34,6 @@ var _apiRoutes = require('./routes/apiRoutes');
 
 var _apiRoutes2 = _interopRequireDefault(_apiRoutes);
 
-var _yelpQuery = require('./yelp/yelpQuery');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();

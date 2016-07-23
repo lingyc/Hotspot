@@ -7,7 +7,6 @@ import localAuthConfig from './auth/localAuth';
 import primaryRoutes from './routes/primaryRoutes';
 import authRoutes from './routes/authRoutes';
 import apiRoutes from './routes/apiRoutes';
-import {generateYelpNewBusParam, generateYelpBusIDParam, requestYelp, parseYelpData} from './yelp/yelpQuery';
 
 
 const app = express();

@@ -8,10 +8,10 @@ exports.default = function (app, User) {
   app.engine('hbs', (0, _expressHandlebars2.default)({
     extname: 'hbs',
     defaultLayout: 'splash',
-    layoutsDir: _path2.default.join(__dirname, 'views/templates/'),
-    partialsDir: _path2.default.join(__dirname, 'views/partials/')
+    layoutsDir: _path2.default.join(__dirname, './views/templates/'),
+    partialsDir: _path2.default.join(__dirname, './views/partials/')
   }));
-  app.set('views', _path2.default.join(__dirname, 'views'));
+  app.set('views', _path2.default.join(__dirname, './views'));
   app.set('view engine', 'hbs');
 
   _passport2.default.serializeUser(function (user, done) {
@@ -39,13 +39,12 @@ exports.default = function (app, User) {
   app.use(_bodyParser2.default.json());
 
   // STATIC DIRECTORIES
-  app.use(_express2.default.static(_path2.default.join(__dirname, '/../build')));
-  app.use(_express2.default.static(_path2.default.join(__dirname, '/../compiled')));
-  app.use(_express2.default.static(_path2.default.join(__dirname, '/../../index.html')));
-  app.use(_express2.default.static(_path2.default.join(__dirname, '/../node_modules')));
-  app.use(_express2.default.static(_path2.default.join(__dirname, '/../Client/')));
+  app.use(_express2.default.static(_path2.default.join(__dirname, '../compiled')));
+  app.use(_express2.default.static(_path2.default.join(__dirname, '../index.html')));
+  app.use(_express2.default.static(_path2.default.join(__dirname, '../node_modules')));
+  app.use(_express2.default.static(_path2.default.join(__dirname, '../Client/')));
   app.use(_express2.default.static(_path2.default.join(__dirname, './views')));
-  app.use(_express2.default.static(_path2.default.join(__dirname, './server-test')));
+  app.use(_express2.default.static(_path2.default.join(__dirname, '../server-test')));
 
   app.use((0, _expressSession2.default)({
     secret: 'keyboard cat',
@@ -55,8 +54,6 @@ exports.default = function (app, User) {
   app.use(_passport2.default.initialize());
   app.use(_passport2.default.session());
 };
-
-exports.inLocalEnv = inLocalEnv;
 
 var _bodyParser = require('body-parser');
 
@@ -91,7 +88,3 @@ var _lodash = require('lodash');
 var _lodash2 = _interopRequireDefault(_lodash);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function inLocalEnv() {
-  return _fs2.default.readdirSync(_path2.default.join(__dirname)).indexOf('config') >= 0;
-}
