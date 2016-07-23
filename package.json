@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "<br> ##Introduction## ###Situation### > When a person wants to find a location to do X, they typically use multiple apps (ie. Yelp) and google searches to find what they need.",
   "main": "index.js",
+  "engines": {
+    "node": "6.2.2"
+  },
   "scripts": {
     "test": "babel-node server/server.js & mocha --compilers js:babel-register --bail --reporter nyan test/apiSpec.js; pkill -n node;",
     "server": "nodemon server/server.js --exec babel-node --presets es2015 stage-1",
