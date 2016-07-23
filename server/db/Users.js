@@ -20,11 +20,11 @@ class User extends DB {
   }
 
   generateHash(password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   }
 
   isValidPassword(password, id) {
-    return db.findUser({id: id})
+    return this.find({id: id})
     .then((user) => {
       return [bcrypt.compareSync(password, user[0].password), user];
     })

@@ -10,7 +10,8 @@
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "resetdb": "psql -f server/db/setuphotspotdb.sql",
     "serverdb": "npm run server & npm run startdb",
-    "setupconfig": "mkdir ./server/config; cp ../hotspot-config/config/* ./server/config/"
+    "setupconfig": "mkdir ./server/config; cp ../hotspot-config/config/* ./server/config/",
+    "start": "babel-node server/server.js"
   },
   "repository": {
     "type": "git",
