@@ -55,7 +55,7 @@ Takes the clicked item, should turn off the detailed view
 clickLocationSubmit(name, lat, lon, rating, filters)
 type: MAP_CONFIRM_POINT
 payload: {
-	newLoc: {}
+	newSpot : {}
   filters: filters
 }
 Takes the location's name, lat, lon, rating, and all filters (mostly from the map [Ryan's end])

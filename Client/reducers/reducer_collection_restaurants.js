@@ -1,12 +1,20 @@
-import { SAVE_RESTAURANT } from '../actions/index';
+import { MAP_CONFIRM_POINT } from '../actions/index';
 import { FETCH_RESTAURANTS } from '../actions/index';
-
-export default function(state = [], action) {
+import { FETCH_FILTERS } from '../actions/index';
+export default function(state = {}, action) {
   switch (action.type) {
-  case SAVE_RESTAURANT:
-    return state.concat([ action.payload ]);
+  case MAP_CONFIRM_POINT:
+    return {collection: state.collection.concat([ action.payload.newSpot ]) , ...state };
+      // this syntax may not work, but here we need to concat every newspot entry that is saved
+      // to our state.collection
+      // if the above does not work then use this:
+      // return { state.collection.concat([action.payload.newSpot])}
+  case MAP_CONFIRM_POINT:
+    return {...state, filterOptions: state.filterOptions.concat([action.payload.filters])}
   case FETCH_RESTAURANTS:
-    return state;
+    return {...state, collection: action.payload};
+  case FETCH_FILTERS:
+    return {...state, filterOptions: action.payload};
   }
   return state;
 }

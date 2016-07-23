@@ -1,40 +1,39 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchCollection } from '../actions/index.js';
-var Menu = require('react-burger-menu').push;
+import { toggleCollectionList, toggleFilterList } from '../actions/index.js';
 import Panel from './Panel';
 
 class Nav extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showPanel: false
-    };
+
+  collectionClick(e) {
+    e.preventDefault();
+    this.props.toggleCollectionList(this.props.PanelMode('collection'));
   }
 
-  navClick(e) {
+  filterClick(e) {
     e.preventDefault();
-    <Menu isOpen />;
+    this.props.toggleFilterList(this.props.PanelMode('filter'));
   }
 
   render() {
     return (
       <nav className="navbar">
-        <div className='collectionPanel'>
-          <Menu customBurgerIcon={ <button>Collection</button> } />
-          <Menu customCrossIcon={ <button>Collection</button> } />
-        </div>
-        <div className='filterPanel'>
-          <button onClick={() => props.panel('filter')}></button>
-        </div>
+        <ul>
+          <li onClick={this.collectionClick.bind(this)} className='collectionPanel' >Collection</li>
+          <li onClick={this.filterClick.bind(this)} className='filterPanel'>Filter</li>
+        </ul>
       </nav>
     );
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchCollection}, dispatch);
+  return bindActionCreators({toggleCollectionList, toggleFilterList}, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(Nav);
+function mapStateToProps(state) {
+  PanelMode = state.PanelMode;
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);

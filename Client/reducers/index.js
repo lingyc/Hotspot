@@ -1,14 +1,35 @@
 import { combineReducers } from 'redux';
-import CollectionRestaurants from './reducer_collection_restaurants';
-import FilteredRestaurants from './reducer_filtered_restaurants';
-import FilterOptions from './reducer_filter_options';
-import FilterSelected from './reducer_filtered';
+import CollectionRestaurantsFilters from './reducer_collection_restaurants';
+import FilterSelectedRestaurants from './reducer_filtered_restaurants';
+import PanelMode from './reducer_panel_mode';
+import PanelSelect from './reducer_panel_select';
 
 const rootReducer = combineReducers({
-  allRestaurants: CollectionRestaurants,
-  filteredRestaurants: FilteredRestaurants,
-  filterOptions: FilterOptions,
-  FilterSelected: FilterSelected
+  CollectionRestaurantsFilters: CollectionRestaurantsFilters,
+  PanelMode: PanelMode,
+  FilterSelectedRestaurants: FilterSelectedRestaurants,
+  PanelSelect: PanelSelect
 });
 
 export default rootReducer;
+
+
+state = {
+  PanelMode: 'filter', // or 'collectin'
+    // if its collection then this.state.CollectionRestaurants.collection
+    // if its filter then this.state.CollectionRestaurants.filterOptions and this.state.CollectionRestaurants.collection
+
+
+  CollectionRestaurants: {
+    collection: [],
+    filterOptions: []
+  },
+
+  CollectionFilters: {
+    filtersSelected: [],
+    filteredRestaurants: []
+  },
+
+  PanelSelect: {}//single restaurant
+
+};
