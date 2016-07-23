@@ -16,6 +16,7 @@ exports.default = function (app, User) {
 
   _passport2.default.serializeUser(function (user, done) {
     var userId = void 0;
+    console.log('serialize user', user);
     if (Array.isArray(user)) {
       userId = user[0].id;
     } else {

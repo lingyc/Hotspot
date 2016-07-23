@@ -5,12 +5,12 @@ import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config-public/fb';
 // import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config/fb';
 
 //change line 4 to import from '../config/fb'
-const cb = 'https://hotspot-app.herokuapp.com/auth/facebook/callback';
 // : 'http://localhost:8000/auth/facebook/callback';
+
 const FB = {
   APP_ID: FACEBOOK_APP_ID || process.env.FACEBOOK_APP_ID || 0,
   APP_SECRET: FACEBOOK_APP_SECRET || process.env.FACEBOOK_APP_SECRET || 0,
-  CALLBACK: cb
+  CALLBACK: 'https://hotspot-app.herokuapp.com/auth/facebook/callback'
 };
 
 console.log(FB);

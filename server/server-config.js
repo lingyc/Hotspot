@@ -19,6 +19,7 @@ export default function(app, User) {
 
   passport.serializeUser(function(user, done) {
     let userId;
+    console.log('serialize user', user);
     if (Array.isArray(user)) {
       userId = user[0].id;
     } else {
