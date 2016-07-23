@@ -21,7 +21,7 @@ exports.default = function (app) {
   }));
   // route for facebook authentication and login
   // different scopes while logging in
-  app.get('/auth/facebook', _passport2.default.authenticate('facebook', { scope: 'email' }));
+  app.get('/auth/facebook', _passport2.default.authenticate('facebook', { npscope: 'email' }));
 
   app.get('/auth/facebook/callback', _passport2.default.authenticate('facebook', { failureRedirect: '/login' }));
 

@@ -27,7 +27,10 @@ export const facebookAuthConfig = function(User) {
         facebookId: profile.id,
         facebookAccessToken: accessToken
       })
-      .then((user) => done(null, user))
+      .then((user) => {
+        console.log('got it!');
+        return done(null, user);
+      })
       .catch((err) => done(err, null));
     });
   }

@@ -44,6 +44,7 @@ var facebookAuthConfig = exports.facebookAuthConfig = function facebookAuthConfi
         facebookId: profile.id,
         facebookAccessToken: accessToken
       }).then(function (user) {
+        console.log('got it!');
         return done(null, user);
       }).catch(function (err) {
         return done(err, null);
