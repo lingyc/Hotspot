@@ -5,16 +5,14 @@ const pgp = require('pg-promise')({
   promiseLib: promise
 });
 
-let connectionString = 'postgres://localhost:5432/hotspots';
+// let connectionString = 'postgres://localhost:5432/hotspots';
 // if (process.env.RDS_HOSTNAME) {
 //   connectionString = `postgres://${process.env.RDS_USERNAME}:${process.env.RDS_PASSWORD}@${process.env.RDS_HOSTNAME}:${process.env.RDS_PORT}/hotspots`;
 // }
 
-if (process.env.DATABASE_URL) {
-  connectionString = process.env.DATABASE_URL;
-}
-
-console.log(connectionString);
+// if (process.env.DATABASE_URL) {
+let connectionString = process.env.DATABASE_URL;
+// }
 
 const pg = pgp(connectionString);
 
