@@ -32,6 +32,20 @@ export const createUpdateQuery = function(schema, updateObj, id) {
   return `${query} ${changes};`;
 };
 
+export const createSelectQuery = function(schema, findObj) {
+  let query = `select * from ${schema.tableName} where`;
+  let length = Object.keys(findObj).length;
+  let i = 0;
+  let params = _.reduce(findObj, (params, val, key) => {
+    if (i === length - 1) {
+      return `${params} ${key} = ${typeWrapper(val, schema.columns[key])}`;
+    }
+    i++;
+    return `${params} ${key} = ${typeWrapper(val, schema.columns[key])} or`;
+  }, '');
+  return `${query} ${params}`
+};
+
 export const sendBackJSON = function (rest, data, message){
   return res.status(200)
     .json({

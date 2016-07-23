@@ -18,3 +18,8 @@ node_modules/
 ## API KEYS ##
 auth/fb.js
 config
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

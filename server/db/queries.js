@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {createInsertQuery, createUpdateQuery, sendBackJSON} from './queryHelpers';
+import {createInsertQuery, createUpdateQuery, sendBackJSON, createSelectQuery} from './queryHelpers';
 
 export default class DB {
   constructor(pgConnection, schema) {
@@ -7,28 +7,33 @@ export default class DB {
     this.schema = schema;
   }
 
-  getAll(req, res, next) {
-    this.pg.query('select * from ${schema.tableName}')
-     .then((data) => sendBackJSON(res, data, 'retrieved all'))
-     .catch((err) => next(err));
+  getAll() {
+    return this.pg.query(`select * from ${this.schema.tableName}`)
   }
 
-  getOne(req, res, next) {
-    const id = req.params.id;
-    this.pg.query(`select * from ${schema.tableName} where id = ${id}`)
-     .then((data) => sendBackJSON(res, data, 'retrieved one'))
-     .catch((err) => next(err));
+  getOne(id) {
+    return this.pg.query(`select * from ${this.schema.tableName} where id = ${id}`)
   }
 
-  create(req, res, next) {
-    this.pg.query(createInsertQuery(schema, req.body))
-     .then((data) => sendBackJSON(res, data, 'created a new item'))
-     .catch((err) => next(err));
+  find(obj) {
+    return this.pg.query(createSelectQuery(this.schema, obj))
   }
 
-  remove(req, res, next) {
-    this.pg.query(`delete from ${schema.tableName} where id = ${req.params.id}`)
-     .then((data) => sendBackJSON(res, data, 'deleted'))
-     .catch((err) => next(err));
+  create(obj) {
+    return this.pg.query(createInsertQuery(this.schema, obj))
+  }
+  //TODO HERE I WAS
+  findOrCreate(obj) {
+    return this.find(obj)
+    .then((foundObj) => {
+      if (foundObj.length > 0) {
+        return foundObj;
+      }
+      return this.create(obj);
+    })
+  }
+
+  remove(id) {
+    return this.pg.query(`delete from ${this.schema.tableName} where id = ${id}`)
   }
 }
