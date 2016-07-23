@@ -1,6 +1,6 @@
 import { MAP_CONFIRM_POINT } from '../actions/index';
 import { FETCH_RESTAURANTS } from '../actions/index';
-import { FETCH_FILTERS } from '../actions/index';
+import { POPULATE_FILTER_OPTIONS } from '../actions/index';
 export default function(state = {}, action) {
   switch (action.type) {
   case MAP_CONFIRM_POINT:
@@ -13,7 +13,7 @@ export default function(state = {}, action) {
     return {...state, filterOptions: state.filterOptions.concat([action.payload.filters])}
   case FETCH_RESTAURANTS:
     return {...state, collection: action.payload};
-  case FETCH_FILTERS:
+  case POPULATE_FILTER_OPTIONS:
     return {...state, filterOptions: action.payload};
   }
   return state;

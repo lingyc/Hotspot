@@ -3,13 +3,11 @@ const webpack = require('webpack');
 
 const PATHS = {
   compiled: path.join(__dirname, 'compiled'),
-  src: path.join(__dirname, 'Client')
+  src: path.join(__dirname, 'Client/index.js')
 };
 
 module.exports = {
-  entry: {
-    src: PATHS.src
-  },
+  entry: './Client/index.js',
   output: {
     path: PATHS.compiled,
     filename: 'app.bundle.js'
@@ -18,13 +16,17 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: 'babel'
+        // exclude: /node_modules/,
+        loader: 'babel-loader'
       }
     ]
   },
-  resolve: {
-    extensions: ['', '.js', '.jsx']
+  resolveLoaders: {
+    modulesDirectories: ['node_modules']
+  },
+  resolve: { // in import statements default to these file types if none specified
+    extensions: ['', '.js', '.jsx', '.css'],
+    modulesDirectories: ['node_modules']
   },
   devServer: {
     contentBase: PATHS.compiled,
@@ -37,29 +39,3 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
   ]
 };
-// module.exports = {
-//   entry: [
-//     './Client/index.js'
-//   ],
-//   output: {
-//     path: __dirname,
-//     publicPath: '/',
-//     filename: 'bundle.js'
-//   },
-//   module: {
-//     loaders: [{
-//       exclude: /node_modules/,
-//       loader: 'babel',
-//       query: {
-//         presets: ['react', 'es2015', 'stage-1']
-//       }
-//     }]
-//   },
-//   resolve: {
-//     extensions: ['', '.js', '.jsx']
-//   },
-//   devServer: {
-//     historyApiFallback: true,
-//     contentBase: './'
-//   }
-// };
