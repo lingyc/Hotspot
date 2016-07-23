@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.parseYelpData = exports.requestYelp = exports.generateYelpNewBusParam = undefined;
+exports.parseYelpData = exports.requestMultipleYelp = exports.requestYelp = exports.generateYelpNewBusParam = undefined;
 
 var _oauthSignature = require('oauth-signature');
 
@@ -47,8 +47,7 @@ var YELP_TOKEN_SECRET = _yelpconfig2.default.YELP_TOKEN_SECRET || process.env.YE
 var endpointNewPlace = 'https://api.yelp.com/v2/search';
 var endpointBusID = 'https://api.yelp.com/v2/business/';
 
-// Generate parameters
-// New business
+// Generate parameters for a new business
 var generateYelpNewBusParam = exports.generateYelpNewBusParam = function generateYelpNewBusParam(name, longitude, latitude) {
   return {
     term: name,
@@ -56,14 +55,6 @@ var generateYelpNewBusParam = exports.generateYelpNewBusParam = function generat
     ll: latitude + ',' + longitude
   };
 };
-//
-// // Stored business
-// export var generateYelpBusIDParam = function (businessId) {
-//   return {
-//     id: businessId
-//   };
-// };
-
 
 // Yelp call
 var requestYelp = exports.requestYelp = function requestYelp(setParameters, busId, cb) {
@@ -95,7 +86,7 @@ var requestYelp = exports.requestYelp = function requestYelp(setParameters, busI
   var consumerSecret = YELP_CONSUMER_SECRET;
   var tokenSecret = YELP_TOKEN_SECRET;
 
-  // Call Yelp servers for a signature (only good for 300 sec)
+  // Call Yelp servers for a oAuth signature (only good for 300 sec)
   var signature = _oauthSignature2.default.generate(httpMethod, url, parameters, consumerSecret, tokenSecret, { encodeSignature: false });
 
   parameters.oauth_signature = signature;
@@ -113,6 +104,21 @@ var requestYelp = exports.requestYelp = function requestYelp(setParameters, busI
     } else {
       cb(parseYelpData(data.businesses[0]));
     }
+  });
+};
+
+// Multiple requests for businessId array
+var requestMultipleYelp = exports.requestMultipleYelp = function requestMultipleYelp(busIds, cb) {
+  var compiledData = [];
+
+  busIds.forEach(function (busId) {
+    requestYelp(busId, true, function (data) {
+      compiledData.push(data);
+
+      if (compiledData.length === busIds.length) {
+        cb(compiledData);
+      }
+    });
   });
 };
 

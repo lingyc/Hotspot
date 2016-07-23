@@ -5,7 +5,8 @@ import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config-public/fb';
 // import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config/fb';
 
 //change line 4 to import from '../config/fb'
-const cb = process.env.PORT ? 'https://hotspot-app.herokuapp.com:' + process.env.PORT + '/auth/facebook/callback' : 'http://localhost:8000/auth/facebook/callback';
+const cb = 'https://hotspot-app.herokuapp.com:' + process.env.PORT + '/auth/facebook/callback';
+// : 'http://localhost:8000/auth/facebook/callback';
 const FB = {
   APP_ID: FACEBOOK_APP_ID || process.env.FACEBOOK_APP_ID || 0,
   APP_SECRET: FACEBOOK_APP_SECRET || process.env.FACEBOOK_APP_SECRET || 0,
