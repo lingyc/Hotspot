@@ -29,7 +29,7 @@ class Map extends React.Component {
 
     // If any filters have been selected and a filtered collection
     // exists, send that into the map instead
-    if(this.props.filteredCollection !== []){
+    if (this.props.filteredCollection !== []) {
       collection = this.props.filteredCollection;
     }
 
