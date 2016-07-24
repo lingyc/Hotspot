@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "a2b903ced1441b9f0254"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "1d1dfa935f391a762c63"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -22778,7 +22778,7 @@
 
 	var _reducer_panel_mode2 = _interopRequireDefault(_reducer_panel_mode);
 
-	var _reducer_panel_select = __webpack_require__(201);
+	var _reducer_panel_select = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./reducer_panel_select\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 	var _reducer_panel_select2 = _interopRequireDefault(_reducer_panel_select);
 
@@ -33840,31 +33840,7 @@
 	var _index = __webpack_require__(190);
 
 /***/ },
-/* 201 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-	  var action = arguments[1];
-
-	  switch (action.type) {
-	    case _index.PANEL_CLOSE_COLLECTION_ITEM:
-	      return state = action.payload;
-	    case _index.PANEL_CLOSE_COLLECTION_ITEM:
-	      return state = null;
-	  }
-	  return state;
-	};
-
-	var _index = __webpack_require__(190);
-
-/***/ },
+/* 201 */,
 /* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -33911,13 +33887,19 @@
 	    key: 'collectionClick',
 	    value: function collectionClick(e) {
 	      e.preventDefault();
-	      this.props.toggleCollectionList(this.props.PanelMode('collection'));
+	      this.props.actions.toggleCollectionList(this.props.PanelMode);
 	    }
 	  }, {
 	    key: 'filterClick',
 	    value: function filterClick(e) {
 	      e.preventDefault();
-	      this.props.toggleFilterList(this.props.PanelMode('filter'));
+	      this.props.actions.toggleFilterList(this.props.PanelMode);
+	    }
+	  }, {
+	    key: 'singOut',
+	    value: function singOut(e) {
+	      e.preventDefault();
+	      this.props.actions.logout();
 	    }
 	  }, {
 	    key: 'render',
@@ -33937,6 +33919,11 @@
 	            'li',
 	            { onClick: this.filterClick.bind(this), className: 'filterPanel' },
 	            'Filter'
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            { onClick: this.signOut.bind(this) },
+	            'Sign Out'
 	          )
 	        )
 	      );
@@ -33947,7 +33934,9 @@
 	}(_react2.default.Component);
 
 	function mapDispatchToProps(dispatch) {
-	  return (0, _redux.bindActionCreators)({ toggleCollectionList: _index.toggleCollectionList, toggleFilterList: _index.toggleFilterList }, dispatch);
+	  return {
+	    actions: (0, _redux.bindActionCreators)({ toggleCollectionList: _index.toggleCollectionList, toggleFilterList: _index.toggleFilterList, logout: logout }, dispatch)
+	  };
 	}
 
 	function mapStateToProps(state) {
@@ -34000,30 +33989,23 @@
 	  _createClass(Panel, [{
 	    key: 'renderPanel',
 	    value: function renderPanel() {
+	      var _this2 = this;
+
 	      if (this.props.PanelMode === 'collection') {
 	        return _react2.default.createElement(
 	          'div',
 	          { className: 'collection' },
-	          this.props.CollectionRestaurants.collection.map(function (restaurant) {
+	          this.props.collection.map(function (restaurant) {
 	            return _react2.default.createElement(_CollectionModel2.default, { restaurant: restaurant });
 	          })
 	        );
 	      } else if (this.props.PanelMode === 'filter') {
 	        return _react2.default.createElement(
 	          'div',
-	          { className: 'filterPanel' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'filters' },
-	            this.props.CollectionRestaurants.filterOptions
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'collection' },
-	            this.props.CollectionRestaurants.collection.map(function (restaurant) {
-	              return _react2.default.createElement(_CollectionModel2.default, { restaurant: restaurant });
-	            })
-	          )
+	          { className: 'filters' },
+	          this.props.filters.map(function (filter) {
+	            return _react2.default.createElement(FilterItem, { filter: filter, appliedFilters: _this2.props.filterSelected, toggleFilter: _this2.props.actions.toggleFilter });
+	          })
 	        );
 	      }
 	    }
@@ -34031,21 +34013,12 @@
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'div',
-	        { id: 'outer-container' },
-	        _react2.default.createElement(Menu, { pageWrapId: "page-wrap", outerContainerId: "outer-container", right: true, isOpen: this.props.PanelMode }),
+	        Menu,
+	        { right: true, isOpen: this.props.PanelMode ? true : false },
 	        _react2.default.createElement(
-	          'main',
-	          { id: 'page-wrap' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'panelBody panel' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'collection' },
-	              this.renderPanel()
-	            )
-	          )
+	          'div',
+	          { className: 'panelBody panel' },
+	          this.renderPanel()
 	        )
 	      );
 	    }
@@ -34054,11 +34027,22 @@
 	  return Panel;
 	}(_react2.default.Component);
 
-	function mapStateToProps(state) {
-	  return { CollectionRestaurants: state.CollectionRestaurants,
-	    PanelMode: state.PanelMode };
+	function mapDispatchToProps(dispatch) {
+	  return {
+	    actions: bindActionCreators({ toggleCollectionList: toggleCollectionList, toggleFilterList: toggleFilterList }, dispatch)
+	  };
 	}
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(Panel);
+
+	function mapStateToProps(state) {
+	  return {
+	    collection: state.CollectionRestaurantsFilters.collection,
+	    filters: state.CollectionRestaurantsFilters.filterOptions,
+	    filterSelected: state.FilterSelectedRestaurants.filterSelected,
+	    filteredRestaurants: state.FilterSelectedRestaurants.filteredRestaurants,
+	    PanelMode: state.PanelMode
+	  };
+	}
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Panel);
 
 /***/ },
 /* 204 */
