@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import DB from './queries';
 import dbConnection from './dbConnect';
+import SpotsUsers from './spotsUsersJoin';
+import Promise from 'bluebird';
 
 const spotSchema = {
   columns: {
@@ -13,6 +15,29 @@ const spotSchema = {
   tableName: 'spots'
 };
 
-const Spot = new DB(dbConnection, spotSchema);
+class Spot extends DB {
+  constructor(dbConnection, schema) {
+    super(dbConnection, schema);
+  }
 
-export default Spot;
+  getAllForUser(user) {
+    return SpotsUsers.find({userid: user.id})
+      .then((spotsUsers) => {
+        return Promise.all(spotsUsers.map((spotUser) => this.find({id: spotUser.spotid})));
+      })
+      .then((results) => results.map((result) => result[0]))
+      .catch((err) => console.log(err));
+  }
+}
+const mySpot = new Spot(dbConnection, spotSchema);
+
+const myUser = {
+  id: 1
+};
+
+mySpot.getAllForUser(myUser)
+  .then((results) => {
+    console.log(results);
+  });
+
+export default new Spot(dbConnection, spotSchema);

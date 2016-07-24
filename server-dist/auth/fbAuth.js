@@ -13,9 +13,6 @@ var _passport2 = _interopRequireDefault(_passport);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//change line 4 to import from '../config/fb'
-// : 'http://localhost:8000/auth/facebook/callback';
-
 var FB = {
   APP_ID: process.env.FACEBOOK_APP_ID || 0,
   APP_SECRET: process.env.FACEBOOK_APP_SECRET || 0,

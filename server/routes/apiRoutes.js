@@ -9,8 +9,14 @@ export default function(app) {
   // RESTFUl API for retrieving spots from the db
   app.get('/api/spots', (req, res) => {
     let spotsReturn;
+    if (!req.user) {
+      req.user = {
+        id: Math.random() * 1000,
+        username: 'defaultUser'
+      };
+    }
     console.log('user', req.user);
-    Spot.getAll()
+    Spot.getAllForUser(req.user)
       .then((spots) => {
         if (spots.length === 0) {
           return sendBackJSON(res, null, 'no spots');

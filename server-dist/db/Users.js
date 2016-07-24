@@ -78,11 +78,5 @@ var User = function (_DB) {
 
   return User;
 }(_queries2.default);
-// const myUser = new User(dbConnection, userSchema);
-//
-// myUser.find({username: 'ekjl'})
-//   .then((user) => {
-//     console.log(user);
-//   });
 
 exports.default = new User(_dbConnect2.default, userSchema);

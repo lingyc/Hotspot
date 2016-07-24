@@ -44,8 +44,6 @@ var DB = function () {
     value: function create(obj) {
       return this.pg.query((0, _queryHelpers.createInsertQuery)(this.schema, obj));
     }
-    //TODO HERE I WAS
-
   }, {
     key: 'findOrCreate',
     value: function findOrCreate(obj) {

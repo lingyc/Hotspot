@@ -28,11 +28,9 @@ var createInsertQuery = exports.createInsertQuery = function createInsertQuery(s
       initial = false;
       return '' + typeWrapper(objToInsert[key] || null, val);
     }
-    // if (key === 'password') {
-    //   return `${values}, ${typeWrapper(objToInsert[key] || null, val)}`;
-    // }
     return values + ', ' + typeWrapper(objToInsert[key] || null, val);
   }, '')).concat(') returning *');
+  console.log(query + ' ' + columns + ' ' + values);
   return query + ' ' + columns + ' ' + values;
 };
 
