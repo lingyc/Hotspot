@@ -53,9 +53,9 @@ export function toggleFilterList(panelMode) {
 }
 
 // Click Handler for Nav Logout button
-export function logout() {
+export function logout(collection) {
   // Make final post request to update user's data
-  
+  request.post(endpoints.spots).send(collection);
 
   // End the user's session
   request.get(endpoints.logout);
