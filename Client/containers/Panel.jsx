@@ -30,11 +30,11 @@ class Panel extends React.Component {
 
   render() {
     return (
-      <Menu right isOpen={this.props.PanelMode ? true : false} >
-          <div className='panelBody panel'>
-              {this.renderPanel()}
-          </div>
-        </Menu>
+      <Menu right isOpen={this.props.PanelMode !== 'none' ? true : false} >
+        <div className='panelBody panel'>
+          {this.renderPanel()}
+        </div>
+      </Menu>
     );
   }
 }
@@ -51,7 +51,7 @@ function mapStateToProps(state) {
     filters: state.CollectionRestaurantsFilters.filterOptions,
     filterSelected: state.FilterSelectedRestaurants.filterSelected,
     filteredRestaurants: state.FilterSelectedRestaurants.filteredRestaurants,
-    PanelMode: state.PanelMode
+    PanelMode: state.panelMode
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Panel);
