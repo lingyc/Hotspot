@@ -22,7 +22,7 @@ export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 export function toggleCollectionList(panelMode) {
   // If panelMode is collection, set it to null.
   if (panelMode === 'collection') {
-    panelMode = null;
+    panelMode = 'none';
   } else {
     // Else set panelMode to collection
     panelMode = 'collection';
@@ -38,7 +38,7 @@ export function toggleCollectionList(panelMode) {
 export function toggleFilterList(panelMode) {
   // If panelMode is filter, set it to null.
   if (panelMode === 'filter') {
-    panelMode = null;
+    panelMode = 'none';
   } else {
     // Else set panelMode to filter
     panelMode = 'filter';
@@ -125,7 +125,7 @@ export function deleteCollectionItem(item) {
 }
 
 // Click Handler for map's submit
-export function clickLocationSubmit(name, latitude, longitude, rating, filters) {
+export function clickLocationSubmit(name, latitude, longitude, rating) {
   // Create object to make DB query
   const spotToAdd = {
     name: name,
@@ -162,7 +162,7 @@ export function fetchCollection() {
   }
 }
 
-filterOrganizer = (collection, filters) => {
+const filterOrganizer = (collection, filters) => {
   filters = filters || [];
 
   _.map(collection, (value) => {
