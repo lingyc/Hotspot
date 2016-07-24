@@ -55,12 +55,13 @@ export function logout(collection) {
   // Make final post request to update user's data
   request.post(endpoints.spots).send(collection);
 
+  console.log('logout');
   // End the user's session
   request.get(endpoints.logout);
 
   return {
     type: NAV_CLICK_LOGOUT
-  }
+  };
 }
 
 // Click Handler for Panel Filter item
@@ -135,6 +136,8 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
   };
 
   // Add type and image from returned request
+  console.log('location submit');
+  
   const data = request.post(endpoints.spots).send(spotToAdd);
   filters = filterOrganizer([data], filters);
 

@@ -13,7 +13,7 @@ class Panel extends React.Component {
 
     let panelItems;
 
-    if (this.props.PanelMode === 'collction') {
+    if (this.props.PanelMode === 'collection') {
       panelItems = this.props.collection.map((restaurant) => {
         return (<CollectionModel restaurant={restaurant} />);
       });

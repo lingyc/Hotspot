@@ -26,12 +26,13 @@ class Nav extends React.Component {
         <ul>
           <li onClick={this.collectionClick.bind(this)} className='collectionPanel' >Collection</li>
           <li onClick={this.filterClick.bind(this)} className='filterPanel'>Filter</li>
-          <li onClick={this.signOut.bind(this)}>Sign Out</li>
+          <li><a href="/logout">Sign Out</a></li>
         </ul>
       </nav>
     );
   }
 }
+// onClick={this.signOut.bind(this)}
 
 function mapDispatchToProps(dispatch) {
   return {
