@@ -22,7 +22,7 @@ export default class DB {
   create(obj) {
     return this.pg.query(createInsertQuery(this.schema, obj));
   }
-  //TODO HERE I WAS
+
   findOrCreate(obj) {
     return this.find(obj)
     .then((foundObj) => {

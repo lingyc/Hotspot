@@ -1,12 +1,10 @@
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import passport from 'passport';
-//change line 4 to import from '../config/fb'
-// : 'http://localhost:8000/auth/facebook/callback';
 
 const FB = {
   APP_ID: process.env.FACEBOOK_APP_ID || 0,
   APP_SECRET: process.env.FACEBOOK_APP_SECRET || 0,
-  CALLBACK: `https://hotspot-app.herokuapp.com/auth/facebook/callback`
+  CALLBACK: 'https://hotspot-app.herokuapp.com/auth/facebook/callback'
 };
 
 console.log(FB);

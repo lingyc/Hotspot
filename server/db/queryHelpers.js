@@ -9,7 +9,7 @@ const typeWrapper = function(thing, type){
 export const createInsertQuery = function (schema, objToInsert) {
   let query = `insert into ${schema.tableName}`;
   let columns = '('.concat(_
-    .reduce(Object.keys(schema.columns), (columns, val) => `${columns}, ${val}`),'')
+    .reduce(Object.keys(schema.columns), (columns, val) => `${columns}, ${val}`), '')
     .concat(')');
   let initial = true;
   let values = 'values ('.concat(_
@@ -18,13 +18,10 @@ export const createInsertQuery = function (schema, objToInsert) {
         initial = false;
         return `${typeWrapper(objToInsert[key] || null, val)}`;
       }
-      // if (key === 'password') {
-      //   return `${values}, ${typeWrapper(objToInsert[key] || null, val)}`;
-      // }
       return `${values}, ${typeWrapper(objToInsert[key] || null, val)}`;
     }, ''))
     .concat(') returning *');
-  return `${query} ${columns} ${values}`
+  return `${query} ${columns} ${values}`;
 };
 
 export const createUpdateQuery = function(schema, updateObj, id) {

@@ -39,11 +39,5 @@ class User extends DB {
     .catch((err) => console.log(err));
   }
 }
-// const myUser = new User(dbConnection, userSchema);
-//
-// myUser.find({username: 'ekjl'})
-//   .then((user) => {
-//     console.log(user);
-//   });
 
 export default new User(dbConnection, userSchema);

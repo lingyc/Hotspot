@@ -3,10 +3,11 @@ import { sendBackJSON } from '../db/queryHelpers';
 import {requestMultipleYelp} from '../yelp/yelpQuery';
 import _ from 'lodash';
 
-export default function(app){
+export default function(app) {
   // RESTFUl API for retrieving spots from the db
   app.get('/api/spots', (req, res) => {
     let spotsReturn;
+    console.log(req.user);
     Spot.getAll()
       .then((spots) => {
         console.log(spots);
