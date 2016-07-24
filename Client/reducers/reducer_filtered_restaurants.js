@@ -7,13 +7,13 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-  case PANEL_CLICK_FILTER_ITEM:
-    return {
-      ...state,
-      filterSelected: action.payload.selectedFilters,
-      filteredRestaurants: action.payload.filteredrestaurants
-    };
-  default:
-    return state;
+    case PANEL_CLICK_FILTER_ITEM:
+      return {
+        ...state,
+        filterSelected: action.payload.selectedFilters,
+        filteredRestaurants: action.payload.filteredrestaurants
+      };
+    default:
+      return state;
   }
 }
