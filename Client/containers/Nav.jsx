@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { toggleCollectionList, toggleFilterList, logout } from '../actions/index';
-import Panel from './Panel';
 
 class Nav extends React.Component {
 
