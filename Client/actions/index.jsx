@@ -18,8 +18,6 @@ export const PANEL_DELETE_COLLECTION_ITEM = 'PANEL_DELETE_COLLECTION_ITEM';
 export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
 export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 
-export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT'
-
 // Click Handler for Nav Collection button
 export function toggleCollectionList(panelMode) {
   // If panelMode is collection, set it to null.
