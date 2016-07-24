@@ -15,9 +15,9 @@
     "dev:config": "mkdir ./server/config; cp ../hotspot-config/config/* ./server/config/",
     "prod:buildclient": "webpack",
     "prod:buildserver": "babel ./server -d ./server-dist --presets es2015,stage-2 --copy-files",
-    "prestart": "npm run prod:buildclient",
+    "prestart": "npm run prod:buildclient; npm run prod:buildserver",
     "start": "node server-dist/server.js",
-    "predeploy": "npm run prod:buildserver; git add -A",
+    "predeploy": "git add -A",
     "deploy": "git commit -m",
     "logs": "heroku logs --app hotspot-app -t",
     "postdeploy": "git push origin master"
