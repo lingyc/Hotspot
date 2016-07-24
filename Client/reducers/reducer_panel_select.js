@@ -1,6 +1,5 @@
 import {PANEL_OPEN_COLLECTION_ITEM } from '../actions/index';
 import {PANEL_CLOSE_COLLECTION_ITEM } from '../actions/index';
-import {PANEL_DELETE_COLLECTION_ITEM } from '../actions/index';
 
 const initialState = {
   item: {}
