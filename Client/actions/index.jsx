@@ -15,8 +15,6 @@ export const PANEL_OPEN_COLLECTION_ITEM = 'PANEL_OPEN_COLLECTION_ITEM';
 export const PANEL_CLOSE_COLLECTION_ITEM = 'PANEL_CLOSE_COLLECTION_ITEM';
 export const PANEL_DELETE_COLLECTION_ITEM = 'PANEL_DELETE_COLLECTION_ITEM';
 
-export const POPULATE_FILTER_OPTIONS = 'POPULATE_FILTER_OPTIONS';
-
 export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
 export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 
@@ -24,7 +22,7 @@ export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 export function toggleCollectionList(panelMode) {
   // If panelMode is collection, set it to null.
   if (panelMode === 'collection') {
-    panelMode = null;
+    panelMode = 'none';
   } else {
     // Else set panelMode to collection
     panelMode = 'collection';
@@ -40,7 +38,7 @@ export function toggleCollectionList(panelMode) {
 export function toggleFilterList(panelMode) {
   // If panelMode is filter, set it to null.
   if (panelMode === 'filter') {
-    panelMode = null;
+    panelMode = 'none';
   } else {
     // Else set panelMode to filter
     panelMode = 'filter';
@@ -53,10 +51,12 @@ export function toggleFilterList(panelMode) {
 }
 
 // Click Handler for Nav Logout button
-export function logout() {
+export function logout(collection) {
   // Make final post request to update user's data
+  request.post(endpoints.spots).send(collection);
+
   // End the user's session
-  $.get(enpoints.logout);
+  request.get(endpoints.logout);
 
   return {
     type: NAV_CLICK_LOGOUT
@@ -81,15 +81,15 @@ export function toggleFilter(filter, selectedFilters, collection) {
     if (_.findIndex(selectedFilters, spot.type) > -1) {
       filteredRestaurants.push(spot);
     }
-  })
+  });
 
   return {
     type: PANEL_CLICK_FILTER_ITEM,
     payload: {
       selectedFilters: selectedFilters,
       filteredRestaurants: filteredRestaurants
+    }
   }
-}
 };
 
 // Click Handler for Panel Collection item
@@ -125,7 +125,7 @@ export function deleteCollectionItem(item) {
 }
 
 // Click Handler for map's submit
-export function clickLocationSubmit(name, latitude, longitude, rating, filters) {
+export function clickLocationSubmit(name, latitude, longitude, rating) {
   // Create object to make DB query
   const spotToAdd = {
     name: name,
@@ -162,7 +162,7 @@ export function fetchCollection() {
   };
 }
 
-function filterOrganizer(collection, filters){
+const filterOrganizer = (collection, filters) => {
   filters = filters || [];
 
   _.map(collection, (value) => {

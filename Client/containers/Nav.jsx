@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { toggleCollectionList, toggleFilterList } from '../actions/index';
-import Panel from './Panel';
+import { toggleCollectionList, toggleFilterList, logout } from '../actions/index';
 
 class Nav extends React.Component {
 
@@ -16,7 +15,7 @@ class Nav extends React.Component {
     this.props.actions.toggleFilterList(this.props.PanelMode);
   }
 
-  singOut(e) {
+  signOut(e) {
     e.preventDefault();
     this.props.actions.logout();
   }
@@ -41,7 +40,9 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  PanelMode = state.PanelMode;
+  return  {
+    PanelMode: state.PanelMode.panelMode
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Nav);
