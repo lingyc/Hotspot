@@ -19,34 +19,42 @@ export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
 export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 
 // Click Handler for Nav Collection button
-export function toggleCollectionList(panelMode) {
+export function toggleCollectionList(panelMode, isOpen) {
   // If panelMode is collection, set it to null.
   if (panelMode === 'collection') {
-    panelMode = 'none';
+    isOpen = false;
   } else {
     // Else set panelMode to collection
     panelMode = 'collection';
+    isOpen = true;
   }
 
   return {
     type: NAV_CLICK_COLLECTION,
-    payload: panelMode
+    payload: {
+      panelMode: panelMode,
+      isOpen: isOpen
+    }
   }
 }
 
 // Click Handler for Nav Filter button
-export function toggleFilterList(panelMode) {
+export function toggleFilterList(panelMode, isOpen) {
   // If panelMode is filter, set it to null.
   if (panelMode === 'filter') {
-    panelMode = 'none';
+    isOpen = false;
   } else {
     // Else set panelMode to filter
     panelMode = 'filter';
+    isOpen = true;
   }
 
   return {
     type: NAV_CLICK_FILTER,
-    payload: panelMode
+    payload: {
+      panelMode: panelMode,
+      isOpen: isOpen
+    }
   }
 }
 
