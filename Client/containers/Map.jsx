@@ -23,15 +23,27 @@ class Map extends React.Component {
   }
 
   render() {
+
+    // Sets collection to default to the entire collection
+    let collection = this.props.totalCollection;
+
+    // If any filters have been selected and a filtered collection
+    // exists, send that into the map instead
+    if(filteredCollection !== []){
+      collection = this.props.filteredCollection;
+    }
+
     return (
-      <div className='map' id='map-one' filters={this.props.filters} clickHandler={this.props.actions.clickLocationSubmit}></div>
+      <div className='map' id='map-one' collection={collection} filters={this.props.filters} clickHandler={this.props.actions.clickLocationSubmit}></div>
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    filters: state.CollectionRestaurantsFilters.filterOptions
+    filters: state.CollectionRestaurantsFilters.filterOptions,
+    totalCollection: state.CollectionRestaurantsFilters.collection,
+    filteredCollection: state.FilterSelectedRestaurants.filteredRestaurants
   };
 }
 
