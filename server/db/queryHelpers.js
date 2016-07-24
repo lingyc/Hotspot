@@ -21,6 +21,7 @@ export const createInsertQuery = function (schema, objToInsert) {
       return `${values}, ${typeWrapper(objToInsert[key] || null, val)}`;
     }, ''))
     .concat(') returning *');
+  console.log(`${query} ${columns} ${values}`);
   return `${query} ${columns} ${values}`;
 };
 

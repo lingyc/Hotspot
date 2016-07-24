@@ -1,16 +1,17 @@
 import Spot from '../db/Spots';
+import SpotsUsers from '../db/spotsUsersJoin';
 import { sendBackJSON } from '../db/queryHelpers';
 import {requestMultipleYelp} from '../yelp/yelpQuery';
+import Promise from 'bluebird';
 import _ from 'lodash';
 
 export default function(app) {
   // RESTFUl API for retrieving spots from the db
   app.get('/api/spots', (req, res) => {
     let spotsReturn;
-    console.log(req.user);
+    console.log('user', req.user);
     Spot.getAll()
       .then((spots) => {
-        console.log(spots);
         if (spots.length === 0) {
           return sendBackJSON(res, null, 'no spots');
         }
@@ -37,8 +38,15 @@ export default function(app) {
 
   app.post('/api/spots', (req, res) => {
     Spot.create(req.body)
-      .then((result) => sendBackJSON(res, req.body, 'created new spot'))
-      .catch((err) => sendBackJSON(res, err, 'error'));
+      .then((spot) => {
+        console.log('insert spot ', spot[0], 'with user id', req.user);
+        return SpotsUsers.create({userId: req.user.id, spotId: spot[0].id});
+      })
+      .then((spotuser) => sendBackJSON(res, req.body, 'created new spot'))
+      .catch((err) => {
+        console.log(err);
+        return sendBackJSON(res, err, 'error');
+      });
   });
 
   app.put('/api/spots/:id', (req, res) => {
