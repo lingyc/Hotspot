@@ -83,29 +83,15 @@ export function toggleFilter(filter, selectedFilters, collection) {
     if (_.findIndex(selectedFilters, spot.type) > -1) {
       filteredRestaurants.push(spot);
     }
-  })
+  });
 
   return {
     type: PANEL_CLICK_FILTER_ITEM,
     payload: {
       selectedFilters: selectedFilters,
       filteredRestaurants: filteredRestaurants
-export function toggleFilter(filter, appliedFilters) {
-  // Check if given filter is in filter list
-  var index = _.findIndex(appliedFilters, filter);
-  if (index === -1) { 
-    // Add it to the list if not found
-    appliedFilters.push(filter);
-  } else {
-    // remove it if it is not
-    appliedFilters.splice(index, 1);
+    }
   }
-
-  return {
-    type: PANEL_CLICK_FILTER_ITEM,
-    payload: appliedFilters
-  }
-}
 };
 
 // Click Handler for Panel Collection item
