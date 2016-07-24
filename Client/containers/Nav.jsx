@@ -7,7 +7,6 @@ class Nav extends React.Component {
 
   collectionClick(e) {
     e.preventDefault();
-    console.log(this.props.PanelMode);
     this.props.actions.toggleCollectionList(this.props.PanelMode);
   }
 
