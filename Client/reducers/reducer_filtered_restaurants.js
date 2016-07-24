@@ -10,8 +10,8 @@ export default function(state = initialState, action) {
   case PANEL_CLICK_FILTER_ITEM:
     return {
       ...state,
-      filterSelected: [action.payload.selectedFilters]
-      filteredRestaurants: [action.payload.filteredrestaurants]
+      filterSelected: action.payload.selectedFilters,
+      filteredRestaurants: action.payload.filteredrestaurants
     };
   default:
     return state;
