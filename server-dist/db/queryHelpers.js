@@ -55,7 +55,7 @@ var createSelectQuery = exports.createSelectQuery = function createSelectQuery(s
   return query + ' ' + params;
 };
 
-var sendBackJSON = exports.sendBackJSON = function sendBackJSON(rest, data, message) {
+var sendBackJSON = exports.sendBackJSON = function sendBackJSON(res, data, message) {
   return res.status(200).json({
     data: data,
     message: message

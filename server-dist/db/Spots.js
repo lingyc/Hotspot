@@ -24,7 +24,6 @@ var spotSchema = {
     rating: 'number',
     latitude: 'number',
     longitude: 'number',
-    image: 'string',
     yelp_id: 'string'
   },
   tableName: 'spots'

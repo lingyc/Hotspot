@@ -25,23 +25,22 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _yelpconfig = require('../config-public/yelpconfig');
+var _bluebird = require('bluebird');
 
-var _yelpconfig2 = _interopRequireDefault(_yelpconfig);
+var _bluebird2 = _interopRequireDefault(_bluebird);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// Import sercet API keys (All 4 are needed)
+// cant import from non existant file in deployment
+// import Y from '../config-public/yelpconfig';
 // import Y from '../config/yelpconfig';
 
 // Required modules to handle Yelp's oAuth requirement
-var YELP_CONSUMER_KEY = _yelpconfig2.default.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_KEY || 0;
-
-// Import sercet API keys (All 4 are needed)
-// cant import from non existant file in deployment
-
-var YELP_CONSUMER_SECRET = _yelpconfig2.default.YELP_CONSUMER_KEY || process.env.YELP_CONSUMER_SECRET || 0;
-var YELP_TOKEN = _yelpconfig2.default.YELP_TOKEN || process.env.YELP_TOKEN || 0;
-var YELP_TOKEN_SECRET = _yelpconfig2.default.YELP_TOKEN_SECRET || process.env.YELP_TOKEN_SECRET || 0;
+var YELP_CONSUMER_KEY = process.env.YELP_CONSUMER_KEY || 0;
+var YELP_CONSUMER_SECRET = process.env.YELP_CONSUMER_SECRET || 0;
+var YELP_TOKEN = process.env.YELP_TOKEN || 0;
+var YELP_TOKEN_SECRET = process.env.YELP_TOKEN_SECRET || 0;
 
 // Yelp Endpoints
 var endpointNewPlace = 'https://api.yelp.com/v2/search';
@@ -57,7 +56,7 @@ var generateYelpNewBusParam = exports.generateYelpNewBusParam = function generat
 };
 
 // Yelp call
-var requestYelp = exports.requestYelp = function requestYelp(setParameters, busId, cb) {
+var requestYelp = exports.requestYelp = function requestYelp(setParameters, busId) {
   var httpMethod = 'GET';
 
   if (busId) {
@@ -95,31 +94,40 @@ var requestYelp = exports.requestYelp = function requestYelp(setParameters, busI
 
   var apiUrl = url + '?' + paramUrl;
 
-  (0, _request2.default)(apiUrl, function (err, res, body) {
-    console.log('**********************************');
-    console.log('ERROR', err);
-    var data = JSON.parse(body);
-    if (busId) {
-      cb(parseYelpData(data));
-    } else {
-      cb(parseYelpData(data.businesses[0]));
-    }
+  return new _bluebird2.default(function (resolve, reject) {
+    (0, _request2.default)(apiUrl, function (err, res, body) {
+      if (err) {
+        console.log('**********************************');
+        console.log('ERROR', err);
+        reject(err);
+      }
+
+      var data = JSON.parse(body);
+      // console.log('returning data', data);
+
+      if (busId) {
+        resolve(parseYelpData(data));
+      } else {
+        resolve(parseYelpData(data.businesses[0]));
+      }
+    });
   });
 };
 
 // Multiple requests for businessId array
 var requestMultipleYelp = exports.requestMultipleYelp = function requestMultipleYelp(busIds, cb) {
-  var compiledData = [];
-
-  busIds.forEach(function (busId) {
-    requestYelp(busId, true, function (data) {
-      compiledData.push(data);
-
-      if (compiledData.length === busIds.length) {
-        cb(compiledData);
-      }
-    });
-  });
+  return _bluebird2.default.all(busIds.map(function (busId) {
+    return requestYelp(busId, true);
+  }));
+  // busIds.forEach(function(busId) {
+  //   requestYelp(busId, true)
+  //   .then((data) => {
+  //     compiledData.push(data);
+  //     if (compiledData.length === busIds.length) {
+  //       compiledData;
+  //     }
+  //   });
+  // });
 };
 
 // Parse required data out of Yelp's response data

@@ -11,22 +11,14 @@ var _passport = require('passport');
 
 var _passport2 = _interopRequireDefault(_passport);
 
-var _inLocalEnv = require('../config-public/inLocalEnv');
-
-var _inLocalEnv2 = _interopRequireDefault(_inLocalEnv);
-
-var _fb = require('../config-public/fb');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../config/fb';
 
 //change line 4 to import from '../config/fb'
 // : 'http://localhost:8000/auth/facebook/callback';
 
 var FB = {
-  APP_ID: _fb.FACEBOOK_APP_ID || process.env.FACEBOOK_APP_ID || 0,
-  APP_SECRET: _fb.FACEBOOK_APP_SECRET || process.env.FACEBOOK_APP_SECRET || 0,
+  APP_ID: process.env.FACEBOOK_APP_ID || 0,
+  APP_SECRET: process.env.FACEBOOK_APP_SECRET || 0,
   CALLBACK: 'https://hotspot-app.herokuapp.com/auth/facebook/callback'
 };
 

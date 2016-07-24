@@ -17,6 +17,7 @@
     "start": "node server-dist/server.js",
     "predeploy": "npm run prod:buildserver; git add -A",
     "deploy": "git commit -m",
+    "logs": "heroku logs --app hotspot-app -t",
     "postdeploy": "git push origin master"
   },
   "repository": {
