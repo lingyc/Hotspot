@@ -7,6 +7,7 @@ class Nav extends React.Component {
 
   collectionClick(e) {
     e.preventDefault();
+    console.log(this.props.PanelMode);
     this.props.actions.toggleCollectionList(this.props.PanelMode);
   }
 
@@ -41,7 +42,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return  {
-    PanelMode: state.panelMode
+    PanelMode: state.PanelMode.panelMode
   }
 }
 
