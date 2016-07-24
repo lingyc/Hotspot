@@ -7,11 +7,11 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-  case NAV_CLICK_FILTER:
-    return state.panelMode = action.payload;
-  case NAV_CLICK_COLLECTION:
-    return state.panelMode = action.payload;
-  default:
-    return state;
+    case NAV_CLICK_FILTER:
+      return state.panelMode = action.payload;
+    case NAV_CLICK_COLLECTION:
+      return state.panelMode = action.payload;
+    default:
+      return state;
   }
 }
