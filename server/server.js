@@ -8,6 +8,7 @@ import primaryRoutes from './routes/primaryRoutes';
 import authRoutes from './routes/authRoutes';
 import apiRoutes from './routes/apiRoutes';
 
+
 const app = express();
 const port = process.env.PORT || 8000;
 

@@ -16,11 +16,14 @@ export const createInsertQuery = function (schema, objToInsert) {
     .reduce(schema.columns, (values, val, key) => {
       if (initial) {
         initial = false;
-        return `${typeWrapper(objToInsert[key] || null, val)}`
+        return `${typeWrapper(objToInsert[key] || null, val)}`;
       }
+      // if (key === 'password') {
+      //   return `${values}, ${typeWrapper(objToInsert[key] || null, val)}`;
+      // }
       return `${values}, ${typeWrapper(objToInsert[key] || null, val)}`;
     }, ''))
-    .concat(')');
+    .concat(') returning *');
   return `${query} ${columns} ${values}`
 };
 
@@ -42,11 +45,12 @@ export const createSelectQuery = function(schema, findObj) {
     }
     i++;
     return `${params} ${key} = ${typeWrapper(val, schema.columns[key])} or`;
-  }, '');
+  }, '')
+  console.log(`${query} ${params}`);
   return `${query} ${params}`
 };
 
-export const sendBackJSON = function (rest, data, message){
+export const sendBackJSON = function (res, data, message){
   return res.status(200)
     .json({
       data: data,

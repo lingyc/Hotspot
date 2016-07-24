@@ -2,6 +2,7 @@ import _ from 'lodash';
 import bcrypt from 'bcrypt-nodejs';
 import dbConnection from './dbConnect';
 import DB from './queries';
+import {createInsertQuery} from './queryHelpers';
 
 const userSchema = {
   columns: {
@@ -19,6 +20,13 @@ class User extends DB {
     super(dbConnection, userSchema);
   }
 
+  create(obj) {
+    return this.pg.query(createInsertQuery(this.schema, {
+      username: obj.username,
+      password: this.generateHash(obj.password)
+    }));
+  }
+
   generateHash(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   }
@@ -26,10 +34,16 @@ class User extends DB {
   isValidPassword(password, id) {
     return this.find({id: id})
     .then((user) => {
-      return [bcrypt.compareSync(password, user[0].password), user];
+      return bcrypt.compareSync(password, user[0].password);
     })
     .catch((err) => console.log(err));
   }
 }
+// const myUser = new User(dbConnection, userSchema);
+//
+// myUser.find({username: 'ekjl'})
+//   .then((user) => {
+//     console.log(user);
+//   });
 
 export default new User(dbConnection, userSchema);

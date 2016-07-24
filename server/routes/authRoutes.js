@@ -24,18 +24,17 @@ export default function(app) {
   // route for facebook authentication and login
   // different scopes while logging in
   app.get('/auth/facebook',
-    passport.authenticate('facebook', { session: false, scope: 'email' }
+    passport.authenticate('facebook', { npscope: 'email' }
   ));
 
   app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', { session: false, failureRedirect: '/login' }));
+    passport.authenticate('facebook', { successRedirect: '/spots', failureRedirect: '/login' }));
 
   app.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
   });
  // isAuthenticated,
- console.log(isAuthenticated);
   // Get all of a user's spots.
   app.get('/spots', isAuthenticated,
   function(req, res) {

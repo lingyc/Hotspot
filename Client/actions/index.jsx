@@ -67,10 +67,10 @@ export function logout() {
 export function toggleFilter(filter, selectedFilters, collection) {
   // Check if given filter is in filter list
   const index = _.findIndex(selectedFilters, filter);
-  if (index === -1) { 
+  if (index === -1) {
     // Add it to the list if not found
     selectedFilters.push(filter);
-  } else {  
+  } else {
     // remove it if it is not
     selectedFilters.splice(index, 1);
   }
@@ -90,6 +90,7 @@ export function toggleFilter(filter, selectedFilters, collection) {
       filteredRestaurants: filteredRestaurants
   }
 }
+};
 
 // Click Handler for Panel Collection item
 export function viewCollectionItem(item) {
@@ -138,12 +139,12 @@ export function clickLocationSubmit(name, latitude, longitude, rating, filters) 
   filters = filterOrganizer([data], filters);
 
   return {
-    type: MAP_CONFIRM_POINT
+    type: MAP_CONFIRM_POINT,
     payload: {
       newSpot: data,
       filters: filters
     }
-  }
+  };
 }
 
 export function fetchCollection() {
@@ -158,17 +159,17 @@ export function fetchCollection() {
       collection: collection,
       filters: filters
     }
-  }
+  };
 }
 
-function filterOrganizer(collection, filters) => {
+function filterOrganizer(collection, filters){
   filters = filters || [];
 
   _.map(collection, (value) => {
     if (_.findIndex(filters, value) === -1) {
       filters.push(value);
     }
-  })
+  });
 
   return filters;
 }

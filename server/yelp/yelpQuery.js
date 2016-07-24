@@ -4,14 +4,18 @@ import n from 'nonce';
 import request from 'request';
 import qs from 'querystring';
 import _ from 'lodash';
+import Promise from 'bluebird';
 
 // Import sercet API keys (All 4 are needed)
-import {
-  YELP_CONSUMER_KEY,
-  YELP_CONSUMER_SECRET,
-  YELP_TOKEN,
-  YELP_TOKEN_SECRET
-} from '../config/yelpconfig';
+// cant import from non existant file in deployment
+// import Y from '../config-public/yelpconfig';
+// import Y from '../config/yelpconfig';
+
+const YELP_CONSUMER_KEY = process.env.YELP_CONSUMER_KEY || 0;
+const YELP_CONSUMER_SECRET = process.env.YELP_CONSUMER_SECRET || 0;
+const YELP_TOKEN = process.env.YELP_TOKEN || 0;
+const YELP_TOKEN_SECRET = process.env.YELP_TOKEN_SECRET || 0;
+
 
 // Yelp Endpoints
 var endpointNewPlace = 'https://api.yelp.com/v2/search';
@@ -27,7 +31,7 @@ export var generateYelpNewBusParam = function (name, longitude, latitude) {
 };
 
 // Yelp call
-export var requestYelp = function (setParameters, busId, cb) {
+export var requestYelp = function (setParameters, busId) {
   var httpMethod = 'GET';
 
   if (busId) {
@@ -72,31 +76,41 @@ export var requestYelp = function (setParameters, busId, cb) {
 
   var apiUrl = url + '?' + paramUrl;
 
-  request(apiUrl, function(err, res, body) {
-    console.log('**********************************');
-    console.log('ERROR', err);
-    var data = JSON.parse(body);
-    if (busId) {
-      cb(parseYelpData(data));
-    } else {
-      cb(parseYelpData(data.businesses[0]));
-    }
+  return new Promise((resolve, reject) => {
+    request(apiUrl, function(err, res, body) {
+      if (err) {
+        console.log('**********************************');
+        console.log('ERROR', err);
+        reject(err);
+      }
+
+      var data = JSON.parse(body);
+      // console.log('returning data', data);
+
+      if (busId) {
+        resolve(parseYelpData(data));
+      } else {
+        resolve(parseYelpData(data.businesses[0]));
+      }
+    });
   });
+
 };
 
 // Multiple requests for businessId array
 export var requestMultipleYelp = function(busIds, cb) {
-  var compiledData = [];
-
-  busIds.forEach(function(busId) {
-    requestYelp(busId, true, function(data) {
-      compiledData.push(data);
-
-      if (compiledData.length === busIds.length) {
-        cb(compiledData);
-      }
-    });
-  });
+  return Promise.all(busIds.map((busId) => {
+    return requestYelp(busId, true);
+  }));
+  // busIds.forEach(function(busId) {
+  //   requestYelp(busId, true)
+  //   .then((data) => {
+  //     compiledData.push(data);
+  //     if (compiledData.length === busIds.length) {
+  //       compiledData;
+  //     }
+  //   });
+  // });
 };
 
 // Parse required data out of Yelp's response data
