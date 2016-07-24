@@ -22,6 +22,8 @@ var _queries = require('./queries');
 
 var _queries2 = _interopRequireDefault(_queries);
 
+var _queryHelpers = require('./queryHelpers');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51,6 +53,14 @@ var User = function (_DB) {
   }
 
   _createClass(User, [{
+    key: 'create',
+    value: function create(obj) {
+      return this.pg.query((0, _queryHelpers.createInsertQuery)(this.schema, {
+        username: obj.username,
+        password: this.generateHash(obj.password)
+      }));
+    }
+  }, {
     key: 'generateHash',
     value: function generateHash(password) {
       return _bcryptNodejs2.default.hashSync(password, _bcryptNodejs2.default.genSaltSync(10));
@@ -59,7 +69,7 @@ var User = function (_DB) {
     key: 'isValidPassword',
     value: function isValidPassword(password, id) {
       return this.find({ id: id }).then(function (user) {
-        return [_bcryptNodejs2.default.compareSync(password, user[0].password), user];
+        return _bcryptNodejs2.default.compareSync(password, user[0].password);
       }).catch(function (err) {
         return console.log(err);
       });
@@ -68,5 +78,11 @@ var User = function (_DB) {
 
   return User;
 }(_queries2.default);
+// const myUser = new User(dbConnection, userSchema);
+//
+// myUser.find({username: 'ekjl'})
+//   .then((user) => {
+//     console.log(user);
+//   });
 
 exports.default = new User(_dbConnect2.default, userSchema);

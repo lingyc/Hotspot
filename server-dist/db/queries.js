@@ -51,11 +51,11 @@ var DB = function () {
     value: function findOrCreate(obj) {
       var _this = this;
 
-      console.log('make this', obj);
       return this.find(obj).then(function (foundObj) {
         if (foundObj.length > 0) {
           return foundObj;
         }
+        console.log('make this', obj);
         return _this.create(obj);
       });
     }

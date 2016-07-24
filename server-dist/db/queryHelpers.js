@@ -28,8 +28,11 @@ var createInsertQuery = exports.createInsertQuery = function createInsertQuery(s
       initial = false;
       return '' + typeWrapper(objToInsert[key] || null, val);
     }
+    // if (key === 'password') {
+    //   return `${values}, ${typeWrapper(objToInsert[key] || null, val)}`;
+    // }
     return values + ', ' + typeWrapper(objToInsert[key] || null, val);
-  }, '')).concat(')');
+  }, '')).concat(') returning *');
   return query + ' ' + columns + ' ' + values;
 };
 
@@ -52,6 +55,7 @@ var createSelectQuery = exports.createSelectQuery = function createSelectQuery(s
     i++;
     return params + ' ' + key + ' = ' + typeWrapper(val, schema.columns[key]) + ' or';
   }, '');
+  console.log(query + ' ' + params);
   return query + ' ' + params;
 };
 

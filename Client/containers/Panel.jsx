@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import CollectionModel from '../component/CollectionModel';
+import CollectionModel from '../components/CollectionModel';
 var Menu = require('react-burger-menu').push;
 
 class Panel extends React.Component {
