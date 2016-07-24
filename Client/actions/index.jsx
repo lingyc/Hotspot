@@ -53,8 +53,10 @@ export function toggleFilterList(panelMode) {
 // Click Handler for Nav Logout button
 export function logout() {
   // Make final post request to update user's data
+  
+
   // End the user's session
-  $.get(enpoints.logout);
+  request.get(endpoints.logout);
 
   return {
     type: NAV_CLICK_LOGOUT
