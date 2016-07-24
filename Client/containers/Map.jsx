@@ -12,7 +12,7 @@ class Map extends React.Component {
 
   render() {
     return (
-      <div className='map' id='map-one' filters={this.props.filters} clickHandler={this.props.actions.clickLocationSubmit.bind(this)}></div>
+      <div className='map' id='map-one' filters={this.props.filters} clickHandler={this.props.actions.clickLocationSubmit}></div>
     );
   }
 }
@@ -25,8 +25,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    action: bundActionCreators(Actions, dispath)
+    actions: bindActionCreators(Actions, dispatch)
   };
 }
 
-export default Map;
+export default connect(mapStateToProps, mapDispatchToProps)(Map);
