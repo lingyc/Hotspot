@@ -11,22 +11,17 @@ class Panel extends React.Component {
     if (this.props.PanelMode === 'collection') {
       return (
         <div className='collection'>
-          {this.props.CollectionRestaurants.collection.map((restaurant) =>
+          {this.props.collection.map((restaurant) =>
             <CollectionModel restaurant={restaurant} />
           )}
         </div>
       );
     } else if (this.props.PanelMode === 'filter') {
       return (
-        <div className='filterPanel'>
-          <div className='filters'>
-            {this.props.CollectionRestaurants.filterOptions}
-          </div>
-          <div className='collection'>
-            {this.props.CollectionRestaurants.collection.map((restaurant) =>
-              <CollectionModel restaurant={restaurant} />
-            )}
-          </div>
+        <div className='filters'>
+             {this.props.filters.map((filter) =>
+              <FilterItem filter={filter} appliedFilters={this.props.filterSelected} toggleFilter={this.props.actions.toggleFilter}/>
+              )}        
         </div>
       );
     }
@@ -34,22 +29,28 @@ class Panel extends React.Component {
 
   render() {
     return (
-      <div id='outer-container'>
-        <Menu pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" } right isOpen={this.props.PanelMode}/>
-        <main id="page-wrap">
+      <Menu right isOpen={this.props.PanelMode ? true : false} >
           <div className='panelBody panel'>
-            <div className='collection'>
               {this.renderPanel()}
-            </div>
           </div>
-        </main>
-      </div>
+        </Menu>
     );
   }
 }
 
-function mapStateToProps(state) {
-  return {CollectionRestaurants: state.CollectionRestaurants,
-  PanelMode: state.PanelMode};
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators({toggleCollectionList, toggleFilterList}, dispatch)
+  };
 }
-export default connect(mapStateToProps)(Panel);
+
+function mapStateToProps(state) {
+  return {
+    collection: state.CollectionRestaurantsFilters.collection,
+    filters: state.CollectionRestaurantsFilters.filterOptions,
+    filterSelected: state.FilterSelectedRestaurants.filterSelected,
+    filteredRestaurants: state.FilterSelectedRestaurants.filteredRestaurants,
+    PanelMode: state.PanelMode
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Panel);
