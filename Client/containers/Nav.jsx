@@ -42,11 +42,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return  {
-<<<<<<< 4d3da4c4ea74d9e5fc27193cb416fd2a86359f7b
     PanelMode: state.PanelMode.panelMode
-=======
-    PanelMode: state.panelMode
->>>>>>> Making attempts to get program to compile without throwing errors when run
   }
 }
 
