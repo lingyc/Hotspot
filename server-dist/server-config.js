@@ -43,7 +43,7 @@ exports.default = function (app, User) {
   app.use(_express2.default.static(_path2.default.join(__dirname, '/../compiled')));
   app.use(_express2.default.static(_path2.default.join(__dirname, '/../index.html')));
   app.use(_express2.default.static(_path2.default.join(__dirname, '/../node_modules')));
-  app.use(_express2.default.static(_path2.default.join(__dirname, '/../Client/')));
+  app.use(_express2.default.static(_path2.default.join(__dirname, '/../Client')));
   app.use(_express2.default.static(_path2.default.join(__dirname, './views')));
 
   app.use((0, _expressSession2.default)({

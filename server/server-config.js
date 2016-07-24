@@ -44,9 +44,9 @@ export default function(app, User) {
   app.use(express.static(path.join(__dirname, '/../compiled')));
   app.use(express.static(path.join(__dirname, '/../index.html')));
   app.use(express.static(path.join(__dirname, '/../node_modules')));
-  app.use(express.static(path.join(__dirname, '/../Client/')));
+  app.use(express.static(path.join(__dirname, '/../Client')));
   app.use(express.static(path.join(__dirname, './views')));
-  
+
   app.use(session({
     secret: 'keyboard cat',
     saveUninitialized: true,

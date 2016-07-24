@@ -13,7 +13,6 @@ pids
 
 ## NPM ##
 node_modules/
-compiled/
 
 ## API KEYS ##
 auth/fb.js
