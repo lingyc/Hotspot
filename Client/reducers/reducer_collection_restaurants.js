@@ -5,7 +5,7 @@ import { POPULATE_FILTER_OPTIONS } from '../actions/index';
 const initialState = {
   filterOptions: [],
   collection: []
-}
+};
 
 export default function(state = initialState, action) {
   switch (action.type) {
