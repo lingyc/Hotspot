@@ -8,12 +8,16 @@ class Nav extends React.Component {
 
   collectionClick(e) {
     e.preventDefault();
-    this.props.toggleCollectionList(this.props.PanelMode('collection'));
+    this.props.actions.toggleCollectionList(this.props.PanelMode);
   }
 
   filterClick(e) {
     e.preventDefault();
-    this.props.toggleFilterList(this.props.PanelMode('filter'));
+    this.props.actions.toggleFilterList(this.props.PanelMode);
+  }
+
+  singOut(e) {
+    e.preventDefault();
   }
 
   render() {
@@ -22,6 +26,7 @@ class Nav extends React.Component {
         <ul>
           <li onClick={this.collectionClick.bind(this)} className='collectionPanel' >Collection</li>
           <li onClick={this.filterClick.bind(this)} className='filterPanel'>Filter</li>
+          <li onClick={this.signOut.bind(this)}>Sign Out</li>
         </ul>
       </nav>
     );
@@ -29,7 +34,9 @@ class Nav extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({toggleCollectionList, toggleFilterList}, dispatch);
+  return {
+    actions: bindActionCreators({toggleCollectionList, toggleFilterList}, dispatch)
+  };
 }
 
 function mapStateToProps(state) {
