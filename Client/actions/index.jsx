@@ -1,18 +1,10 @@
-import $ from 'jquery';
+import request from 'superagent';
+import _ from 'lodash';
 
-/*
- ===== Action List =====
-  nav-collection-toggle
-  nav-filter
-  nav-logout
-
-  panel-filter-item-toggle
-  panel-collection-item-open
-  panel-collection-item-close
-
-  map-place-point
-  map-rating
-*/
+const endpoints = {
+  logout: '/logout',
+  spots: '/api/spots'
+};
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
 export const NAV_CLICK_FILTER = 'NAV_CLICK_FILTER';
@@ -23,6 +15,12 @@ export const PANEL_OPEN_COLLECTION_ITEM = 'PANEL_OPEN_COLLECTION_ITEM';
 export const PANEL_CLOSE_COLLECTION_ITEM = 'PANEL_CLOSE_COLLECTION_ITEM';
 
 export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT'
+export const PANEL_DELETE_COLLECTION_ITEM = 'PANEL_DELETE_COLLECTION_ITEM';
+
+export const POPULATE_FILTER_OPTIONS = 'POPULATE_FILTER_OPTIONS';
+
+export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
+export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 
 // Click Handler for Nav Collection button
 export function toggleCollectionList(panelMode) {
@@ -60,6 +58,7 @@ export function toggleFilterList(panelMode) {
 export function logout() {
   // Make final post request to update user's data
   // End the user's session
+  $.get(enpoints.logout);
 
   return {
     type: NAV_CLICK_LOGOUT
@@ -67,20 +66,30 @@ export function logout() {
 }
 
 // Click Handler for Panel Filter item
-export function toggleFilter(filter, appliedFilters) {
+export function toggleFilter(filter, selectedFilters, collection) {
   // Check if given filter is in filter list
-  var index = _.findIndex(appliedFilters, filter);
+  const index = _.findIndex(selectedFilters, filter);
   if (index === -1) { 
     // Add it to the list if not found
-    appliedFilters.push(filter);
-  } else {
+    selectedFilters.push(filter);
+  } else {  
     // remove it if it is not
-    appliedFilters.splice(index, 1);
+    selectedFilters.splice(index, 1);
   }
+
+  // make a list of the restaurants that match the filter
+  const filteredRestaurants = {};
+  _.map(collection, (spot) => {
+    if (_.findIndex(selectedFilters, spot.type) > -1) {
+      filteredRestaurants.push(spot);
+    }
+  })
 
   return {
     type: PANEL_CLICK_FILTER_ITEM,
-    payload: appliedFilters
+    payload: {
+      selectedFilters: selectedFilters,
+      filteredRestaurants: filteredRestaurants
   }
 }
 
@@ -101,13 +110,67 @@ export function closeCollectionItem(item) {
   }
 }
 
+export function deleteCollectionItem(item) {
+  // delete the collection item from the db
+  const collection = request.del(endpoints.spots + '/' + item.id);
+  // update the collection and filters
+  const filters = filterOrganizer(collection);
+
+  return {
+    type: PANEL_DELETE_COLLECTION_ITEM,
+    payload: {
+      collection: collection,
+      filters: filters
+    }
+  }
+}
+
 // Click Handler for map's submit
-export function clickLocationSubmit(name, lat, lon, rating) {
+export function clickLocationSubmit(name, latitude, longitude, rating, filters) {
   // Create object to make DB query
+  const spotToAdd = {
+    name: name,
+    latitude: latitude,
+    longitude: longitude,
+    rating: rating
+  };
+
   // Add type and image from returned request
+  const data = request.post(endpoints.spots).send(spotToAdd);
+  filters = filterOrganizer([data], filters);
 
   return {
     type: MAP_CONFIRM_POINT
-    payload: locToAdd
+    payload: {
+      newSpot: data,
+      filters: filters
+    }
   }
+}
+
+export function fetchCollection() {
+  // This function should only be called once on startup
+  // Query database for user's entire collection
+  const collection = request.get(endpoints.spots);
+  const filters = filterOrganizer(collection);
+
+  return {
+    type: FETCH_COLLECTION,
+    payload: {
+      collection: collection,
+      filters: filters
+    }
+  }
+}
+
+function filterOrganizer(collection, filters) => {
+  filters = filters || [];
+
+  _.map(collection, (value) => {
+    if (_.findIndex(filters, value) === -1) {
+      filters.push(value);
+    }
+  })
+
+  return filters;
 }

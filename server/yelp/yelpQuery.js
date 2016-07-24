@@ -17,8 +17,7 @@ import {
 var endpointNewPlace = 'https://api.yelp.com/v2/search';
 var endpointBusID = 'https://api.yelp.com/v2/business/';
 
-// Generate parameters
-// New business
+// Generate parameters for a new business
 export var generateYelpNewBusParam = function (name, longitude, latitude) {
   return {
     term: name,
@@ -26,14 +25,6 @@ export var generateYelpNewBusParam = function (name, longitude, latitude) {
     ll: latitude + ',' + longitude
   };
 };
-//
-// // Stored business
-// export var generateYelpBusIDParam = function (businessId) {
-//   return {
-//     id: businessId
-//   };
-// };
-
 
 // Yelp call
 export var requestYelp = function (setParameters, busId, cb) {
@@ -65,7 +56,7 @@ export var requestYelp = function (setParameters, busId, cb) {
   var consumerSecret = YELP_CONSUMER_SECRET;
   var tokenSecret = YELP_TOKEN_SECRET;
 
-  // Call Yelp servers for a signature (only good for 300 sec)
+  // Call Yelp servers for a oAuth signature (only good for 300 sec)
   var signature = oauthSignature.generate(
     httpMethod,
     url,
@@ -90,6 +81,21 @@ export var requestYelp = function (setParameters, busId, cb) {
     } else {
       cb(parseYelpData(data.businesses[0]));
     }
+  });
+};
+
+// Multiple requests for businessId array
+export var requestMultipleYelp = function(busIds, cb) {
+  var compiledData = [];
+
+  busIds.forEach(function(busId) {
+    requestYelp(busId, true, function(data) {
+      compiledData.push(data);
+
+      if (compiledData.length === busIds.length) {
+        cb(compiledData);
+      }
+    });
   });
 };
 
