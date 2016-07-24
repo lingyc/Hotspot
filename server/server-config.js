@@ -41,13 +41,12 @@ export default function(app, User) {
   app.use(bodyParser.json());
 
   // STATIC DIRECTORIES
-  app.use(express.static(path.join(__dirname, '../compiled')));
-  app.use(express.static(path.join(__dirname, '../index.html')));
-  app.use(express.static(path.join(__dirname, '../node_modules')));
-  app.use(express.static(path.join(__dirname, '../Client/')));
+  app.use(express.static(path.join(__dirname, '/../compiled')));
+  app.use(express.static(path.join(__dirname, '/../index.html')));
+  app.use(express.static(path.join(__dirname, '/../node_modules')));
+  app.use(express.static(path.join(__dirname, '/../Client/')));
   app.use(express.static(path.join(__dirname, './views')));
-  app.use(express.static(path.join(__dirname, '../server-test')));
-
+  
   app.use(session({
     secret: 'keyboard cat',
     saveUninitialized: true,
