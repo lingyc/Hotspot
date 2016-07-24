@@ -1,47 +1,59 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import CollectionModel from '../components/CollectionModel';
-var Menu = require('react-burger-menu').push;
+import FilterItem from '../components/FilterItem';
+import * as Actions from '../actions';
+
+const Menu = require('react-burger-menu').slide;
 
 class Panel extends React.Component {
 
+  render() {
 
+    let panelItems;
 
-  renderPanel() {
-    if (this.props.PanelMode === 'collection') {
-      return (
-        <div className='collection'>
-          {this.props.collection.map((restaurant) =>
-            <CollectionModel restaurant={restaurant} />
-          )}
-        </div>
-      );
+    if (this.props.PanelMode === 'collction') {
+      panelItems = this.props.collection.map((restaurant) => {
+        return (<CollectionModel restaurant={restaurant} />);
+      });
     } else if (this.props.PanelMode === 'filter') {
-      return (
-        <div className='filters'>
-             {this.props.filters.map((filter) =>
-              <FilterItem filter={filter} appliedFilters={this.props.filterSelected} toggleFilter={this.props.actions.toggleFilter}/>
-              )}        
-        </div>
+      let filterSelected = this.props.filterSelected;
+      let toggleFilter = this.props.actions.toggleFilter;
+      panelItems = this.props.filters.map((filter) => {
+        return (<FilterItem filter={filter} appliedFilters={filterSelected} toggleFilter={toggleFilter}/>);
+      });
+    };
+
+    let renderPanel = (
+      <Menu id={ 'panel' }
+            right
+            noOverlay
+            customBurgerIcon={ false }
+            customCrossIcon={ false }
+            isOpen={ false }>
+      </Menu>
+    );
+
+    if (this.props.PanelMode !== 'none') {
+      renderPanel = (
+        <Menu id={ 'panel' }
+              right
+              noOverlay
+              customBurgerIcon={ false }
+              customCrossIcon={ false }
+              isOpen={ true }>
+          {panelItems}
+        </Menu>
       );
     }
-  }
 
-  render() {
     return (
-      <Menu right isOpen={this.props.PanelMode ? true : false} >
-          <div className='panelBody panel'>
-              {this.renderPanel()}
-          </div>
-        </Menu>
+      <div>
+        {renderPanel}
+      </div>
     );
   }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators({toggleCollectionList, toggleFilterList}, dispatch)
-  };
 }
 
 function mapStateToProps(state) {
@@ -50,7 +62,14 @@ function mapStateToProps(state) {
     filters: state.CollectionRestaurantsFilters.filterOptions,
     filterSelected: state.FilterSelectedRestaurants.filterSelected,
     filteredRestaurants: state.FilterSelectedRestaurants.filteredRestaurants,
-    PanelMode: state.PanelMode
+    PanelMode: state.PanelMode.panelMode
   };
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(Actions, dispatch)
+  };
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(Panel);
