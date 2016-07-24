@@ -1,5 +1,5 @@
-// Default focus if location access not allowed or available. (HR Campus)
-var defaultCoord = [37.7837008, -122.4111551];
+// Default focus if location access not allowed or available. (Moscone Center)
+var defaultCoord = [37.784005, -122.401551];
 
 // Public accessToken. Set up from mapbox.com. Make sure is a public token
 L.mapbox.accessToken = 'pk.eyJ1Ijoicm1jY2hlc24iLCJhIjoiY2lxbHkxbXFiMDA5dWZubm5mNWkwdGYwbiJ9.QC1lP-2tNymbJ5tHaMugZw';
@@ -8,28 +8,26 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 
-// class Map extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {};
-//   }
-
 // Globl map
 var mainMap;
 
-// Generate React map class
-var Map = React.createClass({
+class Map extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   componentDidMount() {
     renderMap();
     getUserLocation(mainMap);
-  },
+  }
 
   render() {
     return (
       <div className='map' id='map-one' filters={this.props.filters} clickHandler={this.props.actions.clickLocationSubmit}></div>
     );
   }
-});
+}
 
 function mapStateToProps(state) {
   return {
@@ -163,6 +161,7 @@ var renderMap = () => {
   var geocoderControl = L.mapbox.geocoderControl('mapbox.places', {
     autocomplete: true,
     keepOpen: true,
+    proximity: true,
     container: 'geocoder-container'
   });
   geocoderControl.addTo(mainMap);
@@ -231,5 +230,3 @@ var foundRestaurant = (res) => {
   pointQuery.setGeoJSON(pickedPlace);
   pointQuery.openPopup();
 };
-
-window.Map = Map;
