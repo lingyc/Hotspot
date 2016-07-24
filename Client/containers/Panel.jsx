@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import CollectionModel from '../component/CollectionModel';
+import CollectionModel from '../components/CollectionModel';
 import FilterItem from '../components/FilterItem';
 import Menu from 'react-burger-menu';
 import * as Actions from '../actions';
