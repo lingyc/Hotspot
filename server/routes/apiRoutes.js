@@ -46,7 +46,7 @@ export default function(app) {
     Spot.create(req.body)
       .then((spot) => {
         console.log('insert spot ', spot[0], 'with user id', req.user);
-        return SpotsUsers.create({userId: req.user.id, spotId: spot[0].id});
+        return SpotsUsers.create({userid: req.user.id, spotid: spot[0].id});
       })
       .then((spotuser) => sendBackJSON(res, req.body, 'created new spot'))
       .catch((err) => {
