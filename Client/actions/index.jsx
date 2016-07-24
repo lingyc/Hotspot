@@ -81,13 +81,14 @@ export function toggleFilter(filter, selectedFilters, collection) {
     if (_.findIndex(selectedFilters, spot.type) > -1) {
       filteredRestaurants.push(spot);
     }
-  })
+  });
 
   return {
     type: PANEL_CLICK_FILTER_ITEM,
     payload: {
       selectedFilters: selectedFilters,
       filteredRestaurants: filteredRestaurants
+    }
   }
 }
 
@@ -138,7 +139,7 @@ export function clickLocationSubmit(name, latitude, longitude, rating, filters) 
   filters = filterOrganizer([data], filters);
 
   return {
-    type: MAP_CONFIRM_POINT
+    type: MAP_CONFIRM_POINT,
     payload: {
       newSpot: data,
       filters: filters
@@ -161,7 +162,7 @@ export function fetchCollection() {
   }
 }
 
-function filterOrganizer(collection, filters) => {
+filterOrganizer = (collection, filters) => {
   filters = filters || [];
 
   _.map(collection, (value) => {

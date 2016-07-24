@@ -1,5 +1,5 @@
-import { NAV_CLICK_FILTER } from '..actions/index';
-import { NAV_CLICK_COLLECTION } from '..actions/index';
+import { NAV_CLICK_FILTER } from '../actions/index';
+import { NAV_CLICK_COLLECTION } from '../actions/index';
 
 const initialState = {
   panelMode: null
