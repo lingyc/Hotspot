@@ -29,15 +29,5 @@ class Spot extends DB {
       .catch((err) => console.log(err));
   }
 }
-const mySpot = new Spot(dbConnection, spotSchema);
-
-const myUser = {
-  id: 1
-};
-
-mySpot.getAllForUser(myUser)
-  .then((results) => {
-    console.log(results);
-  });
 
 export default new Spot(dbConnection, spotSchema);
