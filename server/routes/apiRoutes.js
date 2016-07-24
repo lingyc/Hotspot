@@ -2,6 +2,7 @@ import Spot from '../db/Spots';
 import { sendBackJSON } from '../db/queryHelpers';
 import {requestMultipleYelp} from '../yelp/yelpQuery';
 import _ from 'lodash';
+
 export default function(app){
   // RESTFUl API for retrieving spots from the db
   app.get('/api/spots', (req, res) => {
