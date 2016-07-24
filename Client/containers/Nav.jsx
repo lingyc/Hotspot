@@ -18,6 +18,7 @@ class Nav extends React.Component {
 
   singOut(e) {
     e.preventDefault();
+    this.props.actions.logout();
   }
 
   render() {
@@ -35,7 +36,7 @@ class Nav extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({toggleCollectionList, toggleFilterList}, dispatch)
+    actions: bindActionCreators({toggleCollectionList, toggleFilterList, logout}, dispatch)
   };
 }
 
