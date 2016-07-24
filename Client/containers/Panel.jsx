@@ -9,15 +9,29 @@ const Menu = require('react-burger-menu').slide;
 
 class Panel extends React.Component {
 
+  componentDidMount() {
+    this.props.actions.fetchCollection();
+  }
+
   render() {
 
-    let panelItems;
+    // Default collection to the total collection
+    let collection = this.props.totalCollection;
 
-    if (this.props.PanelMode === 'collction') {
-      panelItems = this.props.collection.map((restaurant) => {
+    // If filteredCollection is populated, use that instead
+    if (this.props.filteredCollection !== []) {
+      collection = this.props.filteredCollection;
+    }
+
+    // Set up variable to be populated with panel items
+    // Default it with the collection of restaurants
+    let panelItems = collection.map((restaurant) => {
         return (<CollectionModel restaurant={restaurant} />);
       });
-    } else if (this.props.PanelMode === 'filter') {
+
+    // Populate said variable with all filter items if the
+    // filter panel is stated to show
+    if (this.props.panelMode === 'filter') {
       let filterSelected = this.props.filterSelected;
       let toggleFilter = this.props.actions.toggleFilter;
       panelItems = this.props.filters.map((filter) => {
@@ -25,44 +39,27 @@ class Panel extends React.Component {
       });
     };
 
-    let renderPanel = (
+    return (
       <Menu id={ 'panel' }
             right
             noOverlay
             customBurgerIcon={ false }
             customCrossIcon={ false }
-            isOpen={ false }>
+            isOpen={ this.props.isOpen }>
+        {panelItems}
       </Menu>
-    );
-
-    if (this.props.PanelMode !== 'none') {
-      renderPanel = (
-        <Menu id={ 'panel' }
-              right
-              noOverlay
-              customBurgerIcon={ false }
-              customCrossIcon={ false }
-              isOpen={ true }>
-          {panelItems}
-        </Menu>
-      );
-    }
-
-    return (
-      <div>
-        {renderPanel}
-      </div>
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    collection: state.CollectionRestaurantsFilters.collection,
+    totalCollection: state.CollectionRestaurantsFilters.collection,
     filters: state.CollectionRestaurantsFilters.filterOptions,
     filterSelected: state.FilterSelectedRestaurants.filterSelected,
-    filteredRestaurants: state.FilterSelectedRestaurants.filteredRestaurants,
-    PanelMode: state.PanelMode.panelMode
+    filteredCollection: state.FilterSelectedRestaurants.filteredRestaurants,
+    panelMode: state.PanelMode.panelMode,
+    isOpen: state.PanelMode.isOpen
   };
 }
 
