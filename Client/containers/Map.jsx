@@ -52,21 +52,6 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(Actions, dispatch)
   };
 }
-// Generate React Event Listener
-// var OnSubmit = React.createClass({
-//   submit: function(e) {
-//     e.preventDefault();
-//     alert('it works!');
-//   },
-//
-//   render: function() {
-//     return (
-//       <form onSubmit={this.submit}>
-//         <button>Thumbs!</button>
-//       </form>
-//     );
-//   }
-// });
 
 ////////// TESTING DATA - TODO REMOVE /////////
 var tastyRestaurants = [
@@ -231,7 +216,7 @@ var foundRestaurant = (res) => {
     '<input type="radio" name="goBack" required> Definitely and absolutely<br>' +
     '<input type="radio" name="goBack"> Never ever ever<br>' +
     'go back<br>' +
-    '<input type="button" id="fistBump" value="Thumbs!!!!"></form>' +
+    '<input type="submit" id="fistBump" value="Thumbs!!!!"></form>' +
     '<img src="' + feature.properties.image + '" alt="">';
     marker.bindPopup(content);
   });
@@ -241,5 +226,12 @@ var foundRestaurant = (res) => {
 
   pointQuery.setGeoJSON(pickedPlace);
   pointQuery.openPopup();
-  document.getElementById('fistBump').addEventListener('click', Actions.clickLocationSubmit);
+
+  // Add listener for submission
+  document.getElementById('fistBump').addEventListener('click', function() {
+    var radios = document.getElementsByName('goBack');
+    var rating;
+    radios[0].checked === true ? rating = 5 : rating = 0;
+    Actions.clickLocationSubmit(res.feature.text, coordinates[1], coordinates[0], rating);
+  });
 };
