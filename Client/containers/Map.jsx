@@ -18,12 +18,11 @@ class Map extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actions.fetchCollection();
-    setTimeout(() => {
-      console.log('total collection is', this.props.totalCollection);
-      this.renderMap();
-      this.getUserLocation(mainMap);
-    }, 1000);
+    this.props.actions.fetchCollection()
+      .then((results) => {
+        this.renderMap();
+        this.getUserLocation(mainMap);
+      });
   }
 
   renderMap() {
@@ -162,8 +161,8 @@ var geoJSONPoint = (longitude, latitude, name, thumb, image) => {
       icon: {
         iconUrl: thumb,
         iconSize: [35, 35],
-        iconAnchor: [0, 0],
-        popupAnchor: [0, 0]
+        iconAnchor: [35, 17],
+        popupAnchor: [-17, -17]
       }
     }
   };
