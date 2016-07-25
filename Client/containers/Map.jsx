@@ -89,7 +89,7 @@ class Map extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    filters: state.CollectionRestaurantsFilters.filterOptions,
+    filters: state.FilterSelectedRestaurants.filters,
     totalCollection: state.CollectionRestaurantsFilters.collection,
     filteredCollection: state.FilterSelectedRestaurants.filteredRestaurants
   };

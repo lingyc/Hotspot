@@ -15,11 +15,6 @@ class Nav extends React.Component {
     this.props.actions.toggleFilterList(this.props.PanelMode, this.props.isOpen);
   }
 
-  signOut(e) {
-    e.preventDefault();
-    this.props.actions.logout();
-  }
-
   render() {
     return (
       <nav className="navbar navbar-dark bg-inverse">
@@ -30,7 +25,6 @@ class Nav extends React.Component {
     );
   }
 }
-// onClick={this.signOut.bind(this)}
 
 function mapDispatchToProps(dispatch) {
   return {
