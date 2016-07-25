@@ -8,14 +8,9 @@ const endpoints = {
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
 export const NAV_CLICK_FILTER = 'NAV_CLICK_FILTER';
-
 export const PANEL_CLICK_FILTER_ITEM = 'PANEL_CLICK_FILTER_ITEM';
-export const PANEL_OPEN_COLLECTION_ITEM = 'PANEL_OPEN_COLLECTION_ITEM';
-export const PANEL_CLOSE_COLLECTION_ITEM = 'PANEL_CLOSE_COLLECTION_ITEM';
-
 export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
 export const FETCH_COLLECTION = 'FETCH_COLLECTION';
-
 export const CREATE_FILTERS = 'CREATE_FILTERS';
 
 // Click Handler for Nav Collection button
@@ -88,23 +83,6 @@ export function toggleFilter(filter, selectedFilters, collection) {
   };
 }
 
-// Click Handler for Panel Collection item
-export function viewCollectionItem(item) {
-  // change current panel view to the collection item
-  return {
-    type: PANEL_OPEN_COLLECTION_ITEM,
-    payload: item
-  };
-}
-
-// Click Handler for Panel Collection closeup
-export function closeCollectionItem(item) {
-  // close the current panel view back to the collection
-  return {
-    type: PANEL_CLOSE_COLLECTION_ITEM
-  };
-}
-
 // Click Handler for map's submit
 export function clickLocationSubmit(name, latitude, longitude, rating) {
   // Create object to make DB query
@@ -128,67 +106,7 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
 export function fetchCollection() {
   // This function should only be called once on startup
   // Query database for user's entire collection
-  // const collection = request.get(endpoints.spots).end();
-  const collection = {
-    body: {
-      data: [
-              {
-                name: 'The Flying Falafal',
-                latitude: 37.7812322,
-                longitude: -122.4134787,
-                rating: 5,
-                yelpData: {
-                  cuisine: 'middle-eastern'
-                }
-              },
-              {
-                name: 'Show Dogs',
-                latitude: 37.7821228,
-                longitude: -122.4130593,
-                rating: 5,
-                yelpData: {
-                  cuisine: 'american'
-                }
-              },
-              {
-                name: 'Lemonade',
-                latitude: 37.7848661,
-                longitude: -122.4057182,
-                rating: 5,
-                yelpData: {
-                  cuisine: 'drinks'
-                }
-              },
-              {
-                name: 'Super Duper Burgers',
-                latitude: 37.7862143,
-                longitude: -122.4053212,
-                rating: 5,
-                yelpData: {
-                  cuisine: 'american'
-                }
-              },
-              {
-                name: 'Réveille Coffee Co.',
-                latitude: 37.7735341,
-                longitude: -122.3942448,
-                rating: 5,
-                yelpData: {
-                  cuisine: 'coffee'
-                }
-              },
-              {
-                name: 'Denny\'s',
-                latitude: 37.7859249,
-                longitude: -122.407801,
-                rating: 0,
-                yelpData: {
-                  cuisine: 'american'
-                }
-              }
-            ]
-          }
-        };
+  const collection = request.get(endpoints.spots).end();
 
   return {
     type: FETCH_COLLECTION,
