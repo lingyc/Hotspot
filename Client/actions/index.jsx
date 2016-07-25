@@ -21,13 +21,14 @@ export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 // Click Handler for Nav Collection button
 export function toggleCollectionList(panelMode, isOpen) {
   // If panelMode is collection, set it to null.
-  if (panelMode === 'collection') {
+  if (panelMode === 'collection' && isOpen === true) {
     isOpen = false;
   } else {
     // Else set panelMode to collection
     panelMode = 'collection';
     isOpen = true;
   }
+
 
   return {
     type: NAV_CLICK_COLLECTION,
@@ -41,13 +42,14 @@ export function toggleCollectionList(panelMode, isOpen) {
 // Click Handler for Nav Filter button
 export function toggleFilterList(panelMode, isOpen) {
   // If panelMode is filter, set it to null.
-  if (panelMode === 'filter') {
+  if (panelMode === 'filter' && isOpen === true) {
     isOpen = false;
   } else {
     // Else set panelMode to filter
     panelMode = 'filter';
     isOpen = true;
   }
+
 
   return {
     type: NAV_CLICK_FILTER,
