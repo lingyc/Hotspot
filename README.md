@@ -34,7 +34,7 @@ One-click solution for personalized results.
 `npm run server` in console
 
 ## Deploying to Heroku
-* 
+* TODO
 
 ## Frontend
 * Frontend framework is built using React.js, Redux, and Webpack.
@@ -66,3 +66,4 @@ Please refer to Docs folder for detail on the following:
 * Mapping overview and design choices
 * Mapping - detail including code snippets and sample JSON responses
 * Server api endpoints including functionality descriptions
+* Data flow narrative
