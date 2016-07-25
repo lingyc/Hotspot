@@ -97,8 +97,8 @@ export function toggleFilter(filter, selectedFilters, collection) {
   return {
     type: PANEL_CLICK_FILTER_ITEM,
     payload: {
-      selectedFilters: selectedFilters,
-      filteredRestaurants: filteredRestaurants
+      selectedFilters: selectedFilters.slice(),
+      filteredRestaurants: filteredRestaurants.slice()
     }
   }
 };
@@ -129,8 +129,8 @@ export function deleteCollectionItem(item) {
   return {
     type: PANEL_DELETE_COLLECTION_ITEM,
     payload: {
-      collection: collection,
-      filters: filters
+      collection: collection.slice(),
+      filters: filters.slice()
     }
   }
 }
@@ -155,7 +155,7 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
     type: MAP_CONFIRM_POINT,
     payload: {
       newSpot: data,
-      filters: filters
+      filters: filters.slice()
     }
   };
 }
@@ -210,12 +210,12 @@ export function fetchCollection() {
   ];
 
   const filters = filterOrganizer(collection);
-  
+
   return {
     type: FETCH_COLLECTION,
     payload: {
-      collection: collection,
-      filters: filters
+      collection: collection.slice(),
+      filters: filters.slice()
     }
   };
 }

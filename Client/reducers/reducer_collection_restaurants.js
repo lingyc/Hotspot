@@ -1,5 +1,5 @@
 import { MAP_CONFIRM_POINT } from '../actions/index';
-import { FETCH_RESTAURANTS } from '../actions/index';
+import { FETCH_COLLECTION } from '../actions/index';
 import { PANEL_DELETE_COLLECTION_ITEM } from '../actions/index';
 
 const initialState = {
@@ -15,7 +15,7 @@ export default function(state = initialState, action) {
         filterOptions: action.payload.filters,
         collection: state.collection.concat(action.payload.newSpot)
       };
-    case FETCH_RESTAURANTS:
+    case FETCH_COLLECTION:
       return {
         ...state,
         filterOptions: action.payload.filters,
@@ -26,7 +26,7 @@ export default function(state = initialState, action) {
         ...state,
         filterOptions: action.payload.filters,
         collection: action.payload.collection
-      }
+      };
     default:
       return state;
   }
