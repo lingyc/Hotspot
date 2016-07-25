@@ -1,7 +1,7 @@
 import Spot from '../db/Spots';
 import SpotsUsers from '../db/spotsUsersJoin';
 import { sendBackJSON } from '../db/queryHelpers';
-import {requestMultipleYelp} from '../yelp/yelpQuery';
+import {requestMultipleYelp, generateYelpNewBusParam} from '../yelp/yelpQuery';
 import Promise from 'bluebird';
 import _ from 'lodash';
 
@@ -22,20 +22,33 @@ export default function(app) {
           return sendBackJSON(res, null, 'no spots');
         }
         spotsReturn = spots;
-        return requestMultipleYelp(spots.map((spot) => spot.yelp_id));
+        return requestMultipleYelp(spots.map((spot) => {
+          return generateYelpNewBusParam(spot.name, spot.longitude, spot.latitude);
+        }));
       })
       .then((yelpResults) => {
         console.log('yelpresults looking for busid location', yelpResults);
         return spotsReturn.map((spot) => {
-          let match = yelpResults.filter((result) => result.businessId === spot.yelp_id);
-          spot.yelpData = match[0];
+          let match = yelpResults.filter((result) => {
+            let lowerLength = Math.min([spot.length, result.length]);
+            return result.name.indexOf(spot.name.slice(lowerLength)) !== -1;
+          });
+          console.log('yelp stuff', match);
+          if (match.length === 0) {
+            spot.yelpData = {
+              cuisine: null,
+              image: null
+            };
+          } else {
+            spot.yelpData = match[0];
+          }
           return spot;
         });
       })
       .then((augmentedSpots) => sendBackJSON(res, augmentedSpots, 'got all spots'))
       .catch((err) => console.log(err));
   });
-  
+
   app.get('/api/spots/:id', (req, res) => {
     Spot.getOne(req.params.id)
       .then((spot) => sendBackJSON(res, spot, 'got one spot'))
