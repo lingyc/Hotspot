@@ -53,20 +53,20 @@ function mapDispatchToProps(dispatch) {
   };
 }
 // Generate React Event Listener
-var OnSubmit = React.createClass({
-  submit: function(e) {
-    e.preventDefault();
-    alert('it works!');
-  },
-
-  render: function() {
-    return (
-      <form onSubmit={this.submit}>
-        <button>Thumbs!</button>
-      </form>
-    );
-  }
-});
+// var OnSubmit = React.createClass({
+//   submit: function(e) {
+//     e.preventDefault();
+//     alert('it works!');
+//   },
+//
+//   render: function() {
+//     return (
+//       <form onSubmit={this.submit}>
+//         <button>Thumbs!</button>
+//       </form>
+//     );
+//   }
+// });
 
 ////////// TESTING DATA - TODO REMOVE /////////
 var tastyRestaurants = [
@@ -221,8 +221,8 @@ var geoSuccess = (position) => {
 var foundRestaurant = (res) => {
   console.log('found a place', res, res.feature.text, res.feature.center); // -122, 33 long / lat
   var pointQuery = L.mapbox.featureLayer().addTo(mainMap);
-
   pointQuery.on('layeradd', function(point) {
+    console.log('actions', Actions);
     var marker = point.layer;
     var feature = marker.feature;
     marker.setIcon(L.icon(feature.properties.icon));
@@ -231,7 +231,7 @@ var foundRestaurant = (res) => {
     '<input type="radio" name="goBack" required> Definitely and absolutely<br>' +
     '<input type="radio" name="goBack"> Never ever ever<br>' +
     'go back<br>' +
-    '<input type="submit" name="fistBump" value="Thumbs!"></form>' +
+    '<input type="button" id="fistBump" value="Thumbs!!!!"></form>' +
     '<img src="' + feature.properties.image + '" alt="">';
     marker.bindPopup(content);
   });
@@ -241,4 +241,5 @@ var foundRestaurant = (res) => {
 
   pointQuery.setGeoJSON(pickedPlace);
   pointQuery.openPopup();
+  document.getElementById('fistBump').addEventListener('click', Actions.clickLocationSubmit);
 };
