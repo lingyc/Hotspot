@@ -33,15 +33,23 @@ One-click solution for personalized results.
 `npm run resetdb` in console to set up new DB with schema provided
 `npm run server` in console
 
-## Deploying to TODO
-TODO
+## Deploying to Heroku
+* 
 
 ## Frontend
 * Frontend framework is built using React.js, Redux, and Webpack.
 * Mapping functionality provided by Mapbox.js and Leaflet.js.
 
 ### File structure
-TODO
+* Client - main development files for front end as well as mapping functionality
+* Docs - detailed documentation files
+* server - development files for server side including;
+  * routing
+  * authentication
+  * database access
+  * Yelp calls
+* compiled - production folder for front end. Ignored by git and needs to be recompiled by Webpack each iteration.
+* server-dist - production folder for server. Heroku will build this on their side.
 
 ### Code style
 Code is written utilizing Hack Reactor styling guide.
