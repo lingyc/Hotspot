@@ -35,7 +35,7 @@ export default function(app) {
       .then((augmentedSpots) => sendBackJSON(res, augmentedSpots, 'got all spots'))
       .catch((err) => console.log(err));
   });
-
+  
   app.get('/api/spots/:id', (req, res) => {
     Spot.getOne(req.params.id)
       .then((spot) => sendBackJSON(res, spot, 'got one spot'))
