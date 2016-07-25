@@ -17,12 +17,12 @@ img {
 
 /* Color/shape of burger icon bars */
 .bm-burger-bars {
-  background: #373a47;
+  background: #87b;
 }
 
 /* General sidebar styles */
 .bm-menu {
-  background: #373a47;
+  background: #87b;
   padding: 2.5em 1.5em 0;
   font-size: 1.15em;
 }
@@ -31,4 +31,20 @@ img {
 .bm-item-list {
   color: #b8b7ad;
   padding: 0.8em;
+}
+
+.bm-menu-wrap {
+  position: absolute;
+  top: 68px;
+  right: 0;
+}
+
+.btn {
+  margin: 10px 30px;
+}
+
+nav.navbar {
+  margin-bottom: 0;
+  border-bottom: 5px solid #87b;
+  height: 70px;
 }
