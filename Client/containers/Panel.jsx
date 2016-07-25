@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import CollectionModel from '../components/CollectionModel';
 import FilterItem from '../components/FilterItem';
 import * as Actions from '../actions';
+import CollectionDetailModel from '../components/CollectionDetailModel';
 
 const Menu = require('react-burger-menu').slide;
 
@@ -14,7 +15,6 @@ class Panel extends React.Component {
   }
 
   render() {
-
     let panelItems;
 
     if (this.props.panelMode === 'filter') {
@@ -25,14 +25,16 @@ class Panel extends React.Component {
       });
     } else if (this.props.filteredCollection.length !== 0) {
       panelItems = this.props.filteredCollection.map((restaurant) => {
-          return (<CollectionModel item={restaurant} key={restaurant.name}/>);
-        });
+        return (<CollectionModel item={restaurant} key={restaurant.name}/>);
+      });
     } else {
       panelItems = this.props.totalCollection.map((restaurant) => {
-          return (<CollectionModel item={restaurant} key={restaurant.name}/>);
-        });
+        return (<CollectionModel item={restaurant}
+          viewCollectionItem={this.props.actions.viewCollectionItem}
+          key={restaurant.name}/>);
+      });
     }
-
+    console.log(panelItems);
     return (
       <Menu id={ 'panel' }
             right
@@ -41,6 +43,7 @@ class Panel extends React.Component {
             customCrossIcon={ false }
             isOpen={ this.props.isOpen }>
         {panelItems}
+
       </Menu>
     );
   }
@@ -53,7 +56,8 @@ function mapStateToProps(state) {
     filterSelected: state.FilterSelectedRestaurants.filterSelected,
     filteredCollection: state.FilterSelectedRestaurants.filteredRestaurants,
     panelMode: state.PanelMode.panelMode,
-    isOpen: state.PanelMode.isOpen
+    isOpen: state.PanelMode.isOpen,
+    panelSelect: state.PanelSelect.item
   };
 }
 
