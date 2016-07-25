@@ -23,9 +23,9 @@ class Nav extends React.Component {
   render() {
     return (
       <nav className="navbar">
-          <div onClick={this.collectionClick.bind(this)} className='btn btn-default' >Collection</div>
-          <div onClick={this.filterClick.bind(this)} className='btn btn-default'>Filter</div>
-          <a className='btn btn-default' href="/logout">Sign Out</a>
+          <div onClick={this.collectionClick.bind(this)} className='btn btn-default btn-lg' >Collection</div>
+          <div onClick={this.filterClick.bind(this)} className='btn btn-default btn-lg'>Filter</div>
+          <a className='btn btn-default btn-lg' href="/logout">Sign Out</a>
       </nav>
     );
   }
