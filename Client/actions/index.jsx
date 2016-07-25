@@ -8,15 +8,10 @@ const endpoints = {
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
 export const NAV_CLICK_FILTER = 'NAV_CLICK_FILTER';
-export const NAV_CLICK_LOGOUT = 'NAV_CLICK_LOGOUT';
-
 export const PANEL_CLICK_FILTER_ITEM = 'PANEL_CLICK_FILTER_ITEM';
-export const PANEL_OPEN_COLLECTION_ITEM = 'PANEL_OPEN_COLLECTION_ITEM';
-export const PANEL_CLOSE_COLLECTION_ITEM = 'PANEL_CLOSE_COLLECTION_ITEM';
-export const PANEL_DELETE_COLLECTION_ITEM = 'PANEL_DELETE_COLLECTION_ITEM';
-
 export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
 export const FETCH_COLLECTION = 'FETCH_COLLECTION';
+export const CREATE_FILTERS = 'CREATE_FILTERS';
 
 // Click Handler for Nav Collection button
 export function toggleCollectionList(panelMode, isOpen) {
@@ -60,40 +55,25 @@ export function toggleFilterList(panelMode, isOpen) {
   };
 }
 
-// Click Handler for Nav Logout button
-export function logout(collection) {
-  // Make final post request to update user's data
-  request.post(endpoints.spots).send(collection);
-
-  console.log('logout');
-  // End the user's session
-  request.get(endpoints.logout);
-
-  return {
-    type: NAV_CLICK_LOGOUT
-  };
-}
-
 // Click Handler for Panel Filter item
 export function toggleFilter(filter, selectedFilters, collection) {
   // Check if given filter is in filter list
-  const index = _.findIndex(selectedFilters, filter);
+  const index = _.findIndex(selectedFilters, (o) => { return o === filter; });
   if (index === -1) {
     // Add it to the list if not found
     selectedFilters.push(filter);
   } else {
     // remove it if it is not
-    selectedFilters.splice(index, 1);
+    selectedFilters.splice(index, index + 1);
   }
 
   // make a list of the restaurants that match the filter
-  const filteredRestaurants = {};
+  let filteredRestaurants = [];
   _.map(collection, (spot) => {
-    if (_.findIndex(selectedFilters, spot.type) > -1) {
+    if (_.findIndex(selectedFilters, (o) => { return o === spot.yelpData.cuisine}) > -1) {
       filteredRestaurants.push(spot);
     }
   });
-
   return {
     type: PANEL_CLICK_FILTER_ITEM,
     payload: {
@@ -146,22 +126,12 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
   };
 
   // Add type and image from returned request
-  console.log('location submit');
+  const data = request.post(endpoints.spots).send(spotToAdd);
 
-  return makePostRequest(endpoints.spots, spotToAdd)
-    .then((spot) => {
-      console.log('got this back', spot);
-      spot = JSON.parse(spot.text).data;
-      const filters = filterOrganizer([spot], filters);
-      return {
-        type: MAP_CONFIRM_POINT,
-        payload: {
-          newSpot: spot,
-          filters: filters.slice()
-        }
-      };
-    })
-    .catch((err) => console.log(err));
+  return {
+    type: MAP_CONFIRM_POINT,
+    payload: data
+  };
 }
 
 
@@ -171,7 +141,7 @@ export function fetchCollection() {
 
   // const collection = request.get(endpoints.spots);
   // const collection = [
-  
+
 
   return makeGetRequest(endpoints.spots)
     .then((spots) => {
@@ -188,19 +158,23 @@ export function fetchCollection() {
       };
     })
     .catch((err) => console.log(err));
+
 }
 
+export function createFilters(collection, filters) {
 
-function filterOrganizer(collection, filters) {
-  filters = filters || [];
-
-  _.map(collection, (value) => {
-    if (_.findIndex(filters, value.type) === -1) {
-      filters.push(value.type);
+  _.map(collection, (spot) => {
+    if (_.findIndex(filters, (o) => {
+      return o === spot.yelpData.cuisine
+    }) === -1) {
+      filters.push(spot.yelpData.cuisine);
     }
   });
 
-  return filters;
+  return {
+    type: CREATE_FILTERS,
+    payload: filters
+  }
 }
 
 function makePostRequest(endpoint, data) {

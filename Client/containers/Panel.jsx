@@ -17,11 +17,15 @@ class Panel extends React.Component {
   render() {
     let panelItems;
 
+    this.props.actions.createFilters(this.props.totalCollection, this.props.filters);
+    
     if (this.props.panelMode === 'filter') {
-      let filterSelected = this.props.filterSelected;
-      let toggleFilter = this.props.actions.toggleFilter;
       panelItems = this.props.filters.map((filter) => {
-        return (<FilterItem filter={filter} appliedFilters={filterSelected} toggleFilter={toggleFilter} key={filter}/>);
+        return (<FilterItem filter={filter}
+                            appliedFilters={this.props.filterSelected}
+                            toggleFilter={this.props.actions.toggleFilter}
+                            collection={this.props.totalCollection}
+                            key={filter}/>);
       });
     } else if (this.props.filteredCollection.length !== 0) {
       panelItems = this.props.filteredCollection.map((restaurant) => {
@@ -52,7 +56,7 @@ class Panel extends React.Component {
 function mapStateToProps(state) {
   return {
     totalCollection: state.CollectionRestaurantsFilters.collection,
-    filters: state.CollectionRestaurantsFilters.filterOptions,
+    filters: state.FilterSelectedRestaurants.filters,
     filterSelected: state.FilterSelectedRestaurants.filterSelected,
     filteredCollection: state.FilterSelectedRestaurants.filteredRestaurants,
     panelMode: state.PanelMode.panelMode,
