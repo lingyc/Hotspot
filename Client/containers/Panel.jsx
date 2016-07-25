@@ -23,6 +23,7 @@ class Panel extends React.Component {
       collection = this.props.filteredCollection;
     }
 
+
     // Set up variable to be populated with panel items
     // Default it with the collection of restaurants
     let panelItems = collection.map((restaurant) => {

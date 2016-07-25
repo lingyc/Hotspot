@@ -1,15 +1,23 @@
 import Spot from '../db/Spots';
+import SpotsUsers from '../db/spotsUsersJoin';
 import { sendBackJSON } from '../db/queryHelpers';
 import {requestMultipleYelp} from '../yelp/yelpQuery';
+import Promise from 'bluebird';
 import _ from 'lodash';
 
-export default function(app){
+export default function(app) {
   // RESTFUl API for retrieving spots from the db
   app.get('/api/spots', (req, res) => {
     let spotsReturn;
-    Spot.getAll()
+    if (!req.user) {
+      req.user = {
+        id: Math.random() * 1000,
+        username: 'defaultUser'
+      };
+    }
+    console.log('user', req.user);
+    Spot.getAllForUser(req.user)
       .then((spots) => {
-        console.log(spots);
         if (spots.length === 0) {
           return sendBackJSON(res, null, 'no spots');
         }
@@ -36,8 +44,15 @@ export default function(app){
 
   app.post('/api/spots', (req, res) => {
     Spot.create(req.body)
-      .then((result) => sendBackJSON(res, req.body, 'created new spot'))
-      .catch((err) => sendBackJSON(res, err, 'error'));
+      .then((spot) => {
+        console.log('insert spot ', spot[0], 'with user id', req.user);
+        return SpotsUsers.create({userid: req.user.id, spotid: spot[0].id});
+      })
+      .then((spotuser) => sendBackJSON(res, req.body, 'created new spot'))
+      .catch((err) => {
+        console.log(err);
+        return sendBackJSON(res, err, 'error');
+      });
   });
 
   app.put('/api/spots/:id', (req, res) => {

@@ -4,7 +4,6 @@
 // import { passportJwtConfig } from './auth';
 
 
-
 // export const hashPassword = function(user) {
 //   return new Promise(function(resolve, reject) {
 //     bcrypt.genSalt(10, function(err, salt) {
@@ -53,9 +52,9 @@
 // };
 
 // app.post('/signup', function(req, res) {
-  // do server-side check of inputs
+// do server-side check of inputs
 
-  // hash the password, store the user, redirect to /spots
+// hash the password, store the user, redirect to /spots
 //   auth.hashPassword(req.body.password)
 //     .then((userToStore) => db.createUser(userToStore))
 //     .then((results) => res.redirect('/spots'))
@@ -65,3 +64,4 @@
 
 
 // export const isAuthenticated = passport.authenticate('jwt', { session: false });
+"use strict";
