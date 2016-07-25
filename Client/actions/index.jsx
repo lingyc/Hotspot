@@ -97,8 +97,8 @@ export function toggleFilter(filter, selectedFilters, collection) {
   return {
     type: PANEL_CLICK_FILTER_ITEM,
     payload: {
-      selectedFilters: selectedFilters.slice(),
-      filteredRestaurants: filteredRestaurants.slice()
+      selectedFilters: selectedFilters,
+      filteredRestaurants: filteredRestaurants
     }
   };
 }
@@ -129,8 +129,8 @@ export function deleteCollectionItem(item) {
   return {
     type: PANEL_DELETE_COLLECTION_ITEM,
     payload: {
-      collection: collection.slice(),
-      filters: filters.slice()
+      collection: collection,
+      filters: filters
     }
   };
 }
@@ -168,52 +168,78 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
 export function fetchCollection() {
   // This function should only be called once on startup
   // Query database for user's entire collection
-
   // const collection = request.get(endpoints.spots);
+  //
   // const collection = [
   //   {
   //     name: 'The Flying Falafal',
   //     latitude: 37.7812322,
   //     longitude: -122.4134787,
   //     rating: 5,
-  //     type: 'middle-east'
+  //     notes: 'i love falafal',
+  //     yelpData: {
+  //       cuisine: 'med',
+  //       image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
+  //     }
   //   },
   //   {
   //     name: 'Show Dogs',
   //     latitude: 37.7821228,
   //     longitude: -122.4130593,
   //     rating: 5,
-  //     type: 'american'
+  //     notes: ' i love hotdogs ',
+  //     yelpData: {
+  //       cuisine: 'american',
+  //       image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
+  //     }
   //   },
   //   {
   //     name: 'Lemonade',
   //     latitude: 37.7848661,
   //     longitude: -122.4057182,
   //     rating: 5,
-  //     type: 'drink'
+  //     notes: 'i love lemondae',
+  //     yelpData: {
+  //       cuisine: 'drink',
+  //       image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
+  //     }
   //   },
   //   {
   //     name: 'Super Duper Burgers',
   //     latitude: 37.7862143,
   //     longitude: -122.4053212,
   //     rating: 5,
-  //     type: 'american'
+  //     notes: 'I love burgers',
+  //     yelpData: {
+  //       cuisine: 'american',
+  //       image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
+  //     }
   //   },
   //   {
   //     name: 'Réveille Coffee Co.',
   //     latitude: 37.7735341,
   //     longitude: -122.3942448,
   //     rating: 5,
-  //     type: 'coffee'
+  //     notes: 'i love coffee',
+  //     yelpData: {
+  //       'cuisine': 'drink',
+  //       image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
+  //     }
   //   },
   //   {
   //     name: 'Denny\'s',
   //     latitude: 37.7859249,
   //     longitude: -122.407801,
   //     rating: 0,
-  //     type: 'american'
+  //     notes: 'i love dennys',
+  //     yelpData: {
+  //       cuisine: 'american',
+  //       image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
+  //     }
   //   }
   // ];
+
+
 
   return makeGetRequest(endpoints.spots)
     .then((spots) => {
@@ -230,6 +256,7 @@ export function fetchCollection() {
       };
     })
     .catch((err) => console.log(err));
+
 }
 
 
