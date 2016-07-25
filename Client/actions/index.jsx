@@ -8,7 +8,6 @@ const endpoints = {
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
 export const NAV_CLICK_FILTER = 'NAV_CLICK_FILTER';
-export const NAV_CLICK_LOGOUT = 'NAV_CLICK_LOGOUT';
 
 export const PANEL_CLICK_FILTER_ITEM = 'PANEL_CLICK_FILTER_ITEM';
 export const PANEL_OPEN_COLLECTION_ITEM = 'PANEL_OPEN_COLLECTION_ITEM';
@@ -60,40 +59,27 @@ export function toggleFilterList(panelMode, isOpen) {
   };
 }
 
-// Click Handler for Nav Logout button
-export function logout(collection) {
-  // Make final post request to update user's data
-  request.post(endpoints.spots).send(collection);
-
-  console.log('logout');
-  // End the user's session
-  request.get(endpoints.logout);
-
-  return {
-    type: NAV_CLICK_LOGOUT
-  };
-}
-
 // Click Handler for Panel Filter item
 export function toggleFilter(filter, selectedFilters, collection) {
   // Check if given filter is in filter list
-  const index = _.findIndex(selectedFilters, filter);
+  const index = _.findIndex(selectedFilters, (o) => { return o === filter });
   if (index === -1) {
     // Add it to the list if not found
     selectedFilters.push(filter);
   } else {
     // remove it if it is not
-    selectedFilters.splice(index, 1);
+    selectedFilters.splice(index, index + 1);
   }
 
   // make a list of the restaurants that match the filter
-  const filteredRestaurants = {};
+  const filteredRestaurants = [];
   _.map(collection, (spot) => {
     if (_.findIndex(selectedFilters, spot.type) > -1) {
       filteredRestaurants.push(spot);
     }
   });
 
+  console.log('toggle', filter, selectedFilters);
   return {
     type: PANEL_CLICK_FILTER_ITEM,
     payload: {
@@ -136,7 +122,7 @@ export function deleteCollectionItem(item) {
 }
 
 // Click Handler for map's submit
-export function clickLocationSubmit(name, latitude, longitude, rating) {
+export function clickLocationSubmit(name, latitude, longitude, rating, filters) {
   // Create object to make DB query
   const spotToAdd = {
     name: name,
@@ -146,117 +132,90 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
   };
 
   // Add type and image from returned request
-  console.log('location submit');
+  const data = request.post(endpoints.spots).send(spotToAdd);
 
-  return makePostRequest(endpoints.spots, spotToAdd)
-    .then((spot) => {
-      console.log('got this back', spot);
-      spot = JSON.parse(spot.text).data;
-      const filters = filterOrganizer([spot], filters);
-      return {
-        type: MAP_CONFIRM_POINT,
-        payload: {
-          newSpot: spot,
-          filters: filters.slice()
-        }
-      };
-    })
-    .catch((err) => console.log(err));
+  filters = filterOrganizer([data], filters);
+
+  return {
+    type: MAP_CONFIRM_POINT,
+    payload: {
+      newSpot: data,
+      filters: filters
+    }
+  };
 }
 
 
 export function fetchCollection() {
   // This function should only be called once on startup
   // Query database for user's entire collection
-  // const collection = request.get(endpoints.spots);
-  //
-  // const collection = [
-  //   {
-  //     name: 'The Flying Falafal',
-  //     latitude: 37.7812322,
-  //     longitude: -122.4134787,
-  //     rating: 5,
-  //     notes: 'i love falafal',
-  //     yelpData: {
-  //       cuisine: 'med',
-  //       image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
-  //     }
-  //   },
-  //   {
-  //     name: 'Show Dogs',
-  //     latitude: 37.7821228,
-  //     longitude: -122.4130593,
-  //     rating: 5,
-  //     notes: ' i love hotdogs ',
-  //     yelpData: {
-  //       cuisine: 'american',
-  //       image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
-  //     }
-  //   },
-  //   {
-  //     name: 'Lemonade',
-  //     latitude: 37.7848661,
-  //     longitude: -122.4057182,
-  //     rating: 5,
-  //     notes: 'i love lemondae',
-  //     yelpData: {
-  //       cuisine: 'drink',
-  //       image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
-  //     }
-  //   },
-  //   {
-  //     name: 'Super Duper Burgers',
-  //     latitude: 37.7862143,
-  //     longitude: -122.4053212,
-  //     rating: 5,
-  //     notes: 'I love burgers',
-  //     yelpData: {
-  //       cuisine: 'american',
-  //       image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
-  //     }
-  //   },
-  //   {
-  //     name: 'Réveille Coffee Co.',
-  //     latitude: 37.7735341,
-  //     longitude: -122.3942448,
-  //     rating: 5,
-  //     notes: 'i love coffee',
-  //     yelpData: {
-  //       'cuisine': 'drink',
-  //       image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
-  //     }
-  //   },
-  //   {
-  //     name: 'Denny\'s',
-  //     latitude: 37.7859249,
-  //     longitude: -122.407801,
-  //     rating: 0,
-  //     notes: 'i love dennys',
-  //     yelpData: {
-  //       cuisine: 'american',
-  //       image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
-  //     }
-  //   }
-  // ];
+  // const collection = request.get(endpoints.spots).end();
+  const collection = [
+  {
+    name: 'The Flying Falafal',
+    latitude: 37.7812322,
+    longitude: -122.4134787,
+    rating: 5,
+    yelpData: {
+      cuisine: 'middle-eastern'
+    }
+  },
+  {
+    name: 'Show Dogs',
+    latitude: 37.7821228,
+    longitude: -122.4130593,
+    rating: 5,
+    yelpData: {
+      cuisine: 'american'
+    }
+  },
+  {
+    name: 'Lemonade',
+    latitude: 37.7848661,
+    longitude: -122.4057182,
+    rating: 5,
+    yelpData: {
+      cuisine: 'drinks'
+    }
+  },
+  {
+    name: 'Super Duper Burgers',
+    latitude: 37.7862143,
+    longitude: -122.4053212,
+    rating: 5,
+    yelpData: {
+      cuisine: 'american'
+    }
+  },
+  {
+    name: 'Réveille Coffee Co.',
+    latitude: 37.7735341,
+    longitude: -122.3942448,
+    rating: 5,
+    yelpData: {
+      cuisine: 'coffee'
+    }
+  },
+  {
+    name: 'Denny\'s',
+    latitude: 37.7859249,
+    longitude: -122.407801,
+    rating: 0,
+    yelpData: {
+      cuisine: 'american'
+    }
+  }
+];
 
+  const filters = filterOrganizer(collection);
 
-
-  return makeGetRequest(endpoints.spots)
-    .then((spots) => {
-      console.log('got this back', spots);
-      spots = JSON.parse(spots.text).data;
-      const filters = filterOrganizer(spots);
-      // cb(spots);
-      return {
-        type: FETCH_COLLECTION,
-        payload: {
-          collection: spots.slice(),
-          filters: filters.slice()
-        }
-      };
-    })
-    .catch((err) => console.log(err));
-
+  return {
+    type: FETCH_COLLECTION,
+    payload: {
+      collection: collection,
+      filters: filters
+    }
+  };
 }
 
 
@@ -264,8 +223,8 @@ function filterOrganizer(collection, filters) {
   filters = filters || [];
 
   _.map(collection, (value) => {
-    if (_.findIndex(filters, value.type) === -1) {
-      filters.push(value.type);
+    if (_.findIndex(filters, (o) => {return o === value.yelpData.cuisine}) === -1) {
+      filters.push(value.yelpData.cuisine);
     }
   });
 

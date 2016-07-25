@@ -1,6 +1,5 @@
 import { MAP_CONFIRM_POINT } from '../actions/index';
 import { FETCH_COLLECTION } from '../actions/index';
-import { PANEL_DELETE_COLLECTION_ITEM } from '../actions/index';
 
 const initialState = {
   filterOptions: [],
@@ -16,12 +15,6 @@ export default function(state = initialState, action) {
         collection: state.collection.concat(action.payload.newSpot)
       };
     case FETCH_COLLECTION:
-      return {
-        ...state,
-        filterOptions: action.payload.filters,
-        collection: action.payload.collection
-      };
-    case PANEL_DELETE_COLLECTION_ITEM:
       return {
         ...state,
         filterOptions: action.payload.filters,

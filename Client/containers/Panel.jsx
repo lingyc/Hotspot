@@ -20,8 +20,9 @@ class Panel extends React.Component {
     if (this.props.panelMode === 'filter') {
       let filterSelected = this.props.filterSelected;
       let toggleFilter = this.props.actions.toggleFilter;
+      let collection = this.props.totalCollection;
       panelItems = this.props.filters.map((filter) => {
-        return (<FilterItem filter={filter} appliedFilters={filterSelected} toggleFilter={toggleFilter} key={filter}/>);
+        return (<FilterItem filter={filter} appliedFilters={filterSelected} toggleFilter={toggleFilter} collection={collection} key={filter}/>);
       });
     } else if (this.props.filteredCollection.length !== 0) {
       panelItems = this.props.filteredCollection.map((restaurant) => {
