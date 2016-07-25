@@ -18,12 +18,11 @@ class Map extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actions.fetchCollection();
-    setTimeout(() => {
-      console.log('total collection is', this.props.totalCollection);
-      this.renderMap();
-      this.getUserLocation(mainMap);
-    }, 3000);
+    this.props.actions.fetchCollection()
+      .then((results) => {
+        this.renderMap();
+        this.getUserLocation(mainMap);
+      });
   }
 
   renderMap() {
@@ -162,8 +161,8 @@ var geoJSONPoint = (longitude, latitude, name, thumb, image) => {
       icon: {
         iconUrl: thumb,
         iconSize: [35, 35],
-        iconAnchor: [0, 0],
-        popupAnchor: [0, 0]
+        iconAnchor: [35, 17],
+        popupAnchor: [-17, -17]
       }
     }
   };
@@ -180,8 +179,11 @@ var geoJSONSet = () => {
 
 ////////// HELPER FUNCTIONS - TODO MODULARIZE //////////
 function formatGeoJSON(array) {
-  const ratingImg = array.rating === 0 ? thumbDown : thumbUp;
-  const geoPointArray = array.map((spot) => geoJSONPoint(spot.longitude, spot.latitude, spot.name, ratingImg, spot.yelpData.image));
+  const geoPointArray = array.map((spot) => {
+    console.log('spot is', spot);
+    let ratingImg = spot.rating === '5' ? thumbUp : thumbDown;
+    return geoJSONPoint(spot.longitude, spot.latitude, spot.name, ratingImg, spot.yelpData.image);
+  });
   return [
     {
       type: 'FeatureCollection',
