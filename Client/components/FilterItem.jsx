@@ -7,8 +7,6 @@ var FilterItem = ({filter, appliedFilters, toggleFilter, collection}) => {
     cssClasses += ' active';
   }
 
-  console.log('filteritem', appliedFilters, cssClasses);
-
   return (
     <div className='filter'>
       <div className={cssClasses} onClick={ () => { toggleFilter(filter, appliedFilters, collection); }}>
