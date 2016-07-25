@@ -12,7 +12,6 @@ export const NAV_CLICK_FILTER = 'NAV_CLICK_FILTER';
 export const PANEL_CLICK_FILTER_ITEM = 'PANEL_CLICK_FILTER_ITEM';
 export const PANEL_OPEN_COLLECTION_ITEM = 'PANEL_OPEN_COLLECTION_ITEM';
 export const PANEL_CLOSE_COLLECTION_ITEM = 'PANEL_CLOSE_COLLECTION_ITEM';
-export const PANEL_DELETE_COLLECTION_ITEM = 'PANEL_DELETE_COLLECTION_ITEM';
 
 export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
 export const FETCH_COLLECTION = 'FETCH_COLLECTION';
@@ -74,12 +73,13 @@ export function toggleFilter(filter, selectedFilters, collection) {
   // make a list of the restaurants that match the filter
   const filteredRestaurants = [];
   _.map(collection, (spot) => {
-    if (_.findIndex(selectedFilters, spot.type) > -1) {
+    console.log('spot', spot);
+    if (_.findIndex(selectedFilters, (o) => { return o.yelpData.cuisine === spot.yelpData.cuisine}) > -1) {
+      console.log('inside if');
       filteredRestaurants.push(spot);
     }
   });
-
-  console.log('toggle', filter, selectedFilters);
+  console.log('toggle', filteredRestaurants);
   return {
     type: PANEL_CLICK_FILTER_ITEM,
     payload: {
@@ -106,21 +106,6 @@ export function closeCollectionItem(item) {
   };
 }
 
-export function deleteCollectionItem(item) {
-  // delete the collection item from the db
-  const collection = request.del(endpoints.spots + '/' + item.id);
-  // update the collection and filters
-  const filters = filterOrganizer(collection);
-
-  return {
-    type: PANEL_DELETE_COLLECTION_ITEM,
-    payload: {
-      collection: collection,
-      filters: filters
-    }
-  };
-}
-
 // Click Handler for map's submit
 export function clickLocationSubmit(name, latitude, longitude, rating, filters) {
   // Create object to make DB query
@@ -134,14 +119,9 @@ export function clickLocationSubmit(name, latitude, longitude, rating, filters) 
   // Add type and image from returned request
   const data = request.post(endpoints.spots).send(spotToAdd);
 
-  filters = filterOrganizer([data], filters);
-
   return {
     type: MAP_CONFIRM_POINT,
-    payload: {
-      newSpot: data,
-      filters: filters
-    }
+    payload: data
   };
 }
 
@@ -207,14 +187,9 @@ export function fetchCollection() {
   }
 ];
 
-  const filters = filterOrganizer(collection);
-
   return {
     type: FETCH_COLLECTION,
-    payload: {
-      collection: collection,
-      filters: filters
-    }
+    payload: collection
   };
 }
 

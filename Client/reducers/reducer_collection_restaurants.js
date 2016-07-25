@@ -2,7 +2,6 @@ import { MAP_CONFIRM_POINT } from '../actions/index';
 import { FETCH_COLLECTION } from '../actions/index';
 
 const initialState = {
-  filterOptions: [],
   collection: []
 };
 
@@ -11,14 +10,12 @@ export default function(state = initialState, action) {
     case MAP_CONFIRM_POINT:
       return {
         ...state,
-        filterOptions: action.payload.filters,
-        collection: state.collection.concat(action.payload.newSpot)
+        collection: state.collection.concat(action.payload.body.data)
       };
     case FETCH_COLLECTION:
       return {
         ...state,
-        filterOptions: action.payload.filters,
-        collection: action.payload.collection
+        collection: action.payload.body.data
       };
     default:
       return state;
