@@ -15,30 +15,32 @@ class Panel extends React.Component {
 
   render() {
 
-    // Default collection to the total collection
-    let collection = this.props.totalCollection;
+    let panelItems;
 
-    // If filteredCollection is populated, use that instead
-    if (this.props.filteredCollection !== []) {
-      collection = this.props.filteredCollection;
-    }
+    console.log('total collection', this.props.totalCollection);
 
-
-    // Set up variable to be populated with panel items
-    // Default it with the collection of restaurants
-    let panelItems = collection.map((restaurant) => {
-        return (<CollectionModel restaurant={restaurant} />);
-      });
-
-    // Populate said variable with all filter items if the
-    // filter panel is stated to show
     if (this.props.panelMode === 'filter') {
       let filterSelected = this.props.filterSelected;
       let toggleFilter = this.props.actions.toggleFilter;
+      console.log(this.props.filters);
       panelItems = this.props.filters.map((filter) => {
+        console.log(filter);
         return (<FilterItem filter={filter} appliedFilters={filterSelected} toggleFilter={toggleFilter}/>);
       });
-    };
+      console.log('after', panelItems);
+    } else if (this.props.filteredCollection.length !== 0) {
+      console.log('is it getting in here?', this.props.filteredCollection.length);
+      panelItems = this.props.filteredCollection.map((restaurant) => {
+          return (<CollectionModel item={restaurant} key={restaurant.name}/>);
+        });
+    } else {
+      console.log('in else', this.props.totalCollection);
+      panelItems = this.props.totalCollection.map((restaurant) => {
+          return (<CollectionModel item={restaurant} key={restaurant.name}/>);
+        });
+      console.log('panelItems', panelItems);
+    }
+    console.log('after if statement', panelItems);
 
     return (
       <Menu id={ 'panel' }
@@ -54,6 +56,7 @@ class Panel extends React.Component {
 }
 
 function mapStateToProps(state) {
+  console.log('mapStateToProps', state);
   return {
     totalCollection: state.CollectionRestaurantsFilters.collection,
     filters: state.CollectionRestaurantsFilters.filterOptions,

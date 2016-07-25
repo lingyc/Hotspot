@@ -21,13 +21,14 @@ export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 // Click Handler for Nav Collection button
 export function toggleCollectionList(panelMode, isOpen) {
   // If panelMode is collection, set it to null.
-  if (panelMode === 'collection') {
+  if (panelMode === 'collection' && isOpen === true) {
     isOpen = false;
   } else {
     // Else set panelMode to collection
     panelMode = 'collection';
     isOpen = true;
   }
+
 
   return {
     type: NAV_CLICK_COLLECTION,
@@ -41,13 +42,14 @@ export function toggleCollectionList(panelMode, isOpen) {
 // Click Handler for Nav Filter button
 export function toggleFilterList(panelMode, isOpen) {
   // If panelMode is filter, set it to null.
-  if (panelMode === 'filter') {
+  if (panelMode === 'filter' && isOpen === true) {
     isOpen = false;
   } else {
     // Else set panelMode to filter
     panelMode = 'filter';
     isOpen = true;
   }
+
 
   return {
     type: NAV_CLICK_FILTER,
@@ -161,9 +163,54 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
 export function fetchCollection() {
   // This function should only be called once on startup
   // Query database for user's entire collection
-  const collection = request.get(endpoints.spots);
-  const filters = filterOrganizer(collection);
+  // const collection = request.get(endpoints.spots);
+  const collection = [
+    {
+      name: 'The Flying Falafal',
+      latitude: 37.7812322,
+      longitude: -122.4134787,
+      rating: 5,
+      type: 'middle-east'
+    },
+    {
+      name: 'Show Dogs',
+      latitude: 37.7821228,
+      longitude: -122.4130593,
+      rating: 5,
+      type: 'american'
+    },
+    {
+      name: 'Lemonade',
+      latitude: 37.7848661,
+      longitude: -122.4057182,
+      rating: 5,
+      type: 'drink'
+    },
+    {
+      name: 'Super Duper Burgers',
+      latitude: 37.7862143,
+      longitude: -122.4053212,
+      rating: 5,
+      type: 'american'
+    },
+    {
+      name: 'Réveille Coffee Co.',
+      latitude: 37.7735341,
+      longitude: -122.3942448,
+      rating: 5,
+      type: 'coffee'
+    },
+    {
+      name: 'Denny\'s',
+      latitude: 37.7859249,
+      longitude: -122.407801,
+      rating: 0,
+      type: 'american'
+    }
+  ];
 
+  const filters = filterOrganizer(collection);
+  
   return {
     type: FETCH_COLLECTION,
     payload: {
@@ -177,8 +224,8 @@ const filterOrganizer = (collection, filters) => {
   filters = filters || [];
 
   _.map(collection, (value) => {
-    if (_.findIndex(filters, value) === -1) {
-      filters.push(value);
+    if (_.findIndex(filters, value.type) === -1) {
+      filters.push(value.type);
     }
   });
 
