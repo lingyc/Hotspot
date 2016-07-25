@@ -148,34 +148,27 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
   // Add type and image from returned request
   console.log('location submit');
 
-  const data = request.post(endpoints.spots).send(spotToAdd);
-  filters = filterOrganizer([data], filters);
-
-  return {
-    type: MAP_CONFIRM_POINT,
-    payload: {
-      newSpot: data,
-      filters: filters
-    }
-  };
-
+  return makePostRequest(endpoints.spots, spotToAdd)
+    .then((spot) => {
+      console.log('got this back', spot);
+      spot = JSON.parse(spot.text).data;
+      const filters = filterOrganizer([spot], filters);
+      return {
+        type: MAP_CONFIRM_POINT,
+        payload: {
+          newSpot: spot,
+          filters: filters.slice()
+        }
+      };
+    })
+    .catch((err) => console.log(err));
 }
 
 
 export function fetchCollection() {
   // This function should only be called once on startup
   // Query database for user's entire collection
-  const collection = request.get(endpoints.spots);
 
-  const filters = filterOrganizer(collection);
-
-  return {
-    type: FETCH_COLLECTION,
-    payload: {
-      collection: collection.slice(),
-      filters: filters.slice()
-    }
-  };
   // const collection = request.get(endpoints.spots);
   // const collection = [
   //   {
@@ -222,6 +215,21 @@ export function fetchCollection() {
   //   }
   // ];
 
+  return makeGetRequest(endpoints.spots)
+    .then((spots) => {
+      console.log('got this back', spots);
+      spots = JSON.parse(spots.text).data;
+      const filters = filterOrganizer(spots);
+      // cb(spots);
+      return {
+        type: FETCH_COLLECTION,
+        payload: {
+          collection: spots.slice(),
+          filters: filters.slice()
+        }
+      };
+    })
+    .catch((err) => console.log(err));
 }
 
 
