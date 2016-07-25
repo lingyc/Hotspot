@@ -171,10 +171,10 @@ export function fetchCollection() {
       latitude: 37.7812322,
       longitude: -122.4134787,
       rating: 5,
-      type: 'med',
       notes: 'i love falafal',
       yelpData: {
-        cuisine: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
+        cuisine: 'med',
+        image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
       }
     },
     {
@@ -182,10 +182,10 @@ export function fetchCollection() {
       latitude: 37.7821228,
       longitude: -122.4130593,
       rating: 5,
-      type: 'american',
       notes: ' i love hotdogs ',
       yelpData: {
-        cuisine: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
+        cuisine: 'american',
+        image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
       }
     },
     {
@@ -193,10 +193,10 @@ export function fetchCollection() {
       latitude: 37.7848661,
       longitude: -122.4057182,
       rating: 5,
-      type: 'drink',
       notes: 'i love lemondae',
       yelpData: {
-        cuisine: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
+        cuisine: 'drink',
+        image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
       }
     },
     {
@@ -204,10 +204,10 @@ export function fetchCollection() {
       latitude: 37.7862143,
       longitude: -122.4053212,
       rating: 5,
-      type: 'american',
       notes: 'I love burgers',
       yelpData: {
-        cuisine: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
+        cuisine: 'american',
+        image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
       }
     },
     {
@@ -215,10 +215,10 @@ export function fetchCollection() {
       latitude: 37.7735341,
       longitude: -122.3942448,
       rating: 5,
-      type: 'drink',
       notes: 'i love coffee',
       yelpData: {
-        cuisine: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
+        'cuisine': 'drink',
+        image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
       }
     },
     {
@@ -226,10 +226,10 @@ export function fetchCollection() {
       latitude: 37.7859249,
       longitude: -122.407801,
       rating: 0,
-      type: 'american',
       notes: 'i love dennys',
       yelpData: {
-        cuisine: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
+        cuisine: 'american',
+        image: 'http://s3-media3.fl.yelpcdn.com/bphoto/2KsVi9R0MXfe9qbzC7cmvg/o.jpg'
       }
     }
   ];

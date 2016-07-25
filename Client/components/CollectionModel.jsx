@@ -12,14 +12,13 @@ import React from 'react';
 var CollectionModel = ({item}) => {
   return (
   <div id='restaurant' className='restaurant card' >
-    <img className='card-img-top' src={item.yelpData.cuisine} />
+    <img className='card-img-top' src={item.yelpData.image} />
     <div className='card-block'>
       <h4 className='card-title'>{item.name}</h4>
     </div>
     <ul className='list-group list-group-flush'>
       <li className='list-group-item'>Rating: {item.rating}</li>
-      <li className='list-group-item'>Type: {item.type}</li>
-      <li className='list-group-item'>Notes: {item.notes}</li>
+      <li className='list-group-item'>Type: {item.yelpData.cuisine}</li>
     </ul>
   </div>
 );
