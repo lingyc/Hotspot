@@ -115,7 +115,6 @@ export function deleteCollectionItem(item) {
   };
 }
 
-// Click Handler for map's submit
 export function clickLocationSubmit(name, latitude, longitude, rating) {
   // Create object to make DB query
   const spotToAdd = {
@@ -138,27 +137,12 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
 export function fetchCollection() {
   // This function should only be called once on startup
   // Query database for user's entire collection
+  const collection = request.get(endpoints.spots);
 
-  // const collection = request.get(endpoints.spots);
-  // const collection = [
-
-
-  return makeGetRequest(endpoints.spots)
-    .then((spots) => {
-      console.log('got this back', spots);
-      spots = JSON.parse(spots.text).data;
-      const filters = filterOrganizer(spots);
-      // cb(spots);
-      return {
-        type: FETCH_COLLECTION,
-        payload: {
-          collection: spots.slice(),
-          filters: filters.slice()
-        }
-      };
-    })
-    .catch((err) => console.log(err));
-
+  return {
+    type: FETCH_COLLECTION,
+    payload: collection
+  };
 }
 
 export function createFilters(collection, filters) {

@@ -18,7 +18,7 @@ class Panel extends React.Component {
     let panelItems;
 
     this.props.actions.createFilters(this.props.totalCollection, this.props.filters);
-    
+
     if (this.props.panelMode === 'filter') {
       panelItems = this.props.filters.map((filter) => {
         return (<FilterItem filter={filter}
@@ -60,8 +60,7 @@ function mapStateToProps(state) {
     filterSelected: state.FilterSelectedRestaurants.filterSelected,
     filteredCollection: state.FilterSelectedRestaurants.filteredRestaurants,
     panelMode: state.PanelMode.panelMode,
-    isOpen: state.PanelMode.isOpen,
-    panelSelect: state.PanelSelect.item
+    isOpen: state.PanelMode.isOpen
   };
 }
 
