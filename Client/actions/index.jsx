@@ -161,12 +161,12 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
       };
     })
     .catch((err) => console.log(err));
-}
 
 
 export function fetchCollection() {
   // This function should only be called once on startup
   // Query database for user's entire collection
+<<<<<<< HEAD
   // const collection = request.get(endpoints.spots);
   // const collection = [
   //   {
