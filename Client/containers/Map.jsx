@@ -23,7 +23,7 @@ class Map extends React.Component {
       console.log('total collection is', this.props.totalCollection);
       this.renderMap();
       this.getUserLocation(mainMap);
-    }, 3000);
+    }, 1000);
   }
 
   renderMap() {
@@ -180,8 +180,11 @@ var geoJSONSet = () => {
 
 ////////// HELPER FUNCTIONS - TODO MODULARIZE //////////
 function formatGeoJSON(array) {
-  const ratingImg = array.rating === 0 ? thumbDown : thumbUp;
-  const geoPointArray = array.map((spot) => geoJSONPoint(spot.longitude, spot.latitude, spot.name, ratingImg, spot.yelpData.image));
+  const geoPointArray = array.map((spot) => {
+    console.log('spot is', spot);
+    let ratingImg = spot.rating === '5' ? thumbUp : thumbDown;
+    return geoJSONPoint(spot.longitude, spot.latitude, spot.name, ratingImg, spot.yelpData.image);
+  });
   return [
     {
       type: 'FeatureCollection',
