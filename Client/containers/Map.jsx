@@ -29,7 +29,7 @@ class Map extends React.Component {
 
     // If any filters have been selected and a filtered collection
     // exists, send that into the map instead
-    if(this.props.filteredCollection !== []){
+    if (this.props.filteredCollection !== []) {
       collection = this.props.filteredCollection;
     }
 
@@ -52,21 +52,6 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(Actions, dispatch)
   };
 }
-// Generate React Event Listener
-var OnSubmit = React.createClass({
-  submit: function(e) {
-    e.preventDefault();
-    alert('it works!');
-  },
-
-  render: function() {
-    return (
-      <form onSubmit={this.submit}>
-        <button>Thumbs!</button>
-      </form>
-    );
-  }
-});
 
 ////////// TESTING DATA - TODO REMOVE /////////
 var tastyRestaurants = [
@@ -221,8 +206,8 @@ var geoSuccess = (position) => {
 var foundRestaurant = (res) => {
   console.log('found a place', res, res.feature.text, res.feature.center); // -122, 33 long / lat
   var pointQuery = L.mapbox.featureLayer().addTo(mainMap);
-
   pointQuery.on('layeradd', function(point) {
+    console.log('actions', Actions);
     var marker = point.layer;
     var feature = marker.feature;
     marker.setIcon(L.icon(feature.properties.icon));
@@ -231,7 +216,7 @@ var foundRestaurant = (res) => {
     '<input type="radio" name="goBack" required> Definitely and absolutely<br>' +
     '<input type="radio" name="goBack"> Never ever ever<br>' +
     'go back<br>' +
-    '<input type="submit" name="fistBump" value="Thumbs!"></form>' +
+    '<input type="submit" id="fistBump" value="Thumbs!!!!"></form>' +
     '<img src="' + feature.properties.image + '" alt="">';
     marker.bindPopup(content);
   });
@@ -241,4 +226,12 @@ var foundRestaurant = (res) => {
 
   pointQuery.setGeoJSON(pickedPlace);
   pointQuery.openPopup();
+
+  // Add listener for submission
+  document.getElementById('fistBump').addEventListener('click', function() {
+    var radios = document.getElementsByName('goBack');
+    var rating;
+    radios[0].checked === true ? rating = 5 : rating = 0;
+    Actions.clickLocationSubmit(res.feature.text, coordinates[1], coordinates[0], rating);
+  });
 };
