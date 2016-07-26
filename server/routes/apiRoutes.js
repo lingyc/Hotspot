@@ -19,6 +19,7 @@ export default function(app) {
     Spot.getAllForUser(req.user)
       .then((spots) => {
         if (spots.length === 0) {
+          spotsReturn = [];
           return sendBackJSON(res, [], 'no spots');
         }
         spotsReturn = spots;
