@@ -46,7 +46,7 @@
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
-    "bootstrap": "^4.0.0-alpha.2",
+    "bootstrap": "^3.3.7",
     "bootstrap-validator": "^0.11.5",
     "eslint-config-hackreactor": "github:hackreactor-labs/eslint-config-hackreactor",
     "eslint-plugin-react": "^5.2.2",
