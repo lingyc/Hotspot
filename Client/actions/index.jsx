@@ -58,7 +58,7 @@ export function toggleFilterList(panelMode, isOpen) {
 // Click Handler for Panel Filter item
 export function toggleFilter(filter, selectedFilters, collection) {
   // Check if given filter is in filter list
-  const index = _.findIndex(selectedFilters, (o) => { return o === filter });
+  const index = _.findIndex(selectedFilters, (o) => { return o === filter; });
   if (index === -1) {
     // Add it to the list if not found
     selectedFilters.push(filter);
@@ -77,13 +77,44 @@ export function toggleFilter(filter, selectedFilters, collection) {
   return {
     type: PANEL_CLICK_FILTER_ITEM,
     payload: {
-      selectedFilters: selectedFilters,
-      filteredRestaurants: filteredRestaurants
+      selectedFilters: selectedFilters.slice(),
+      filteredRestaurants: filteredRestaurants.slice()
     }
   };
 }
 
-// Click Handler for map's submit
+// Click Handler for Panel Collection item
+export function viewCollectionItem(item) {
+  // change current panel view to the collection item
+  return {
+    type: PANEL_OPEN_COLLECTION_ITEM,
+    payload: item
+  };
+}
+
+// Click Handler for Panel Collection closeup
+export function closeCollectionItem(item) {
+  // close the current panel view back to the collection
+  return {
+    type: PANEL_CLOSE_COLLECTION_ITEM
+  };
+}
+
+export function deleteCollectionItem(item) {
+  // delete the collection item from the db
+  const collection = request.del(endpoints.spots + '/' + item.id);
+  // update the collection and filters
+  const filters = filterOrganizer(collection);
+
+  return {
+    type: PANEL_DELETE_COLLECTION_ITEM,
+    payload: {
+      collection: collection.slice(),
+      filters: filters.slice()
+    }
+  };
+}
+
 export function clickLocationSubmit(name, latitude, longitude, rating) {
   // Create object to make DB query
   const spotToAdd = {
@@ -106,7 +137,7 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
 export function fetchCollection() {
   // This function should only be called once on startup
   // Query database for user's entire collection
-  const collection = request.get(endpoints.spots).end();
+  const collection = request.get(endpoints.spots);
 
   return {
     type: FETCH_COLLECTION,

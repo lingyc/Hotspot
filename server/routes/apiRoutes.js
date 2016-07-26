@@ -19,7 +19,9 @@ export default function(app) {
     Spot.getAllForUser(req.user)
       .then((spots) => {
         if (spots.length === 0) {
-          return sendBackJSON(res, null, 'no spots');
+          spotsReturn = [];
+          // return sendBackJSON(res, [], 'no spots');
+          return [];
         }
         spotsReturn = spots;
         return requestMultipleYelp(spots.map((spot) => {
@@ -28,6 +30,9 @@ export default function(app) {
       })
       .then((yelpResults) => {
         console.log('yelpresults looking for busid location', yelpResults);
+        if (yelpResults.length === 0) {
+          return [];
+        }
         return spotsReturn.map((spot) => {
           let match = yelpResults.filter((result) => {
             let lowerLength = Math.min([spot.length, result.length]);

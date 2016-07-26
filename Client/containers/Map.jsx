@@ -9,7 +9,8 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 
 // Globl map
-var mainMap;
+var mainMap, restaurantPoints;
+var initialize = true;
 
 class Map extends React.Component {
   constructor(props) {
@@ -41,14 +42,17 @@ class Map extends React.Component {
     geocoderControl.on('select', function(res, mainMap) {
       foundRestaurant(res, mainMap);
     });
-
     this.addPointsLayer(mainMap);
 
+    initialize = false;
     return mainMap;
   }
 
   addPointsLayer(map) {
-    var restaurantPoints = L.mapbox.featureLayer().addTo(map);
+    if (!initialize) {
+      mainMap.removeLayer(restaurantPoints);
+    }
+    restaurantPoints = L.mapbox.featureLayer().addTo(map);
 
     restaurantPoints.on('layeradd', function(point) {
       var marker = point.layer;
@@ -58,11 +62,19 @@ class Map extends React.Component {
       '<img src="' + feature.properties.image + '" alt="">';
       marker.bindPopup(content);
     });
-    console.log('set geojson on', restaurantPoints, 'with', this.props.totalCollection);
-    const formattedPoints = formatGeoJSON(this.props.totalCollection);
+    let collection = this.props.totalCollection;
+    console.log('total collection', this.props.totalCollection);
+    // If any filters have been selected and a filtered collection
+    // exists, send that into the map instead
+    if (this.props.filteredCollection.length > 0) {
+      collection = this.props.filteredCollection;
+    }
+    console.log('set geojson on', restaurantPoints, 'with', collection);
+    const formattedPoints = formatGeoJSON(collection);
     console.log('formatted points are', formattedPoints);
-    restaurantPoints.setGeoJSON(formatGeoJSON(this.props.totalCollection));
+    restaurantPoints.setGeoJSON(formatGeoJSON(collection));
   }
+
 
   // Helpers for interacting with users live location
   getUserLocation() {
@@ -71,18 +83,15 @@ class Map extends React.Component {
     }, geoError);
   }
 
+
   render() {
     // Sets collection to default to the entire collection
-    let collection = this.props.totalCollection;
-    console.log('total collection', this.props.totalCollection);
-    // If any filters have been selected and a filtered collection
-    // exists, send that into the map instead
-    if (this.props.filteredCollection !== []) {
-      collection = this.props.filteredCollection;
+    // this.deleteExistingPointsLayer(mainMap)
+    if (!initialize) {
+      this.addPointsLayer(mainMap);
     }
-
     return (
-      <div className='map' id='map-one' collection={collection} filters={this.props.filters} clickHandler={this.props.actions.clickLocationSubmit}></div>
+      <div className='map' id='map-one'></div>
     );
   }
 }
