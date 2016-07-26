@@ -1,5 +1,7 @@
 import request from 'superagent';
 import _ from 'lodash';
+import $ from 'jquery';
+import Promise from 'bluebird';
 
 const endpoints = {
   logout: '/logout',
@@ -125,7 +127,10 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
   };
 
   // Add type and image from returned request
+  console.log('new spot', spotToAdd);
+  // const data = request.post(endpoints.spots).send(spotToAdd).end();
   const data = request.post(endpoints.spots).send(spotToAdd);
+  console.log('sending data', data);
 
   return {
     type: MAP_CONFIRM_POINT,

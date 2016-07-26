@@ -245,7 +245,7 @@ var foundRestaurant = (res) => {
     '<input type="radio" name="goBack" required> Definitely and absolutely<br>' +
     '<input type="radio" name="goBack"> Never ever ever<br>' +
     'go back<br>' +
-    '<input type="submit" id="fistBump" value="Thumbs!!!!"></form>' +
+    '<input type="button" id="fistBump" value="Thumbs!!!!"></form>' +
     '<img src="' + feature.properties.image + '" alt="">';
     marker.bindPopup(content);
   });
