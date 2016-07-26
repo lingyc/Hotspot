@@ -8,6 +8,7 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case MAP_CONFIRM_POINT:
+      console.log('action', action.payload);
       return {
         ...state,
         collection: state.collection.concat(action.payload.body.data)

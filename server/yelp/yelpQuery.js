@@ -89,8 +89,10 @@ export var requestYelp = function (setParameters, busId) {
 
       if (busId) {
         resolve(parseYelpData(data));
-      } else {
+      } else if (data.businesses.length > 0) {
         resolve(parseYelpData(data.businesses[0]));
+      } else {
+        resolve();
       }
     });
   });
