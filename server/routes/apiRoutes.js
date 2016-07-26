@@ -19,7 +19,7 @@ export default function(app) {
     Spot.getAllForUser(req.user)
       .then((spots) => {
         if (spots.length === 0) {
-          return sendBackJSON(res, null, 'no spots');
+          return sendBackJSON(res, [], 'no spots');
         }
         spotsReturn = spots;
         return requestMultipleYelp(spots.map((spot) => {
