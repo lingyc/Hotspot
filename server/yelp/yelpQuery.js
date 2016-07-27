@@ -32,7 +32,7 @@ export var generateYelpNewBusParam = function (name, longitude, latitude) {
 };
 
 // Yelp call
-export var requestYelp = function (setParameters, busId) {
+export var requestYelp = function (setParameters, busId, searchBar) {
   console.log('requestYelp called')
   var httpMethod = 'GET';
 
@@ -89,14 +89,17 @@ export var requestYelp = function (setParameters, busId) {
 
       var data = JSON.parse(body);
       // console.log('returning data', data);
-      resolve(data.businesses.map(business => parseYelpData(business)));
-      // if (busId) {
-      //   resolve(parseYelpData(data));
-      // } else if (data.businesses.length > 0) {
-      //   resolve(parseYelpData(data.businesses));
-      // } else {
-      //   resolve();
-      // }
+      if (busId) {
+        resolve(parseYelpData(data));
+      } else if (data.businesses.length > 0) {
+        if (searchBar) {
+          resolve(data.businesses.map(business => parseYelpData(business)));
+        } else {
+          resolve(parseYelpData(data.businesses[0]));
+        }
+      } else {
+        resolve();
+      }
     });
   });
 

@@ -87,7 +87,7 @@ export default function(app) {
 
   app.post('/api/yelp', (req, res) => {
     console.log('req.body', req.body);
-    requestYelp({term:'burger',location: 'San Francisco'})
+    requestYelp({term:'burger',location: 'San Francisco'}, null, true)
     .then(function(data){
       console.log('yelp data', data);
       res.send(data);

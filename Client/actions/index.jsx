@@ -194,6 +194,7 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
 export function fetchCollection() {
   // This function should only be called once on startup
   // Query database for user's entire collection
+  console.log('fetchCollection')
   const collection = request.get(endpoints.spots);
 
   return {
