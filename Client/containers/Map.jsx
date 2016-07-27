@@ -31,17 +31,17 @@ class Map extends React.Component {
     mainMap = L.mapbox.map('map-one', 'mapbox.streets')
       .setView(defaultCoord, 16);
 
-    var geocoderControl = L.mapbox.geocoderControl('mapbox.places', {
-      autocomplete: true,
-      keepOpen: true,
-      proximity: true,
-      container: 'geocoder-container'
-    });
-    geocoderControl.addTo(mainMap);
+    // var geocoderControl = L.mapbox.geocoderControl('mapbox.places', {
+    //   autocomplete: true,
+    //   keepOpen: true,
+    //   proximity: true,
+    //   container: 'geocoder-container'
+    // });
+    // geocoderControl.addTo(mainMap);
 
-    geocoderControl.on('select', function(res, mainMap) {
-      foundRestaurant(res, mainMap);
-    });
+    // geocoderControl.on('select', function(res, mainMap) {
+    //   foundRestaurant(res, mainMap);
+    // });
     this.addPointsLayer(mainMap);
 
     initialize = false;

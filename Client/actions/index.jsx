@@ -5,7 +5,8 @@ import Promise from 'bluebird';
 
 const endpoints = {
   logout: '/logout',
-  spots: '/api/spots'
+  spots: '/api/spots',
+  yelp: 'https://api.yelp.com/v2/search'
 };
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
@@ -14,6 +15,47 @@ export const PANEL_CLICK_FILTER_ITEM = 'PANEL_CLICK_FILTER_ITEM';
 export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
 export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 export const CREATE_FILTERS = 'CREATE_FILTERS';
+
+export const NAV_SEARCH = 'NAV_SEARCH';
+export const NAV_SEARCH_RESULTS = 'NAV_SEARCH_RESULTS';
+
+
+export function handleChange(input) {
+  return {
+    type: NAV_SEARCH,
+    payload: {
+      searchInput: input
+    }
+  }
+}
+
+export function submitSearch(input) {
+  const yelpQuery = {
+    term: 'burger',
+    limit: 10,
+    location: 'San Francisco'
+  };
+
+  const data = new Promise((resolve, reject) => {
+    request.post('/api/yelp')
+    .send(yelpQuery)
+    .end((err, res) => {
+      if (err) {
+        return reject(err);
+      }
+
+      return resolve(res);
+    });
+  });
+
+  console.log('yelp data', data);
+  return {
+    type: NAV_SEARCH_RESULTS,
+    payload: {
+      searchResults: data
+    }
+  }
+}
 
 // Click Handler for Nav Collection button
 export function toggleCollectionList(panelMode, isOpen) {
@@ -129,9 +171,20 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
   // Add type and image from returned request
   console.log('new spot', spotToAdd);
   // const data = request.post(endpoints.spots).send(spotToAdd).end();
-  const data = request.post(endpoints.spots).send(spotToAdd);
-  console.log('sending data', data);
+  // const data = request.post(endpoints.spots).send(spotToAdd);
 
+  const data = new Promise((resolve, reject) => {
+    request.post(endpoints.spots)
+      .send(spotToAdd)
+      .end((err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(res);
+      });
+  });
+
+  console.log('sending data', data);
   return {
     type: MAP_CONFIRM_POINT,
     payload: data

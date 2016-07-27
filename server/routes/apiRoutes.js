@@ -1,7 +1,7 @@
 import Spot from '../db/Spots';
 import SpotsUsers from '../db/spotsUsersJoin';
 import { sendBackJSON } from '../db/queryHelpers';
-import {requestMultipleYelp, generateYelpNewBusParam} from '../yelp/yelpQuery';
+import {requestMultipleYelp, generateYelpNewBusParam, requestYelp} from '../yelp/yelpQuery';
 import Promise from 'bluebird';
 import _ from 'lodash';
 
@@ -84,4 +84,17 @@ export default function(app) {
       .then((result) => sendBackJSON(res, result, 'updated a spot'))
       .catch((err) => sendBackJSON(res, err, 'error'));
   });
+
+  app.post('/api/yelp', (req, res) => {
+    console.log('req.body', req.body);
+    requestYelp({term:'burger',location: 'San Francisco'})
+    .then(function(data){
+      console.log('yelp data', data);
+      res.send(data);
+    })
+    .catch(function(err){
+      console.log(err);
+      res.send(err);
+    })
+  })
 }
