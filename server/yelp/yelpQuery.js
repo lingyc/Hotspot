@@ -23,6 +23,7 @@ var endpointBusID = 'https://api.yelp.com/v2/business/';
 
 // Generate parameters for a new business
 export var generateYelpNewBusParam = function (name, longitude, latitude) {
+  console.log('generateYelpNewBusParam called')
   return {
     term: name,
     limit: 1,
@@ -31,7 +32,8 @@ export var generateYelpNewBusParam = function (name, longitude, latitude) {
 };
 
 // Yelp call
-export var requestYelp = function (setParameters, busId) {
+export var requestYelp = function (setParameters, busId, searchBar) {
+  console.log('requestYelp called')
   var httpMethod = 'GET';
 
   if (busId) {
@@ -59,7 +61,6 @@ export var requestYelp = function (setParameters, busId) {
 
   var consumerSecret = YELP_CONSUMER_SECRET;
   var tokenSecret = YELP_TOKEN_SECRET;
-
   // Call Yelp servers for a oAuth signature (only good for 300 sec)
   var signature = oauthSignature.generate(
     httpMethod,
@@ -71,13 +72,15 @@ export var requestYelp = function (setParameters, busId) {
   );
 
   parameters.oauth_signature = signature;
-
+  console.log('parameters', parameters);
   var paramUrl = qs.stringify(parameters);
 
   var apiUrl = url + '?' + paramUrl;
 
   return new Promise((resolve, reject) => {
+    // console.log(apiUrl);
     request(apiUrl, function(err, res, body) {
+      // console.log('yelp res', res);
       if (err) {
         console.log('**********************************');
         console.log('ERROR', err);
@@ -86,11 +89,14 @@ export var requestYelp = function (setParameters, busId) {
 
       var data = JSON.parse(body);
       // console.log('returning data', data);
-
       if (busId) {
         resolve(parseYelpData(data));
       } else if (data.businesses.length > 0) {
-        resolve(parseYelpData(data.businesses[0]));
+        if (searchBar) {
+          resolve(data.businesses.map(business => parseYelpData(business)));
+        } else {
+          resolve(parseYelpData(data.businesses[0]));
+        }
       } else {
         resolve();
       }
