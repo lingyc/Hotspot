@@ -26,22 +26,28 @@ class Map extends React.Component {
       });
   }
 
+  componentWillReceiveProps(nextProps) {
+    // console.log('nextProps', nextProps);
+    nextProps.searchResults.forEach(yelpResultEntry => foundRestaurant(formatResObj(yelpResultEntry)));
+  }
+
   renderMap() {
     console.log('lmapbox', L.mapbox);
     mainMap = L.mapbox.map('map-one', 'mapbox.streets')
       .setView(defaultCoord, 16);
 
-    // var geocoderControl = L.mapbox.geocoderControl('mapbox.places', {
-    //   autocomplete: true,
-    //   keepOpen: true,
-    //   proximity: true,
-    //   container: 'geocoder-container'
-    // });
-    // geocoderControl.addTo(mainMap);
+    var geocoderControl = L.mapbox.geocoderControl('mapbox.places', {
+      autocomplete: true,
+      keepOpen: true,
+      proximity: true,
+      container: 'geocoder-container'
+    });
+    geocoderControl.addTo(mainMap);
 
-    // geocoderControl.on('select', function(res, mainMap) {
-    //   foundRestaurant(res, mainMap);
-    // });
+    geocoderControl.on('select', function(res, mainMap) {
+      foundRestaurant(res, mainMap);
+    });
+    
     this.addPointsLayer(mainMap);
 
     initialize = false;
@@ -52,6 +58,7 @@ class Map extends React.Component {
     if (!initialize) {
       mainMap.removeLayer(restaurantPoints);
     }
+    console.log('restaurantPoints', restaurantPoints);
     restaurantPoints = L.mapbox.featureLayer().addTo(map);
 
     restaurantPoints.on('layeradd', function(point) {
@@ -100,7 +107,8 @@ function mapStateToProps(state) {
   return {
     filters: state.FilterSelectedRestaurants.filters,
     totalCollection: state.CollectionRestaurantsFilters.collection,
-    filteredCollection: state.FilterSelectedRestaurants.filteredRestaurants
+    filteredCollection: state.FilterSelectedRestaurants.filteredRestaurants,
+    searchResults: state.SearchBar.searchResults
   };
 }
 
@@ -189,7 +197,7 @@ var geoJSONSet = () => {
 ////////// HELPER FUNCTIONS - TODO MODULARIZE //////////
 function formatGeoJSON(array) {
   const geoPointArray = array.map((spot) => {
-    console.log('spot is', spot);
+    // console.log('spot is', spot);
     let ratingImg = spot.rating === '5' ? thumbUp : thumbDown;
     return geoJSONPoint(spot.longitude, spot.latitude, spot.name, ratingImg, spot.yelpData.image);
   });
@@ -231,12 +239,14 @@ var geoSuccess = (position) => {
   mainMap.setView([position.coords.latitude, position.coords.longitude]);
 };
 
+
+
 // Helpers to handle search results
 var foundRestaurant = (res) => {
   console.log('found a place', res, res.feature.text, res.feature.center); // -122, 33 long / lat
   var pointQuery = L.mapbox.featureLayer().addTo(mainMap);
   pointQuery.on('layeradd', function(point) {
-    console.log('actions', Actions);
+    // console.log('actions', Actions);
     var marker = point.layer;
     var feature = marker.feature;
     marker.setIcon(L.icon(feature.properties.icon));
@@ -251,7 +261,7 @@ var foundRestaurant = (res) => {
   });
 
   var coordinates = res.feature.center;
-  var pickedPlace = geoJSONPoint(coordinates[0], coordinates[1], res.feature.text, fistBump, testImage);
+  var pickedPlace = geoJSONPoint(coordinates[0], coordinates[1], res.feature.text, fistBump, res.feature.image || testImage);
 
   pointQuery.setGeoJSON(pickedPlace);
   pointQuery.openPopup();
@@ -263,4 +273,14 @@ var foundRestaurant = (res) => {
     radios[0].checked === true ? rating = 5 : rating = 0;
     Actions.clickLocationSubmit(res.feature.text, coordinates[1], coordinates[0], rating);
   });
+};
+
+var formatResObj = (yelpResultEntry) => {
+  return {
+    feature: {
+      center: [yelpResultEntry.latitude, yelpResultEntry.longitude],
+      text: yelpResultEntry.name,
+      image: yelpResultEntry.image
+    }
+  }
 };
