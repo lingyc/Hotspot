@@ -14,9 +14,10 @@ export default function(state = initialState, action) {
         searchInput: action.payload.searchInput
       };
     case NAV_SEARCH_RESULTS:
+      console.log('action.payload.searchResults',action.payload);
       return {
         ...state,
-        searchResults: action.payload.searchResults
+        searchResults: action.payload.body.data
       };
     default:
       return state;

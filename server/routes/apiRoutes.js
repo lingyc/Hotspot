@@ -34,6 +34,7 @@ export default function(app) {
           return [];
         }
         return spotsReturn.map((spot) => {
+          // console.log('spotssssss', spot)
           let match = yelpResults.filter((result) => {
             let lowerLength = Math.min([spot.length, result.length]);
             return result.name.indexOf(spot.name.slice(lowerLength)) !== -1;
@@ -90,7 +91,7 @@ export default function(app) {
     requestYelp({term:'burger',location: 'San Francisco'}, null, true)
     .then(function(data){
       console.log('yelp data', data);
-      res.send(data);
+      sendBackJSON(res, data, 'got all spots')
     })
     .catch(function(err){
       console.log(err);

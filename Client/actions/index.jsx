@@ -50,9 +50,7 @@ export function submitSearch(input) {
   console.log('yelp data', data);
   return {
     type: NAV_SEARCH_RESULTS,
-    payload: {
-      searchResults: data
-    }
+    payload: data
   }
 }
 

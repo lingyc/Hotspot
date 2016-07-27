@@ -135,7 +135,8 @@ export var parseYelpData = function (business) {
     name: business.name,
     cuisine: cuisine,
     image: imageUrl,
-    businessId: businessId
+    businessId: businessId,
+    coordinate: business.location.coordinate
   };
 
   return parsed;
