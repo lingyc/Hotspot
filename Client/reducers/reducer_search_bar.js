@@ -16,7 +16,7 @@ export default function(state = initialState, action) {
     case NAV_SEARCH_RESULTS:
       return {
         ...state,
-        searchResults: action.payload.searchResults.body.data
+        searchResults: action.payload.searchResults
       };
     default:
       return state;

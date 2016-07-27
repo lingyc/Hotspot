@@ -50,7 +50,7 @@ function mapStateToProps(state) {
   return {
     PanelMode: state.PanelMode.panelMode,
     isOpen: state.PanelMode.isOpen,
-    searchInput: state.searchInput
+    searchInput: state.SearchBar.searchInput
   };
 }
 

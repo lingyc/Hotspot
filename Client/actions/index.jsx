@@ -6,7 +6,6 @@ import Promise from 'bluebird';
 const endpoints = {
   logout: '/logout',
   spots: '/api/spots',
-  yelp: 'https://api.yelp.com/v2/search'
 };
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
@@ -31,7 +30,7 @@ export function handleChange(input) {
 
 export function submitSearch(input) {
   const yelpQuery = {
-    term: 'burger',
+    term: input,
     limit: 10,
     location: 'San Francisco'
   };
