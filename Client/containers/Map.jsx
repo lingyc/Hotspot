@@ -278,7 +278,7 @@ var foundRestaurant = (res) => {
 var formatResObj = (yelpResultEntry) => {
   return {
     feature: {
-      center: [yelpResultEntry.latitude, yelpResultEntry.longitude],
+      center: [yelpResultEntry.longitude, yelpResultEntry.latitude],
       text: yelpResultEntry.name,
       image: yelpResultEntry.image
     }
