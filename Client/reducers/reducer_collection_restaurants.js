@@ -14,6 +14,7 @@ export default function(state = initialState, action) {
         collection: state.collection.concat(action.payload.body.data)
       };
     case FETCH_COLLECTION:
+      console.log('action', action.payload);
       return {
         ...state,
         collection: action.payload.body.data
