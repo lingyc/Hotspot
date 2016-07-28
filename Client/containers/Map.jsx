@@ -268,6 +268,13 @@ var foundRestaurant = (res) => {
     '<input type="button" id="fistBump" value="Thumbs!!!!"></form>' +
     '<img src="' + feature.properties.image + '" alt="">';
     marker.bindPopup(content);
+     marker.on('mouseover', function (e) {
+            this.openPopup();
+        });
+        marker.on('mouseout', function (e) {
+            this.closePopup();
+        });
+
   });
 
   var coordinates = res.feature.center;
