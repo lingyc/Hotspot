@@ -18,6 +18,39 @@ export const CREATE_FILTERS = 'CREATE_FILTERS';
 export const NAV_SEARCH = 'NAV_SEARCH';
 export const NAV_SEARCH_RESULTS = 'NAV_SEARCH_RESULTS';
 
+export const MAP_SEARCH_COORD = 'MAP_SEARCH_COORD';
+export const MAP_SEARCH_ZOOM = 'MAP_SEARCH_ZOOM';
+
+export function mapSearchZoom(zoomLevel) {
+  let meters;
+  let zoomstore = {
+    20 : 100,
+    19 : 200,
+    18 : 400,
+    17 : 800,
+    16 : 1600,
+    15 : 3200,
+    14 : 6400,
+    13 : 12800,
+    12 : 25600
+  }
+  if (zoomLevel < 12) {
+    meters = 40000;
+  } else {
+    meters = zoomstore[zoomLevel];
+  }
+
+  return {
+    type: MAP_SEARCH_ZOOM,
+    payload: meters
+  }
+}
+export function mapSearchCoord(coord) {
+  return {
+    type: MAP_SEARCH_COORD,
+    payload: coord
+  }
+}
 
 export function handleChange(input) {
   return {
@@ -28,16 +61,11 @@ export function handleChange(input) {
   }
 }
 
-export function submitSearch(input) {
-  const yelpQuery = {
-    term: input,
-    limit: 10,
-    location: 'San Francisco'
-  };
+export function submitSearch(inputObj) {
 
   const data = new Promise((resolve, reject) => {
     request.post('/api/yelp')
-    .send(yelpQuery)
+    .send(inputObj)
     .end((err, res) => {
       if (err) {
         return reject(err);
