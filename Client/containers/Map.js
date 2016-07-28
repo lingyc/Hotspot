@@ -17,7 +17,9 @@ var current_accuracy;
 class Map extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      temp_collection: []
+    };
   }
 
   componentDidMount() {
@@ -30,15 +32,29 @@ class Map extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     console.log('componentWillReceiveProps');
-    // if (!initialize && mainMap && pointQuery) {
-    //   console.log('pointQuery',pointQuery);
-    //   mainMap.removeLayer(pointQuery);
-    // }
     if (layerGroup) {
       layerGroup.clearLayers();
       layerGroup = L.layerGroup().addTo(mainMap)
     }
-    nextProps.searchResults.forEach(yelpResultEntry => foundRestaurant(formatResObj(yelpResultEntry)));
+    nextProps.searchResults.forEach(yelpResultEntry => this.foundRestaurant(formatResObj(yelpResultEntry)));
+  }
+
+  tempClickLocationSubmit(name, latitude, longitude, rating, image) {
+  // Create object to make DB query
+    console.log('tempClickLocationSubmit');
+    const spotToAdd = {
+      name: name,
+      latitude: latitude,
+      longitude: longitude,
+      rating: rating,
+      yelpData: {
+        image: image
+      }
+    };
+    var newCollection = this.state.temp_collection.concat([spotToAdd]);
+    this.setState({
+      temp_collection: newCollection
+    })
   }
 
   mapSearchCoord(e) {
@@ -100,7 +116,7 @@ class Map extends React.Component {
       '<img src="' + feature.properties.image + '" alt="">';
       marker.bindPopup(content);
     });
-    let collection = this.props.totalCollection;
+    let collection = this.props.totalCollection.concat(this.state.temp_collection);
     console.log('total collection', this.props.totalCollection);
     // If any filters have been selected and a filtered collection
     // exists, send that into the map instead
@@ -121,6 +137,48 @@ class Map extends React.Component {
     }, geoError);
   }
 
+  foundRestaurant(res) {
+    // console.log('found a place', res, res.feature.text, res.feature.center); // -122, 33 long / lat
+    // var onClick = (event) => { Actions.clickLocationSubmit(res.feature.text) };
+    var pointQuery = L.mapbox.featureLayer().addTo(layerGroup);
+    console.log('pointQuery', pointQuery);
+    pointQuery.on('layeradd', function(point) {
+      // console.log('actions', Actions);
+      var marker = point.layer;
+      var feature = marker.feature;
+      marker.setIcon(L.icon(feature.properties.icon));
+      var content = '<h2>' + feature.properties.title + '<\/h2>' +
+      '<form>I would<br>' +
+      `<input type="radio" name="goBack${pointQuery._leaflet_id}" required> Definitely and absolutely<br>` +
+      `<input type="radio" name="goBack${pointQuery._leaflet_id}"> Never ever ever<br>` +
+      'go back<br>' +
+      `<input type="button" id="fistBump${pointQuery._leaflet_id}" value="Thumbs!!!!"></form>` +
+      '<img src="' + feature.properties.image + '" alt="">';
+      marker.bindPopup(content)
+      // .on('mouseover', onClick);
+    });
+
+    var coordinates = res.feature.center;
+    var pickedPlace = geoJSONPoint(coordinates[0], coordinates[1], res.feature.text, fistBump, res.feature.image || testImage);
+
+    pointQuery.setGeoJSON(pickedPlace);
+    pointQuery.openPopup();
+    
+
+    // Add listener for submission
+    var that = this;
+    $('.leaflet-popup-content').on('click', '#fistBump' + pointQuery._leaflet_id, function() {
+      console.log('clicked')
+      var radios = document.getElementsByName('goBack' + pointQuery._leaflet_id);
+      var rating;
+      radios[0].checked === true ? rating = 5 : rating = 0;
+      Actions.clickLocationSubmit(res.feature.text, coordinates[1], coordinates[0], rating);
+      that.tempClickLocationSubmit(res.feature.text, coordinates[1], coordinates[0], rating, res.image);
+      // console.log('calling mainMap.removeLayer(pointQuery)', pointQuery);
+      mainMap.removeLayer(pointQuery);
+      // that.addPointsLayer(mainMap);
+    })
+  }
 
   render() {
     // Sets collection to default to the entire collection
