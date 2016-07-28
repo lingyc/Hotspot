@@ -24,7 +24,16 @@ class Nav extends React.Component {
 
   submitSearch(e) {
     e.preventDefault();
-    this.props.actions.submitSearch(this.props.searchInput);
+    let lat = this.props.coord.lat;
+    let lng = this.props.coord.lng;
+    let searchQuery = {
+      term: this.props.searchInput,
+      limit: 10,
+      radius: this.props.meter,
+      ll: `${lat},${lng}` 
+    }
+    console.log(searchQuery);
+    this.props.actions.submitSearch(searchQuery);
   }
 
   render() {
@@ -50,7 +59,9 @@ function mapStateToProps(state) {
   return {
     PanelMode: state.PanelMode.panelMode,
     isOpen: state.PanelMode.isOpen,
-    searchInput: state.SearchBar.searchInput
+    searchInput: state.SearchBar.searchInput,
+    coord: state.SearchBar.coord,
+    meter: state.SearchBar.meter
   };
 }
 

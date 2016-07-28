@@ -43,8 +43,11 @@ class Map extends React.Component {
 
   mapSearchCoord(e) {
     // e.preventDefault();
-    console.log('hi')
-    this.props.actions.mapSearchCoord(e)
+    this.props.actions.mapSearchCoord(e);
+  }
+
+  mapSearchZoom(e) {
+    this.props.actions.mapSearchZoom(e);    
   }
 
   renderMap() {
@@ -68,8 +71,11 @@ class Map extends React.Component {
     //and on end will set the store coords to the center of map view 
     mainMap.on('moveend', () => {
       this.mapSearchCoord(mainMap.getBounds().getCenter());
-      console.log(mainMap.getBounds().getCenter())
     });
+
+    mainMap.on('zoomend', () => {
+      this.mapSearchZoom(mainMap.getZoom());
+    })
 
     this.addPointsLayer(mainMap);
     layerGroup = L.layerGroup().addTo(mainMap)
