@@ -39,7 +39,6 @@ export function handleChange(input) {
 export function submitSearch(input) {
   const yelpQuery = {
     term: input,
-    radius: 
     limit: 10,
     location: 'San Francisco'
   };
