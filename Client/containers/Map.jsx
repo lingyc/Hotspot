@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 
 // Globl map
-var mainMap, restaurantPoints;
+var mainMap, restaurantPoints, layerGroup;
 var initialize = true;
 
 class Map extends React.Component {
@@ -27,7 +27,15 @@ class Map extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // console.log('nextProps', nextProps);
+    console.log('componentWillReceiveProps');
+    // if (!initialize && mainMap && pointQuery) {
+    //   console.log('pointQuery',pointQuery);
+    //   mainMap.removeLayer(pointQuery);
+    // }
+    if (layerGroup) {
+      layerGroup.clearLayers();
+      layerGroup = L.layerGroup().addTo(mainMap)
+    }
     nextProps.searchResults.forEach(yelpResultEntry => foundRestaurant(formatResObj(yelpResultEntry)));
   }
 
@@ -49,6 +57,7 @@ class Map extends React.Component {
     });
     
     this.addPointsLayer(mainMap);
+    layerGroup = L.layerGroup().addTo(mainMap)
 
     initialize = false;
     return mainMap;
@@ -56,6 +65,7 @@ class Map extends React.Component {
 
   addPointsLayer(map) {
     if (!initialize) {
+      console.log('mainMap.removeLayer(restaurantPoints);');
       mainMap.removeLayer(restaurantPoints);
     }
     console.log('restaurantPoints', restaurantPoints);
@@ -244,7 +254,7 @@ var geoSuccess = (position) => {
 // Helpers to handle search results
 var foundRestaurant = (res) => {
   console.log('found a place', res, res.feature.text, res.feature.center); // -122, 33 long / lat
-  var pointQuery = L.mapbox.featureLayer().addTo(mainMap);
+  var pointQuery = L.mapbox.featureLayer().addTo(layerGroup);
   pointQuery.on('layeradd', function(point) {
     // console.log('actions', Actions);
     var marker = point.layer;
@@ -273,6 +283,7 @@ var foundRestaurant = (res) => {
     radios[0].checked === true ? rating = 5 : rating = 0;
     Actions.clickLocationSubmit(res.feature.text, coordinates[1], coordinates[0], rating);
   });
+  console.log('pointQuery', pointQuery);
 };
 
 var formatResObj = (yelpResultEntry) => {
