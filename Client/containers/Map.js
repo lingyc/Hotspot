@@ -46,7 +46,7 @@ class Map extends React.Component {
       name: name,
       latitude: latitude,
       longitude: longitude,
-      rating: rating,
+      rating: "" + rating,
       yelpData: {
         image: image
       }
@@ -116,6 +116,9 @@ class Map extends React.Component {
       '<img src="' + feature.properties.image + '" alt="">';
       marker.bindPopup(content);
     });
+
+    console.log('this.state.temp_collection', this.state.temp_collection);
+    console.log('this.props.totalCollection', this.props.totalCollection);
     let collection = this.props.totalCollection.concat(this.state.temp_collection);
     console.log('total collection', this.props.totalCollection);
     // If any filters have been selected and a filtered collection
