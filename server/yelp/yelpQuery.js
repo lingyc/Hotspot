@@ -10,12 +10,10 @@ import Promise from 'bluebird';
 // cant import from non existant file in deployment
 // import Y from '../config-public/yelpconfig';
 // import Y from '../config/yelpconfig';
-
-const YELP_CONSUMER_KEY = 'TMXpPB0Cfc1STQaeBf6wKQ' || 0;
-const YELP_CONSUMER_SECRET = 'NnxsLL9_Kel_Ls0mImLOQXHaMuk' || 0;
-const YELP_TOKEN = 'CqzYbfwlIM1m_N-YE3Urj0D1fDexctdw'|| 0;
-const YELP_TOKEN_SECRET = 'PME0iUhbash_profileo7N-bLpt7G2MBZ6UdrVI'|| 0;
-
+const YELP_CONSUMER_KEY='TMXpPB0Cfc1STQaeBf6wKQ'
+const YELP_CONSUMER_SECRET='NnxsLL9_Kel_Ls0mImLOQXHaMuk'
+const YELP_TOKEN='CqzYbfwlIM1m_N-YE3Urj0D1fDexctdw'
+const YELP_TOKEN_SECRET='PME0iUho7N-bLpt7G2MBZ6UdrVI'
 
 
 
