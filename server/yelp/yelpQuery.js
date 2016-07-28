@@ -11,10 +11,13 @@ import Promise from 'bluebird';
 // import Y from '../config-public/yelpconfig';
 // import Y from '../config/yelpconfig';
 
-const YELP_CONSUMER_KEY = process.env.YELP_CONSUMER_KEY || 0;
-const YELP_CONSUMER_SECRET = process.env.YELP_CONSUMER_SECRET || 0;
-const YELP_TOKEN = process.env.YELP_TOKEN || 0;
-const YELP_TOKEN_SECRET = process.env.YELP_TOKEN_SECRET || 0;
+const YELP_CONSUMER_KEY = 'TMXpPB0Cfc1STQaeBf6wKQ' || 0;
+const YELP_CONSUMER_SECRET = 'NnxsLL9_Kel_Ls0mImLOQXHaMuk' || 0;
+const YELP_TOKEN = 'CqzYbfwlIM1m_N-YE3Urj0D1fDexctdw'|| 0;
+const YELP_TOKEN_SECRET = 'PME0iUhbash_profileo7N-bLpt7G2MBZ6UdrVI'|| 0;
+
+
+
 
 
 // Yelp Endpoints
