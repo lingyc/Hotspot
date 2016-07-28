@@ -18,6 +18,14 @@ export const CREATE_FILTERS = 'CREATE_FILTERS';
 export const NAV_SEARCH = 'NAV_SEARCH';
 export const NAV_SEARCH_RESULTS = 'NAV_SEARCH_RESULTS';
 
+export const MAP_SEARCH_COORD = 'MAP_SEARCH_COORD'
+
+export function mapSearchCoord(coord) {
+  return {
+    type: MAP_SEARCH_COORD,
+    payload: coord
+  }
+}
 
 export function handleChange(input) {
   return {

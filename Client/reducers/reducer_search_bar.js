@@ -1,9 +1,11 @@
 import { NAV_SEARCH } from '../actions/index';
 import { NAV_SEARCH_RESULTS } from '../actions/index';
+import { MAP_SEARCH_COORD } from '../actions/index';
 
 const initialState = {
   searchInput: '',
-  searchResults: []
+  searchResults: [],
+  coord: null
 };
 
 export default function(state = initialState, action) {
@@ -17,6 +19,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         searchResults: action.payload.body.data
+      };
+    case MAP_SEARCH_COORD:
+      return {
+        ...state,
+        coord: action.payload
       };
     default:
       return state;

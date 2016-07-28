@@ -11,6 +11,8 @@ import * as Actions from '../actions';
 // Globl map
 var mainMap, restaurantPoints, layerGroup;
 var initialize = true;
+var current_position;
+var current_accuracy;
 
 class Map extends React.Component {
   constructor(props) {
@@ -39,23 +41,36 @@ class Map extends React.Component {
     nextProps.searchResults.forEach(yelpResultEntry => foundRestaurant(formatResObj(yelpResultEntry)));
   }
 
+  mapSearchCoord(e) {
+    // e.preventDefault();
+    console.log('hi')
+    this.props.actions.mapSearchCoord(e)
+  }
+
   renderMap() {
     console.log('lmapbox', L.mapbox);
     mainMap = L.mapbox.map('map-one', 'mapbox.streets')
       .setView(defaultCoord, 16);
 
-    var geocoderControl = L.mapbox.geocoderControl('mapbox.places', {
-      autocomplete: true,
-      keepOpen: true,
-      proximity: true,
-      container: 'geocoder-container'
-    });
-    geocoderControl.addTo(mainMap);
+    // var geocoderControl = L.mapbox.geocoderControl('mapbox.places', {
+    //   autocomplete: true,
+    //   keepOpen: true,
+    //   proximity: true,
+    //   container: 'geocoder-container'
+    // });
+    // geocoderControl.addTo(mainMap);
 
-    geocoderControl.on('select', function(res, mainMap) {
-      foundRestaurant(res, mainMap);
-    });
+    // geocoderControl.on('select', function(res, mainMap) {
+    //   foundRestaurant(res, mainMap);
+    // });
     
+    //add a listener to the mainmap object that listens to moving
+    //and on end will set the store coords to the center of map view 
+    mainMap.on('moveend', () => {
+      this.mapSearchCoord(mainMap.getBounds().getCenter());
+      console.log(mainMap.getBounds().getCenter())
+    });
+
     this.addPointsLayer(mainMap);
     layerGroup = L.layerGroup().addTo(mainMap)
 
@@ -247,6 +262,10 @@ var geoError = () => {
 
 var geoSuccess = (position) => {
   mainMap.setView([position.coords.latitude, position.coords.longitude]);
+};
+
+var currentMapView = () => {
+  return mainMap.getCenter();
 };
 
 
