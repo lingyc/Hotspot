@@ -107,7 +107,25 @@ export function showSearchResults(panelMode, isOpen) {
 
 
 
+ export function toggleFriendReqList (panelMode, isOpen) {
+  // If panelMode is collection, set it to null.
+  if (panelMode === 'collection' && isOpen === true) {
+    isOpen = false;
+  } else {
+    // Else set panelMode to collection
+    panelMode = 'collection';
+    isOpen = true;
+  }
 
+
+  return {
+    type: NAV_CLICK_COLLECTION,
+    payload: {
+      panelMode: panelMode,
+      isOpen: isOpen
+    }
+  };
+}
 
 
 
