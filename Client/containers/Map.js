@@ -36,7 +36,17 @@ class Map extends React.Component {
       layerGroup.clearLayers();
       layerGroup = L.layerGroup().addTo(mainMap)
     }
-    nextProps.searchResults.forEach(yelpResultEntry => this.foundRestaurant(formatResObj(yelpResultEntry)));
+    //creates a uniqueId for already rated items
+    var uniqueIds = this.props.totalCollection.map(id => id.name + id.latitude.toString().slice(0,2) + id.longitude.toString().slice(0,2))
+
+    //render user search results
+    nextProps.searchResults.forEach(yelpResultEntry => {
+      //compare search results uniqueId with already rated items
+      var id = yelpResultEntry.name + yelpResultEntry.latitude.toString().slice(0,2) + yelpResultEntry.longitude.toString().slice(0,2);
+      if (uniqueIds.indexOf(id) === -1) {
+        this.foundRestaurant(formatResObj(yelpResultEntry));
+      }
+    });
   }
 
   tempClickLocationSubmit(name, latitude, longitude, rating, image) {
@@ -46,7 +56,7 @@ class Map extends React.Component {
       name: name,
       latitude: latitude,
       longitude: longitude,
-      rating: rating,
+      rating: "" + rating,
       yelpData: {
         image: image
       }
@@ -100,6 +110,7 @@ class Map extends React.Component {
     return mainMap;
   }
 
+  // Helpers to handle search results
   addPointsLayer(map) {
     if (!initialize) {
       console.log('mainMap.removeLayer(restaurantPoints);');
@@ -115,7 +126,13 @@ class Map extends React.Component {
       var content = '<h2>' + feature.properties.title + '<\/h2>' +
       '<img src="' + feature.properties.image + '" alt="">';
       marker.bindPopup(content);
+      marker.on('mouseover', function(e) {
+        this.openPopup();
+      });
     });
+
+    console.log('this.state.temp_collection', this.state.temp_collection);
+    console.log('this.props.totalCollection', this.props.totalCollection);
     let collection = this.props.totalCollection.concat(this.state.temp_collection);
     console.log('total collection', this.props.totalCollection);
     // If any filters have been selected and a filtered collection
@@ -155,7 +172,9 @@ class Map extends React.Component {
       `<input type="button" id="fistBump${pointQuery._leaflet_id}" value="Thumbs!!!!"></form>` +
       '<img src="' + feature.properties.image + '" alt="">';
       marker.bindPopup(content)
-      // .on('mouseover', onClick);
+      marker.on('mouseover', function(e) {
+        this.openPopup();
+      });
     });
 
     var coordinates = res.feature.center;
@@ -330,50 +349,6 @@ var geoSuccess = (position) => {
 
 var currentMapView = () => {
   return mainMap.getCenter();
-};
-
-
-
-// Helpers to handle search results
-var foundRestaurant = (res) => {
-  console.log('found a place', res, res.feature.text, res.feature.center); // -122, 33 long / lat
-  var pointQuery = L.mapbox.featureLayer().addTo(layerGroup);
-  pointQuery.on('layeradd', function(point) {
-    // console.log('actions', Actions);
-    var marker = point.layer;
-    var feature = marker.feature;
-    marker.setIcon(L.icon(feature.properties.icon));
-    var content = '<h2>' + feature.properties.title + '<\/h2>' +
-    '<form>I would<br>' +
-    '<input type="radio" name="goBack" required> Definitely and absolutely<br>' +
-    '<input type="radio" name="goBack"> Never ever ever<br>' +
-    'go back<br>' +
-    '<input type="button" id="fistBump" value="Thumbs!!!!"></form>' +
-    '<img src="' + feature.properties.image + '" alt="">';
-    marker.bindPopup(content);
-     marker.on('mouseover', function (e) {
-            this.openPopup();
-        });
-        marker.on('mouseout', function (e) {
-            this.closePopup();
-        });
-
-  });
-
-  var coordinates = res.feature.center;
-  var pickedPlace = geoJSONPoint(coordinates[0], coordinates[1], res.feature.text, fistBump, res.feature.image || testImage);
-
-  pointQuery.setGeoJSON(pickedPlace);
-  pointQuery.openPopup();
-
-  // Add listener for submission
-  document.getElementById('fistBump').addEventListener('click', function() {
-    var radios = document.getElementsByName('goBack');
-    var rating;
-    radios[0].checked === true ? rating = 5 : rating = 0;
-    Actions.clickLocationSubmit(res.feature.text, coordinates[1], coordinates[0], rating);
-  });
-  console.log('pointQuery', pointQuery);
 };
 
 var formatResObj = (yelpResultEntry) => {

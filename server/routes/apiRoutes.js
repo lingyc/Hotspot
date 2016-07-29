@@ -62,16 +62,36 @@ export default function(app) {
   });
 
   app.post('/api/spots', (req, res) => {
-    Spot.create(req.body)
-      .then((spot) => {
-        console.log('insert spot ', spot[0], 'with user id', req.user);
-        return SpotsUsers.create({userid: req.user.id, spotid: spot[0].id});
-      })
-      .then((spotuser) => sendBackJSON(res, req.body, 'created new spot'))
-      .catch((err) => {
-        console.log(err);
-        return sendBackJSON(res, err, 'error');
-      });
+    // console.log('/api/spots req.body', req.body);
+    Spot.find({name: req.body.name, latitude: req.body.latitude, longitude: req.body.longitude})
+    .then((spot) => {
+      // console.log('found spot', spot);
+      if (spot.length > 0) {
+        return SpotsUsers.find({userid: req.user.id, spotid: spot[0].id})
+        .then((spotuser) => {
+          if (spotuser.length > 0) {
+            return spotuser;
+          } else {
+            return SpotsUsers.create({userid: req.user.id, spotid: spot[0].id});
+          }
+        })
+      } else {
+        // console.log('creating spot');
+        return Spot.create(req.body)
+        .then((spot) => {
+          // console.log('insert spot ', spot[0], 'with user id', req.user);
+          return SpotsUsers.create({userid: req.user.id, spotid: spot[0].id});
+        })
+      }
+    })
+    .then((spotuser) => {
+      console.log('created new spot', spotuser);
+      sendBackJSON(res, req.body, 'created new spot')
+    })
+    .catch((err) => {
+      console.log(err);
+      return sendBackJSON(res, err, 'error');
+    });
   });
 
   app.put('/api/spots/:id', (req, res) => {
