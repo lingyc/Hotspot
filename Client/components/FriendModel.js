@@ -1,35 +1,69 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as Actions from '../actions';
+
+
+
+
+
+
 var friendEndpoints={
   accept:'/api/confirmFriend',
   decline:'/api/rejectFriend'
 }
 
-var FriendModel = ({item}) => {
-  console.log('you should see a friend!')
-  return (
-  <div>
-     {item.requestor}
-    <button onClick={function(){accept(item.requestor)}}>Accept</button>
-    <button onClick={function(){decline(item.requestor)}}>Decline</button>
-  </div>
-);
+ class FriendModel extends React.Component  {
+  //console.log('you should see a friend!');
+  constructor(props){
+    super(props)
+  }
 
-};
- function accept(person){
-  console.log('should accept '+ person);
+accept(person){
+console.log('should accept '+ person);
 $.post(friendEndpoints.accept,{ friendname:person },function(a,b){
   console.log('accept request!!',a,b);
 });
 
  }
 
- function decline(person){
-  console.log('should decline '+ person);
 
+decline(person){
+  console.log('should decline '+ person);
 $.post(friendEndpoints.decline,{ friendname:person },function(a,b){
   console.log('decline request!!',a,b);
 });
 
  }
 
-export default FriendModel;
+
+  render(){
+    var that=this;
+ 
+    return (
+  <div>
+     {this.props.item.requestor}
+    <button onClick={function(){that.accept(that.props.item.requestor)}}>Accept</button>
+    <button onClick={function(){that.decline(that.props.item.requestor)}}>Decline</button>
+  </div>
+  );
+ }
+};
+
+
+
+function mapStateToProps(state) {
+  return {
+    friendRequestsLower:state.FriendReqs.friendReqs
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(Actions, dispatch)
+  };
+}
+
+
+ export default connect(mapStateToProps, mapDispatchToProps)(FriendModel);
+
