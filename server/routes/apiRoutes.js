@@ -182,7 +182,7 @@ export default function(app) {
     });
   });
 
-  //get friend request to you
+  //get friend request to other
   app.get('/api/friendRequest', (req, res) => {
     FriendRequests.find({requestor: req.user.username})
     .then((friendRequest) => {
@@ -195,11 +195,16 @@ export default function(app) {
     });
   });
 
-  //get friend request to others
+  //get friend request to you
   app.get('/api/pendingFriendRequest', (req, res) => {
-    FriendRequests.find({requestee: req.user.username})
+    var friendRequestQuery = 
+      `SELECT * FROM friendrequests 
+      WHERE friendrequests.requestee = '${req.user.username}'
+      AND friendrequests.response = 'pending';`;
+
+    FriendRequests.rawQuery(friendRequestQuery)
     .then((pendingFriendRequest) => {
-            sendBackJSON(res, pendingFriendRequest, 'sending a list of pendingFriendRequest')
+      sendBackJSON(res, pendingFriendRequest, 'sending a list of pendingFriendRequest')
     })
     .catch((err) => {
       console.log(err);
@@ -295,7 +300,6 @@ export default function(app) {
 
   //add your own wishes
   app.post('/api/spots/wishes', (req, res) => {
-    //find spotid first, if wish exist dont add another one
     var findWishQuery = 
       `SELECT wishes.spotid, spots.name FROM wishes 
       INNER JOIN users 
@@ -338,10 +342,7 @@ export default function(app) {
   });
 
   //get friend wishes
-    //an array of friend wishes with friendname
-    //allow user to send request to fullfill wishes to friend
-  app.get('/api/spots/friendWishes', (req, res) => {
-    console.log('req', req);
+  app.get('/api/friendwishes', (req, res) => {
     var friendWishQuery = 
       `SELECT * FROM wishes 
       INNER JOIN friends 
@@ -350,9 +351,9 @@ export default function(app) {
       ON users.username=friends.username
       INNER JOIN spots
       ON wishes.spotid=spots.id
-      WHERE users.username = '${req.body.username}';`;
+      WHERE users.username = '${req.query.username}';`;
 
-    Wishes.rawQuery(findWishQuery)
+    Wishes.rawQuery(friendWishQuery)
     .then(friendWishes => {
       console.log('friendWishes', friendWishes);
       sendBackJSON(res, friendWishes, 'sending new friend');
@@ -364,7 +365,8 @@ export default function(app) {
   });
 
   app.post('/api/spots/acceptFriendWishes', (req, res) => {
-
+    console.log('asdfsad')
+    res.send('asdfasd')
   });
 
   //saved spots should attach wishe boolean
