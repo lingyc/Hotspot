@@ -7,11 +7,11 @@ console.log('handleChange', handleChange);
 
 class Nav extends React.Component {
 
-  collectionClick(e) {
+  friendReqClick(e) {
     e.preventDefault();
     this.props.actions.toggleFriendReqList(this.props.PanelMode, this.props.isOpen);
   }
-friendReqClick(e) {
+collectionClick(e) {
     e.preventDefault();
     this.props.actions.toggleCollectionList(this.props.PanelMode, this.props.isOpen);
   }

@@ -10,6 +10,7 @@ const endpoints = {
 };
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
+export const NAV_CLICK_FRIENDREQS = 'NAV_CLICK_FRIENDREQS';
 export const NAV_CLICK_FILTER = 'NAV_CLICK_FILTER';
 export const PANEL_CLICK_FILTER_ITEM = 'PANEL_CLICK_FILTER_ITEM';
 export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
@@ -111,7 +112,7 @@ export function showSearchResults(panelMode, isOpen) {
 
  export function toggleFriendReqList (panelMode, isOpen) {
   // If panelMode is collection, set it to null.
-  if (panelMode === 'collection' && isOpen === true) {
+  if (panelMode === 'friendRequests' && isOpen === true) {
     isOpen = false;
   } else {
     // Else set panelMode to collection
@@ -121,7 +122,7 @@ export function showSearchResults(panelMode, isOpen) {
 
 
   return {
-    type: NAV_CLICK_COLLECTION,
+    type: NAV_CLICK_FRIENDREQS,
     payload: {
       panelMode: panelMode,
       isOpen: isOpen
@@ -285,7 +286,9 @@ export function fetchFriendRequests() {
   // Query database for user's friend requests;
   console.log('fetchFriendRequests')
   const friendRequests = request.get(endpoints.friendReqs);
-
+  $.get("http://127.0.0.1:8732/api/friendRequest",function(a,b){
+    console.log(a,b);
+  })
   return {
     type: FETCH_FRIENDREQS,
     payload: friendRequests
