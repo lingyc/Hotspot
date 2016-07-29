@@ -13,7 +13,7 @@ CREATE TABLE spots_users (
 CREATE TABLE spots (
   id SERIAL PRIMARY KEY,
   name VARCHAR,
-  rating VARCHAR,
+  rating REAL,
   latitude REAL,
   longitude REAL,
   yelp_id VARCHAR
@@ -26,4 +26,22 @@ CREATE TABLE users (
   password VARCHAR,
   facebookId BIGINT,
   facebookAccessToken VARCHAR
+);
+
+CREATE TABLE friends (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR,
+  friendname VARCHAR
+);
+
+CREATE TABLE wishes (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR,
+  spotid REAL
+);
+
+CREATE TABLE friendrequests (
+  id SERIAL PRIMARY KEY,
+  requestor VARCHAR,
+  requestee VARCHAR
 );
