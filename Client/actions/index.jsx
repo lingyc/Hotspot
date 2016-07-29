@@ -286,8 +286,8 @@ export function fetchFriendRequests() {
   // Query database for user's friend requests;
   console.log('fetchFriendRequests')
   const friendRequests = request.get(endpoints.friendReqs);
-  $.get("http://127.0.0.1:8732/api/friendRequest",function(a,b){
-    console.log(a,b);
+  $.get("http://127.0.0.1:8732/api/pendingFriendRequest",function(a,b){
+    console.log('these are all my friend requests',a,b);
   })
   return {
     type: FETCH_FRIENDREQS,
