@@ -59,7 +59,6 @@ else if (this.props.panelMode === 'results'){
           key={restaurant.name}/>);
       });
     }
-    console.log(panelItems,this.props.totalCollection,this.props.searchResults);
     return (
       <Menu id={ 'panel' }
             right

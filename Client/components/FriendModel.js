@@ -22,7 +22,7 @@ var friendEndpoints={
 accept(person){
   var that=this;
 $.post(friendEndpoints.accept,{ friendname:person },function(a,b){
-  console.log('accept request!!',a,b);
+  console.log('accept request!!',a,'error(?):',b);
   that.props.actions.fetchFriendRequests();
     console.log('the new store!:',that.props.friendRequestsLower);
 
@@ -34,7 +34,7 @@ $.post(friendEndpoints.accept,{ friendname:person },function(a,b){
 decline(person){
   var that=this;
 $.post(friendEndpoints.decline,{ friendname:person },function(a,b){
-  console.log('decline request!!',a,b);
+  console.log('decline request!!',a,'error(?):',b);
   that.props.actions.fetchFriendRequests();
 });
 
