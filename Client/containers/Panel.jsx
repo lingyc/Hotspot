@@ -25,10 +25,8 @@ console.log(this.props.panelMode)
 if (this.props.panelMode === 'friendRequests'){
   console.log('friendRequests panel being called',this.props.friendRequests)
 
-      panelItems = this.props.searchResults.map((restaurant) => {
-        return (<ResultModel item={restaurant}
-          viewCollectionItem={this.props.actions.viewCollectionItem}
-          key={restaurant.name}/>);
+      panelItems = this.props.friendRequests.map((person) => {
+        return (<div>{person.requestor}</div>);
       });
     }
 

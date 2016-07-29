@@ -6,7 +6,7 @@ import Promise from 'bluebird';
 const endpoints = {
   logout: '/logout',
   spots: '/api/spots',
-  friendReqs:'/api/friendRequest'
+  friendReqs:'/api/pendingFriendRequest'
 };
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
