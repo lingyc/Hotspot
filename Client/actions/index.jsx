@@ -14,7 +14,7 @@ export const PANEL_CLICK_FILTER_ITEM = 'PANEL_CLICK_FILTER_ITEM';
 export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
 export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 export const CREATE_FILTERS = 'CREATE_FILTERS';
-
+export const SHOW_RESULTS = 'SHOW_RESULTS';
 export const NAV_SEARCH = 'NAV_SEARCH';
 export const NAV_SEARCH_RESULTS = 'NAV_SEARCH_RESULTS';
 
@@ -86,17 +86,17 @@ export function submitSearch(inputObj) {
 //click handler for search results panel
 export function showSearchResults(panelMode, isOpen) {
   // If panelMode is collection, set it to null.
-  if (panelMode === 'collection' && isOpen === true) {
+  if (panelMode === 'results' && isOpen === true) {
     isOpen = false;
   } else {
     // Else set panelMode to collection
-    panelMode = 'collection';
+    panelMode = 'results';
     isOpen = true;
   }
 
 
   return {
-    type: NAV_CLICK_COLLECTION,
+    type: SHOW_RESULTS,
     payload: {
       panelMode: panelMode,
       isOpen: isOpen
