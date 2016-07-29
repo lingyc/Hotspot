@@ -6,9 +6,11 @@ import Promise from 'bluebird';
 const endpoints = {
   logout: '/logout',
   spots: '/api/spots',
+  friendReqs:'/api/pendingFriendRequest'
 };
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
+export const NAV_CLICK_FRIENDREQS = 'NAV_CLICK_FRIENDREQS';
 export const NAV_CLICK_FILTER = 'NAV_CLICK_FILTER';
 export const PANEL_CLICK_FILTER_ITEM = 'PANEL_CLICK_FILTER_ITEM';
 export const MAP_CONFIRM_POINT = 'MAP_CONFIRM_POINT';
@@ -16,6 +18,7 @@ export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 export const CREATE_FILTERS = 'CREATE_FILTERS';
 export const SHOW_RESULTS = 'SHOW_RESULTS';
 export const NAV_SEARCH = 'NAV_SEARCH';
+export const FETCH_FRIENDREQS = 'FETCH_FRIENDREQS';
 export const NAV_FRIEND_NAME = 'NAV_FRIEND_NAME';
 export const NAV_SEARCH_RESULTS = 'NAV_SEARCH_RESULTS';
 export const MAP_SEARCH_COORD = 'MAP_SEARCH_COORD';
@@ -107,7 +110,25 @@ export function showSearchResults(panelMode, isOpen) {
 
 
 
+ export function toggleFriendReqList (panelMode, isOpen) {
+  // If panelMode is collection, set it to null.
+  if (panelMode === 'friendRequests' && isOpen === true) {
+    isOpen = false;
+  } else {
+    // Else set panelMode to collection
+    panelMode = 'friendRequests';
+    isOpen = true;
+  }
 
+
+  return {
+    type: NAV_CLICK_FRIENDREQS,
+    payload: {
+      panelMode: panelMode,
+      isOpen: isOpen
+    }
+  };
+}
 
 
 
@@ -258,6 +279,25 @@ export function fetchCollection() {
     payload: collection
   };
 }
+
+
+export function fetchFriendRequests() {
+  // This function should only be called once on startup
+  // Query database for user's friend requests;
+  console.log('fetchFriendRequests')
+  const friendRequests = request.get(endpoints.friendReqs);
+  $.get("http://127.0.0.1:8732/api/friendRequest",function(a,b){
+    console.log(a,b);
+  })
+  return {
+    type: FETCH_FRIENDREQS,
+    payload: friendRequests
+  };
+}
+
+
+
+
 
 export function createFilters(collection, filters) {
 

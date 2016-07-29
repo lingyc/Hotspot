@@ -1,6 +1,7 @@
 import { NAV_CLICK_FILTER } from '../actions/index';
 import { NAV_CLICK_COLLECTION } from '../actions/index';
 import { SHOW_RESULTS} from '../actions/index';
+import { NAV_CLICK_FRIENDREQS} from '../actions/index';
 const initialState = {
   panelMode: 'none',
   isOpen: false
@@ -21,6 +22,12 @@ export default function(state = initialState, action) {
         isOpen: action.payload.isOpen
       };
       case SHOW_RESULTS:
+      return {
+        ...state,
+        panelMode: action.payload.panelMode,
+        isOpen: action.payload.isOpen
+      };
+      case NAV_CLICK_FRIENDREQS:
       return {
         ...state,
         panelMode: action.payload.panelMode,

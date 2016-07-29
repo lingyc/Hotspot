@@ -184,8 +184,9 @@ export default function(app) {
 
   //get friend request to you
   app.get('/api/friendRequest', (req, res) => {
-    FriendRequests.find({requestor: req.query.username})
+    FriendRequests.find({requestor: req.user.username})
     .then((friendRequest) => {
+      console.log('pending!!!!!!!!!!',friendRequest);
       sendBackJSON(res, friendRequest, 'sending a list of friendRequest')
     })
     .catch((err) => {
@@ -196,9 +197,9 @@ export default function(app) {
 
   //get friend request to others
   app.get('/api/pendingFriendRequest', (req, res) => {
-    FriendRequests.find({requestee: req.query.username})
+    FriendRequests.find({requestee: req.user.username})
     .then((pendingFriendRequest) => {
-      sendBackJSON(res, pendingFriendRequest, 'sending a list of pendingFriendRequest')
+            sendBackJSON(res, pendingFriendRequest, 'sending a list of pendingFriendRequest')
     })
     .catch((err) => {
       console.log(err);

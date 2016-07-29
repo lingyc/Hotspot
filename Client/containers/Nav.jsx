@@ -1,17 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { toggleCollectionList, toggleFilterList, logout, submitSearch, handleChange,showSearchResults} from '../actions/index';
+import { toggleCollectionList, toggleFilterList, logout, submitSearch, handleChange,showSearchResults,toggleFriendReqList} from '../actions/index';
 import request from 'superagent';
 console.log('handleChange', handleChange);
 
 class Nav extends React.Component {
 
-  collectionClick(e) {
+  friendReqClick(e) {
+    e.preventDefault();
+    this.props.actions.toggleFriendReqList(this.props.PanelMode, this.props.isOpen);
+  }
+collectionClick(e) {
     e.preventDefault();
     this.props.actions.toggleCollectionList(this.props.PanelMode, this.props.isOpen);
   }
-
   filterClick(e) {
     e.preventDefault();
     this.props.actions.toggleFilterList(this.props.PanelMode, this.props.isOpen);
@@ -43,7 +46,7 @@ class Nav extends React.Component {
 
  submitFriendReq(e) {
     e.preventDefault();
-   
+
     let friendRequest = {
       requestee: document.getElementsByClassName('friendToAdd')[0].value
     }
@@ -56,8 +59,8 @@ console.log(friendRequest);
             console.log(err)
             return reject(err);
           }
-          console.log(res);
-
+          //;
+          console.log(res)
           return resolve(res);
         });
       });
@@ -76,6 +79,7 @@ console.log(friendRequest);
           <div onClick={this.collectionClick.bind(this)} className='btn btn-default btn-lg' >Collection</div>
           <div onClick={this.filterClick.bind(this)} className='btn btn-default btn-lg'>Filter</div>
           <div onClick={this.showResults.bind(this)} className='btn btn-default btn-lg'>Show Search Results</div>
+          <div onClick={this.friendReqClick.bind(this)} className='btn btn-default btn-lg' >Show Friend Requests</div>
 
           <a className='btn btn-default btn-lg' href="/logout">Sign Out</a>
       </nav>
@@ -85,7 +89,7 @@ console.log(friendRequest);
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({toggleCollectionList, toggleFilterList, logout, submitSearch, handleChange, showSearchResults}, dispatch)
+    actions: bindActionCreators({toggleCollectionList, toggleFilterList, logout, submitSearch, handleChange, showSearchResults, toggleFriendReqList}, dispatch)
   };
 }
 
