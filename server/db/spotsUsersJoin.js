@@ -5,7 +5,6 @@ const spotUserSchema = {
   columns: {
     userid: 'number',
     spotid: 'number',
-    wish: 'boolean'
   },
   tableName: 'spots_users'
 };
