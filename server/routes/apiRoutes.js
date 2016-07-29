@@ -281,7 +281,7 @@ export default function(app) {
     var deleteQuery = 
       `DELETE FROM friendrequests 
       WHERE requestor = '${req.body.friendname}'
-      AND requestee = '${req.body.username}';`;
+      AND requestee = '${req.user.username}';`;
 
     Friends.rawQuery(deleteQuery)
     .then((deletedRequest) => {
@@ -293,16 +293,59 @@ export default function(app) {
     });
   });
 
+  //add your own wishes
+  app.post('/api/spots/wishes', (req, res) => {
+    //find spotid first, if wish exist dont add another one
+    var findWishQuery = 
+      `SELECT wishes.spotid, spots.name FROM wishes 
+      INNER JOIN users 
+      ON wishes.username=users.username
+      INNER JOIN spots 
+      ON wishes.spotid=spots.id
+      WHERE users.username = '${req.body.username}'
+      AND spots.name = '${req.body.name}'
+      AND spots.latitude = '${req.body.latitude}'
+      AND spots.longitude = '${req.body.longitude}';`;
+
+    Wishes.rawQuery(findWishQuery)
+    .then((foundWish) => {
+      if (foundWish.length > 0) {
+        console.log('foundWish', foundWish);
+        res.send('wish already exists');
+      } else {
+        console.log('wish not found', foundWish);
+        return Spot.findOrCreate({name: req.body.name, latitude: req.body.latitude, longitude: req.body.longitude})
+        // return Spot.find({name: req.body.name, latitude: req.body.latitude, longitude: req.body.longitude})
+        .then(spot => {
+          console.log('spot', spot);
+          return SpotsUsers.findOrCreate({spotid: spot[0].id, userid: req.body.id})
+          .then(spotuser => {
+            console.log('spotuser', spotuser);
+            return Wishes.create({username: req.body.username, spotid: spotuser[0].spotid, status: 'open', requestee: 'none'})
+            .then(wish => {
+              console.log('wish created');
+              sendBackJSON(res, wish, 'wish created');
+              return wish;
+            })
+          })
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      sendBackJSON(res, err, 'error')
+    });
+  });
+
   //get friend wishes
     //an array of friend wishes with friendname
     //allow user to send request to fullfill wishes to friend
   app.get('/api/spots/friendWishes', (req, res) => {
+    //inner join friend, spots, wishes
     
   });
 
-  //add your own wishes
-    //findOrCreate spot then findOrCreate wish
-  app.post('/api/spots/wishes', (req, res) => {
+  app.post('/api/spots/acceptFriendWishes', (req, res) => {
 
   });
 

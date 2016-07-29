@@ -7,7 +7,7 @@ import Promise from 'bluebird';
 const spotSchema = {
   columns: {
     name: 'string',
-    rating: 'number',
+    rating: 'string',
     latitude: 'number',
     longitude: 'number',
     yelp_id: 'string'

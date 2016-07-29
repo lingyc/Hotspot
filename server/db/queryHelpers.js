@@ -42,7 +42,7 @@ export const createSelectQuery = function(schema, findObj) {
       return `${params} ${key} = ${typeWrapper(val, schema.columns[key])}`;
     }
     i++;
-    return `${params} ${key} = ${typeWrapper(val, schema.columns[key])} or`;
+    return `${params} ${key} = ${typeWrapper(val, schema.columns[key])} and`;
   }, '')
   console.log(`${query} ${params}`);
   return `${query} ${params}`

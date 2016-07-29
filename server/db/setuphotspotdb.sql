@@ -13,9 +13,9 @@ CREATE TABLE spots_users (
 CREATE TABLE spots (
   id SERIAL PRIMARY KEY,
   name VARCHAR,
-  rating REAL,
-  latitude REAL,
-  longitude REAL,
+  rating VARCHAR,
+  latitude DECIMAL,
+  longitude DECIMAL,
   yelp_id VARCHAR
 );
 
@@ -37,7 +37,9 @@ CREATE TABLE friends (
 CREATE TABLE wishes (
   id SERIAL PRIMARY KEY,
   username VARCHAR,
-  spotid REAL
+  spotid REAL,
+  status VARCHAR,
+  requestee VARCHAR
 );
 
 CREATE TABLE friendrequests (
