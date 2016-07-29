@@ -148,7 +148,7 @@ export default function(app) {
             return FriendRequests.find({requestor: req.user.username, requestee: req.body.requestee})
             .then((request) => {
               if (request.length === 0) {
-                return FriendRequests.create({requestor: req.user.username, requestee: req.body.requestee})
+                return FriendRequests.create({requestor: req.user.username, requestee: req.body.requestee, response: 'pending'})
                 .then((request) => {
                   console.log('request stored', request)
                   res.send('friend request sent');
@@ -170,7 +170,7 @@ export default function(app) {
   });
 
   //get friend
-  app.get('/api/friend', (req, res) => {
+  app.get('/api/friends', (req, res) => {
     Friends.find({username: req.user.username})
     .then((friends) => {
       console.log('found friends', friends)
@@ -208,11 +208,74 @@ export default function(app) {
 
   //accept friend request
   app.post('/api/confirmFriend', (req, res) => {
-    
+    console.log('req.body', req.body);
+    FriendRequests.find({requestee: req.body.username, requestor: req.body.friendname})
+    .then((request) => {
+      if (request.length > 0 && request[0].response !== 'accepted') {
+        var acceptQuery = 
+        `UPDATE friendrequests 
+        SET response = 'accepted'
+        WHERE requestor = '${req.body.friendname}'
+        AND requestee = '${req.body.username}';`;
+
+        return Friends.rawQuery(acceptQuery)
+        .then((acceptedRequest) => {
+          console.log('acceptedRequest', acceptedRequest);
+          return Friends.create({username: req.body.friendname, friendname: req.body.username})
+          .then((newfriend) => {
+            console.log('newfriend', newfriend);
+            return Friends.create({username: req.body.username, friendname: req.body.friendname})
+          })
+        }) 
+      } else {
+        console.log('friend request does not exists', request);
+        res.send('friend request does not exists');
+        return request;
+      }
+    })
+    .then((newfriend) => {
+      if (newfriend.length > 0) {
+        console.log('friend created', newfriend);
+        sendBackJSON(res, newfriend, 'sending new friend');
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      sendBackJSON(res, err, 'error')
+    });
   });
 
   //reject friend request
+  app.post('/api/rejectFriend', (req, res) => {
+    console.log('rejectFriend', req.body);
+    FriendRequests.find({requestee: req.body.username, requestor: req.body.friendname})
+    .then((request) => {
+      if (request.length > 0  && request[0].response !== 'rejected') {
+        var rejectQuery = 
+        `UPDATE friendrequests 
+        SET response = 'rejected'
+        WHERE requestor = '${req.body.friendname}'
+        AND requestee = '${req.body.username}';`;
 
+        return Friends.rawQuery(rejectQuery)
+        .then(rejectedRequest => {
+          console.log('rejectedRequest', rejectedRequest);
+          sendBackJSON(res, rejectedRequest, 'sending rejected request');
+          return rejectedRequest;
+        })
+      } else {
+        console.log('friend request does not exists', request);
+        res.send('friend request does not exists');
+        return request;
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      sendBackJSON(res, err, 'error')
+    });
+  });
+
+  //clear friend request
 
   //get friend wishes
     //an array of friend wishes with friendname
