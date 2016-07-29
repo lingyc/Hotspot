@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CollectionModel from '../components/CollectionModel';
+import ResultModel from '../components/ResultModel';
 import FilterItem from '../components/FilterItem';
 import * as Actions from '../actions';
 import CollectionDetailModel from '../components/CollectionDetailModel';
@@ -22,7 +23,7 @@ class Panel extends React.Component {
 
 if (this.props.panelMode === 'results'){
       panelItems = this.props.searchResults.map((restaurant) => {
-        return (<CollectionModel item={restaurant}
+        return (<ResultModel item={restaurant}
           viewCollectionItem={this.props.actions.viewCollectionItem}
           key={restaurant.name}/>);
       });
@@ -45,7 +46,7 @@ if (this.props.panelMode === 'results'){
           key={restaurant.name}/>);
       });
     }
-    console.log(panelItems);
+    console.log(panelItems,this.props.totalCollection,this.props.searchResults);
     return (
       <Menu id={ 'panel' }
             right
