@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import CollectionModel from '../components/CollectionModel';
 import ResultModel from '../components/ResultModel';
 import FilterItem from '../components/FilterItem';
+import FriendModel from '../components/FriendModel';
 import * as Actions from '../actions';
 import CollectionDetailModel from '../components/CollectionDetailModel';
 
@@ -26,7 +27,7 @@ if (this.props.panelMode === 'friendRequests'){
   console.log('friendRequests panel being called',this.props.friendRequests)
 
       panelItems = this.props.friendRequests.map((person) => {
-        return (<div>{person.requestor}</div>);
+        return (<FriendModel item={person} />);
       });
     }
 
