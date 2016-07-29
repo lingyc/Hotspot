@@ -123,6 +123,7 @@ export var requestMultipleYelp = function(yelpParams) {
 
 // Parse required data out of Yelp's response data
 export var parseYelpData = function (business) {
+  console.log('business',business);
   let cuisine;
   if (business.categories && business.categories[0]) {
     cuisine = business.categories[0][0];

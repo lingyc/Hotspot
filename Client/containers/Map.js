@@ -36,7 +36,17 @@ class Map extends React.Component {
       layerGroup.clearLayers();
       layerGroup = L.layerGroup().addTo(mainMap)
     }
-    nextProps.searchResults.forEach(yelpResultEntry => this.foundRestaurant(formatResObj(yelpResultEntry)));
+    //creates a uniqueId for already rated items
+    var uniqueIds = this.props.totalCollection.map(id => id.name + id.latitude.toString().slice(0,2) + id.longitude.toString().slice(0,2))
+
+    //render user search results
+    nextProps.searchResults.forEach(yelpResultEntry => {
+      //compare search results uniqueId with already rated items
+      var id = yelpResultEntry.name + yelpResultEntry.latitude.toString().slice(0,2) + yelpResultEntry.longitude.toString().slice(0,2);
+      if (uniqueIds.indexOf(id) === -1) {
+        this.foundRestaurant(formatResObj(yelpResultEntry));
+      }
+    });
   }
 
   tempClickLocationSubmit(name, latitude, longitude, rating, image) {
