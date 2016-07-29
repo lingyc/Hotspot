@@ -4,7 +4,8 @@ import dbConnection from './dbConnect';
 const FriendRequestsSchema = {
   columns: {
     requestor: 'string',
-    requestee: 'string'
+    requestee: 'string',
+    response: 'string'
   },
   tableName: 'friendrequests'
 };

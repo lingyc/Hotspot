@@ -43,5 +43,6 @@ CREATE TABLE wishes (
 CREATE TABLE friendrequests (
   id SERIAL PRIMARY KEY,
   requestor VARCHAR,
-  requestee VARCHAR
+  requestee VARCHAR,
+  response VARCHAR
 );

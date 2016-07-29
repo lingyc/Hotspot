@@ -125,7 +125,7 @@ export default function(app) {
   });
 
   //sent friend request
-  app.post('/api/addFriendRequest', (req, res) => {
+  app.post('/api/friendRequest', (req, res) => {
     // Friends.find({username: req.user.username})
     // console.log('req.body', req.body);
     var friendQuery = 
@@ -182,15 +182,37 @@ export default function(app) {
     });
   });
 
-  //get friend request
-  app.get('/api/getFriendRequest', (req, res) => {
-    
+  //get friend request to you
+  app.get('/api/friendRequest', (req, res) => {
+    FriendRequests.find({requestor: req.query.username})
+    .then((friendRequest) => {
+      sendBackJSON(res, friendRequest, 'sending a list of friendRequest')
+    })
+    .catch((err) => {
+      console.log(err);
+      sendBackJSON(res, err, 'error')
+    });
+  });
+
+  //get friend request to others
+  app.get('/api/pendingFriendRequest', (req, res) => {
+    FriendRequests.find({requestee: req.query.username})
+    .then((pendingFriendRequest) => {
+      sendBackJSON(res, pendingFriendRequest, 'sending a list of pendingFriendRequest')
+    })
+    .catch((err) => {
+      console.log(err);
+      sendBackJSON(res, err, 'error')
+    });
   });
 
   //accept friend request
   app.post('/api/confirmFriend', (req, res) => {
-
+    
   });
+
+  //reject friend request
+
 
   //get friend wishes
     //an array of friend wishes with friendname
