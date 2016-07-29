@@ -11,8 +11,6 @@ import * as Actions from '../actions';
 // Globl map
 var mainMap, restaurantPoints, layerGroup;
 var initialize = true;
-var current_position;
-var current_accuracy;
 
 class Map extends React.Component {
   constructor(props) {
@@ -351,6 +349,7 @@ var geoSuccess = (position) => {
 var currentMapView = () => {
   return mainMap.getCenter();
 };
+
 
 var formatResObj = (yelpResultEntry) => {
   return {
