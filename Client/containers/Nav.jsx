@@ -49,7 +49,7 @@ class Nav extends React.Component {
     }
 console.log(friendRequest);
     const data = new Promise((resolve, reject) => {
-        request.post('/api/addFriendRequest')
+        request.post('/api/friendRequest')
         .send(friendRequest)
         .end((err, res) => {
           if (err) {
