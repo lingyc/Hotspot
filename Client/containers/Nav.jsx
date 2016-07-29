@@ -44,11 +44,13 @@ class Nav extends React.Component {
   render() {
     return (
       <nav className="navbar navbar-dark bg-inverse">
+          <div ><input type='text' placeholder='Add a Friend'/><button>Send Request</button></div>
           <input onChange={this.handleChange.bind(this)}type="text" placeholder="search here"/>
           <button onClick={this.submitSearch.bind(this)}>search</button>
           <div onClick={this.collectionClick.bind(this)} className='btn btn-default btn-lg' >Collection</div>
           <div onClick={this.filterClick.bind(this)} className='btn btn-default btn-lg'>Filter</div>
           <div onClick={this.showResults.bind(this)} className='btn btn-default btn-lg'>Show Search Results</div>
+
           <a className='btn btn-default btn-lg' href="/logout">Sign Out</a>
       </nav>
     );
