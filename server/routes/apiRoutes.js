@@ -227,17 +227,17 @@ export default function(app) {
             console.log('newfriend', newfriend);
             return Friends.create({username: req.user.username, friendname: req.body.friendname})
           })
-        }) 
+        })
+        .then((newfriend) => {
+          if (newfriend.length > 0) {
+            console.log('friend created', newfriend);
+            sendBackJSON(res, newfriend, 'sending new friend');
+          }
+        })
       } else {
         console.log('friend request does not exists', request);
         res.send('friend request does not exists');
         return request;
-      }
-    })
-    .then((newfriend) => {
-      if (newfriend.length > 0) {
-        console.log('friend created', newfriend);
-        sendBackJSON(res, newfriend, 'sending new friend');
       }
     })
     .catch((err) => {
@@ -302,7 +302,7 @@ export default function(app) {
       ON wishes.username=users.username
       INNER JOIN spots 
       ON wishes.spotid=spots.id
-      WHERE users.username = '${req.body.username}'
+      WHERE users.username = '${req.user.username}'
       AND spots.name = '${req.body.name}'
       AND spots.latitude = '${req.body.latitude}'
       AND spots.longitude = '${req.body.longitude}';`;
@@ -321,7 +321,7 @@ export default function(app) {
           return SpotsUsers.findOrCreate({spotid: spot[0].id, userid: req.body.id})
           .then(spotuser => {
             console.log('spotuser', spotuser);
-            return Wishes.create({username: req.body.username, spotid: spotuser[0].spotid, status: 'open', requestee: 'none'})
+            return Wishes.create({username: req.user.username, spotid: spotuser[0].spotid, status: 'open', requestee: 'none'})
             .then(wish => {
               console.log('wish created');
               sendBackJSON(res, wish, 'wish created');
@@ -341,8 +341,26 @@ export default function(app) {
     //an array of friend wishes with friendname
     //allow user to send request to fullfill wishes to friend
   app.get('/api/spots/friendWishes', (req, res) => {
-    //inner join friend, spots, wishes
-    
+    console.log('req', req);
+    var friendWishQuery = 
+      `SELECT * FROM wishes 
+      INNER JOIN friends 
+      ON wishes.username=friends.friendname
+      INNER JOIN users
+      ON users.username=friends.username
+      INNER JOIN spots
+      ON wishes.spotid=spots.id
+      WHERE users.username = '${req.body.username}';`;
+
+    Wishes.rawQuery(findWishQuery)
+    .then(friendWishes => {
+      console.log('friendWishes', friendWishes);
+      sendBackJSON(res, friendWishes, 'sending new friend');
+    })
+    .catch((err) => {
+      console.log(err);
+      sendBackJSON(res, err, 'error');
+    });
   });
 
   app.post('/api/spots/acceptFriendWishes', (req, res) => {
