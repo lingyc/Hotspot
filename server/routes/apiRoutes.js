@@ -209,22 +209,22 @@ export default function(app) {
   //accept friend request
   app.post('/api/confirmFriend', (req, res) => {
     console.log('req.body', req.body);
-    FriendRequests.find({requestee: req.body.username, requestor: req.body.friendname})
+    FriendRequests.find({requestee: req.user.username, requestor: req.body.friendname})
     .then((request) => {
       if (request.length > 0 && request[0].response !== 'accepted') {
         var acceptQuery = 
         `UPDATE friendrequests 
         SET response = 'accepted'
         WHERE requestor = '${req.body.friendname}'
-        AND requestee = '${req.body.username}';`;
+        AND requestee = '${req.user.username}';`;
 
         return Friends.rawQuery(acceptQuery)
         .then((acceptedRequest) => {
           console.log('acceptedRequest', acceptedRequest);
-          return Friends.create({username: req.body.friendname, friendname: req.body.username})
+          return Friends.create({username: req.body.friendname, friendname: req.user.username})
           .then((newfriend) => {
             console.log('newfriend', newfriend);
-            return Friends.create({username: req.body.username, friendname: req.body.friendname})
+            return Friends.create({username: req.user.username, friendname: req.body.friendname})
           })
         }) 
       } else {
@@ -248,14 +248,14 @@ export default function(app) {
   //reject friend request
   app.post('/api/rejectFriend', (req, res) => {
     console.log('rejectFriend', req.body);
-    FriendRequests.find({requestee: req.body.username, requestor: req.body.friendname})
+    FriendRequests.find({requestee: req.user.username, requestor: req.body.friendname})
     .then((request) => {
       if (request.length > 0  && request[0].response !== 'rejected') {
         var rejectQuery = 
         `UPDATE friendrequests 
         SET response = 'rejected'
         WHERE requestor = '${req.body.friendname}'
-        AND requestee = '${req.body.username}';`;
+        AND requestee = '${req.user.username}';`;
 
         return Friends.rawQuery(rejectQuery)
         .then(rejectedRequest => {
@@ -276,12 +276,27 @@ export default function(app) {
   });
 
   //clear friend request
+  app.post('/api/clearFriendRequest', (req, res) => {
+    var deleteQuery = 
+      `DELETE FROM friendrequests 
+      WHERE requestor = '${req.body.friendname}'
+      AND requestee = '${req.body.username}';`;
+
+    Friends.rawQuery(deleteQuery)
+    .then((deletedRequest) => {
+      res.send('friend request deleted');
+    })
+    .catch((err) => {
+      console.log(err);
+      sendBackJSON(res, err, 'error')
+    });
+  });
 
   //get friend wishes
     //an array of friend wishes with friendname
     //allow user to send request to fullfill wishes to friend
   app.get('/api/spots/friendWishes', (req, res) => {
-
+    
   });
 
   //add your own wishes
