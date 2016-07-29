@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { toggleCollectionList, toggleFilterList, logout, submitSearch, handleChange,showSearchResults } from '../actions/index';
-
+import { toggleCollectionList, toggleFilterList, logout, submitSearch, handleChange,showSearchResults} from '../actions/index';
+import request from 'superagent';
 console.log('handleChange', handleChange);
 
 class Nav extends React.Component {
@@ -41,10 +41,36 @@ class Nav extends React.Component {
     this.props.actions.submitSearch(searchQuery);
   }
 
+ submitFriendReq(e) {
+    e.preventDefault();
+   
+    let friendRequest = {
+      requestee: document.getElementsByClassName('friendToAdd')[0].value
+    }
+console.log(friendRequest);
+    const data = new Promise((resolve, reject) => {
+        request.post('/api/addFriendRequest')
+        .send(friendRequest)
+        .end((err, res) => {
+          if (err) {
+            console.log(err)
+            return reject(err);
+          }
+          console.log(res);
+
+          return resolve(res);
+        });
+      });
+
+
+  }
+
+
+
   render() {
     return (
       <nav className="navbar navbar-dark bg-inverse">
-          <div ><input type='text' placeholder='Add a Friend'/><button>Send Request</button></div>
+          <div ><input className = 'friendToAdd 'type='text' placeholder='Add a Friend'/><button onClick={this.submitFriendReq.bind(this)}>Send Request</button></div>
           <input onChange={this.handleChange.bind(this)}type="text" placeholder="search here"/>
           <button onClick={this.submitSearch.bind(this)}>search</button>
           <div onClick={this.collectionClick.bind(this)} className='btn btn-default btn-lg' >Collection</div>

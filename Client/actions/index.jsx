@@ -16,8 +16,8 @@ export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 export const CREATE_FILTERS = 'CREATE_FILTERS';
 export const SHOW_RESULTS = 'SHOW_RESULTS';
 export const NAV_SEARCH = 'NAV_SEARCH';
+export const NAV_FRIEND_NAME = 'NAV_FRIEND_NAME';
 export const NAV_SEARCH_RESULTS = 'NAV_SEARCH_RESULTS';
-
 export const MAP_SEARCH_COORD = 'MAP_SEARCH_COORD';
 export const MAP_SEARCH_ZOOM = 'MAP_SEARCH_ZOOM';
 
@@ -81,6 +81,7 @@ export function submitSearch(inputObj) {
     payload: data
   }
 }
+
 
 
 //click handler for search results panel
