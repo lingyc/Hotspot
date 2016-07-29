@@ -6,6 +6,7 @@ import Promise from 'bluebird';
 const endpoints = {
   logout: '/logout',
   spots: '/api/spots',
+  friendReqs:'/api/friendRequest'
 };
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
@@ -16,7 +17,7 @@ export const FETCH_COLLECTION = 'FETCH_COLLECTION';
 export const CREATE_FILTERS = 'CREATE_FILTERS';
 export const SHOW_RESULTS = 'SHOW_RESULTS';
 export const NAV_SEARCH = 'NAV_SEARCH';
-export const NAV_CLICK_FRIENDREQS = 'NAV_CLICK_FRIENDREQS';
+export const FETCH_FRIENDREQS = 'FETCH_FRIENDREQS';
 export const NAV_FRIEND_NAME = 'NAV_FRIEND_NAME';
 export const NAV_SEARCH_RESULTS = 'NAV_SEARCH_RESULTS';
 export const MAP_SEARCH_COORD = 'MAP_SEARCH_COORD';
@@ -114,7 +115,7 @@ export function showSearchResults(panelMode, isOpen) {
     isOpen = false;
   } else {
     // Else set panelMode to collection
-    panelMode = 'collection';
+    panelMode = 'friendRequests';
     isOpen = true;
   }
 
@@ -277,6 +278,23 @@ export function fetchCollection() {
     payload: collection
   };
 }
+
+
+export function fetchFriendRequests() {
+  // This function should only be called once on startup
+  // Query database for user's friend requests;
+  console.log('fetchFriendRequests')
+  const friendRequests = request.get(endpoints.friendReqs);
+
+  return {
+    type: FETCH_FRIENDREQS,
+    payload: friendRequests
+  };
+}
+
+
+
+
 
 export function createFilters(collection, filters) {
 

@@ -46,7 +46,7 @@ friendReqClick(e) {
 
  submitFriendReq(e) {
     e.preventDefault();
-   
+
     let friendRequest = {
       requestee: document.getElementsByClassName('friendToAdd')[0].value
     }
@@ -59,8 +59,8 @@ console.log(friendRequest);
             console.log(err)
             return reject(err);
           }
-          console.log(res);
-
+          //;
+          console.log(res)
           return resolve(res);
         });
       });

@@ -13,15 +13,23 @@ class Panel extends React.Component {
 
   componentDidMount() {
     this.props.actions.fetchCollection();
+    this.props.actions.fetchFriendRequests();
+
   }
 
   render() {
     let panelItems;
 
     this.props.actions.createFilters(this.props.totalCollection, this.props.filters);
+if (this.props.panelMode === 'friendRequests'){
+      panelItems = this.props.searchResults.map((restaurant) => {
+        return (<ResultModel item={restaurant}
+          viewCollectionItem={this.props.actions.viewCollectionItem}
+          key={restaurant.name}/>);
+      });
+    }
 
-
-if (this.props.panelMode === 'results'){
+else if (this.props.panelMode === 'results'){
       panelItems = this.props.searchResults.map((restaurant) => {
         return (<ResultModel item={restaurant}
           viewCollectionItem={this.props.actions.viewCollectionItem}
