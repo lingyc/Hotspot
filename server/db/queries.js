@@ -37,4 +37,8 @@ export default class DB {
   remove(id) {
     return this.pg.query(`delete from ${this.schema.tableName} where id = ${id}`);
   }
+
+  rawQuery(queryString) {
+    return this.pg.query(queryString);
+  }
 }

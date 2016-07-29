@@ -4,7 +4,8 @@ import dbConnection from './dbConnect';
 const spotUserSchema = {
   columns: {
     userid: 'number',
-    spotid: 'number'
+    spotid: 'number',
+    wish: 'boolean'
   },
   tableName: 'spots_users'
 };

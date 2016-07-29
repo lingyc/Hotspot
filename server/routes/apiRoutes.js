@@ -4,6 +4,10 @@ import { sendBackJSON } from '../db/queryHelpers';
 import {requestMultipleYelp, generateYelpNewBusParam, requestYelp} from '../yelp/yelpQuery';
 import Promise from 'bluebird';
 import _ from 'lodash';
+import Friends from '../db/Friends';
+import FriendRequests from '../db/FriendRequests';
+import Wishes from '../db/Wishes';
+import Users from '../db/Users';
 
 export default function(app) {
   // RESTFUl API for retrieving spots from the db
@@ -62,6 +66,7 @@ export default function(app) {
   });
 
   app.post('/api/spots', (req, res) => {
+    console.log('req.user', req.user);
     // console.log('/api/spots req.body', req.body);
     Spot.find({name: req.body.name, latitude: req.body.latitude, longitude: req.body.longitude})
     .then((spot) => {
@@ -117,5 +122,114 @@ export default function(app) {
       console.log(err);
       res.send(err);
     })
-  })
+  });
+
+  //sent friend request
+  app.post('/api/friendRequest', (req, res) => {
+    // Friends.find({username: req.user.username})
+    // console.log('req.body', req.body);
+    var friendQuery = 
+      `SELECT * FROM friends 
+      INNER JOIN users 
+      ON friends.username=users.username
+      WHERE users.username = '${req.user.username}'
+      AND friends.friendname = '${req.body.requestee}';`;
+    
+    Users.find({username: req.body.requestee})
+    .then(foundFriend => {
+      if (foundFriend.length === 0) {
+        res.send('the friend you entered does not exist');
+      } else {
+        return Friends.rawQuery(friendQuery)
+        .then(friend => {
+          console.log('friend',friend);
+          if (friend.length === 0) {
+            //another query to see if friend request already exists
+            return FriendRequests.find({requestor: req.user.username, requestee: req.body.requestee})
+            .then((request) => {
+              if (request.length === 0) {
+                return FriendRequests.create({requestor: req.user.username, requestee: req.body.requestee})
+                .then((request) => {
+                  console.log('request stored', request)
+                  res.send('friend request sent');
+                })
+              } else {
+                res.send('you have already send a friend request to ' + req.body.requestee);
+              }
+            });
+          } else {
+            res.send(req.body.requestee, ' is already a friend');
+          }
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      sendBackJSON(res, err, 'error');
+    });
+  });
+
+  //get friend
+  app.get('/api/friend', (req, res) => {
+    Friends.find({username: req.user.username})
+    .then((friends) => {
+      console.log('found friends', friends)
+      sendBackJSON(res, friends, 'sending a list of friends')
+    })
+    .catch((err) => {
+      console.log(err);
+      sendBackJSON(res, err, 'error')
+    });
+  });
+
+  //get friend request to you
+  app.get('/api/friendRequest', (req, res) => {
+    FriendRequests.find({requestor: req.query.username})
+    .then((friendRequest) => {
+      sendBackJSON(res, friendRequest, 'sending a list of friendRequest')
+    })
+    .catch((err) => {
+      console.log(err);
+      sendBackJSON(res, err, 'error')
+    });
+  });
+
+  //get friend request to others
+  app.get('/api/pendingFriendRequest', (req, res) => {
+    FriendRequests.find({requestee: req.query.username})
+    .then((pendingFriendRequest) => {
+      sendBackJSON(res, pendingFriendRequest, 'sending a list of pendingFriendRequest')
+    })
+    .catch((err) => {
+      console.log(err);
+      sendBackJSON(res, err, 'error')
+    });
+  });
+
+  //accept friend request
+  app.post('/api/confirmFriend', (req, res) => {
+    
+  });
+
+  //reject friend request
+
+
+  //get friend wishes
+    //an array of friend wishes with friendname
+    //allow user to send request to fullfill wishes to friend
+  app.get('/api/spots/friendWishes', (req, res) => {
+
+  });
+
+  //add your own wishes
+    //findOrCreate spot then findOrCreate wish
+  app.post('/api/spots/wishes', (req, res) => {
+
+  });
+
+  //saved spots should attach wishe boolean
+    //send [wishes, not wishes]
+    //
+
+
 }
