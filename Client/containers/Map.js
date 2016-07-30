@@ -223,15 +223,16 @@ class Map extends React.Component {
       var marker = point.layer;
       var feature = marker.feature;
       marker.setIcon(L.icon(feature.properties.icon));
-      var content = '<h2>' + feature.properties.title + '<\/h2>' +
-      '<form>I would<br>' +
-      `<input type="radio" name="goBack${pointQuery._leaflet_id}" required> Definitely and absolutely<br>` +
-      `<input type="radio" name="goBack${pointQuery._leaflet_id}"> Never ever ever<br>` +
-      'go back<br>' +
-      `<input type="button" id="fistBump${pointQuery._leaflet_id}" value="Thumbs!!!!"></form>` +
-      '<img src="' + feature.properties.image + '" alt="">' +
-      `<img id="wishImage" src="${wishImage}" alt="">`;
-      
+
+      var content = '<p style="font-size:28px">' + feature.properties.title + '<\/p><br>' +
+      '<img class ="hotspotImage" src="' + feature.properties.image + '" alt="">'+
+      '<h2 style="font-size:20px">Would you go here?</h2><br>' +
+
+      `<input style="height:10px;width:10px" type="radio" name="goBack${pointQuery._leaflet_id}" required>Definitely!<br> ` +
+      `<input style="height:10px;width:10px" type="radio" name="goBack${pointQuery._leaflet_id}">Never!<br> ` +
+      '<br>' +
+      `<input type="button" id="fistBump${pointQuery._leaflet_id}" value="Rate!"></form>` 
+      ;
       marker.bindPopup(content)
       marker.on('mouseover', function(e) {
         this.openPopup();
