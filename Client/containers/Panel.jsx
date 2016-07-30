@@ -15,6 +15,7 @@ class Panel extends React.Component {
   componentDidMount() {
     this.props.actions.fetchCollection();
     this.props.actions.fetchFriendRequests();
+    this.props.actions.fetchCurrentFriends();
 console.log('panel has mounted!!!');
   }
 
