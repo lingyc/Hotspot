@@ -301,7 +301,7 @@ export default function(app) {
   });
 
   //add your own wishes
-  app.post('/api/spots/wishes', (req, res) => {
+  app.post('/api/wishes', (req, res) => {
     var findWishQuery = 
       `SELECT wishes.spotid, spots.name FROM wishes 
       INNER JOIN users 
@@ -344,7 +344,7 @@ export default function(app) {
   });
 
   //get friend wishes
-  app.get('/api/friendwishes', (req, res) => {
+  app.get('/api/friendWishes', (req, res) => {
     var friendWishQuery = 
       `SELECT * FROM wishes 
       INNER JOIN friends 
@@ -366,9 +366,39 @@ export default function(app) {
     });
   });
 
-  app.post('/api/spots/acceptFriendWishes', (req, res) => {
-    console.log('asdfsad')
-    res.send('asdfasd')
+  app.post('/api/acceptWishes', (req, res) => {
+    var acceptWishQuery = 
+      `SELECT * FROM wishes 
+      INNER JOIN friends 
+        ON wishes.username=friends.friendname
+      INNER JOIN users
+        ON users.username=friends.username
+      INNER JOIN spots
+        ON wishes.spotid=spots.id
+        WHERE users.username = '${req.body.username}'
+        AND friends.friendname = '${req.body.friendname}'
+        AND spots.latitude = '${req.body.latitude}'
+        AND spots.longitude = '${req.body.longitude}'
+        AND spots.name = '${req.body.name}';`;
+
+    Wishes.rawQuery(acceptWishQuery)
+    .then(wish => {
+      console.log('wish', wish);
+      var wishUpdate = 
+        `UPDATE wishes 
+        SET status = '${req.body.wishstatus}', 
+          requestee = '${req.body.username}'
+        WHERE id = '${wish[0].id}';`;
+
+      return Wishes.rawQuery(wishUpdate)
+      .then(acceptedWish => {
+        sendBackJSON(res, acceptedWish, 'accepted friend wishes');
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+      sendBackJSON(res, err, 'error');
+    });
   });
 
   //saved spots should attach wishe boolean
