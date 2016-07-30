@@ -30,6 +30,8 @@ export default function(app) {
           return [];
         }
         spotsReturn = spots;
+
+
         return requestMultipleYelp(spots.map((spot) => {
           return generateYelpNewBusParam(spot.name, spot.longitude, spot.latitude);
         }));
@@ -39,7 +41,7 @@ export default function(app) {
         if (yelpResults.length === 0) {
           return [];
         }
-        return spotsReturn.map((spot) => {
+        return Promise.map(spotsReturn, (spot) => {
           // console.log('spotssssss', spot)
           let match = yelpResults.filter((result) => {
             let lowerLength = Math.min([spot.length, result.length]);
@@ -54,13 +56,15 @@ export default function(app) {
           } else {
             spot.yelpData = match[0];
           }
-
-          return spot;
+          
+          return yourWishOnSpot(spot, req.user.username)
+          .then(wishSpot => {
+            return friendWishesOnSpot(wishSpot, req.query.username);
+          })
         });
       })
       .then((augmentedSpots) => {
         //add spots your friend wished
-        // var getOtherFriendSpot = () => {}
         sendBackJSON(res, augmentedSpots, 'got all spots')
       })
       .catch((err) => console.log(err));
@@ -418,25 +422,38 @@ export default function(app) {
   //   yourWish: boolean,
   //   wishStatus: 'pending' or 'fulfilled',
   //   wishFulfilledby: 'friendname',
-  //   fulfilFriendWish: boolean
+  //   fulfilFriendWish: boolean,
+  //   friendData: boolean
   // }
+
+
   app.get('/api/test', (req, res) => {
-    var spot = req.body;
-    yourWishOnSpot(spot);
+    console.log('req.query', req.query);
+    var spot = req.query;
+    yourWishOnSpot(spot, req.query.username, res)
+    .then(wishSpot => {
+      friendWishesOnSpot(wishSpot, req.query.username, res);
+    })
+  });
+
+  app.get('/api/test2', (req, res) => {
+    console.log('req.query for test2', req.query);
+    var spot = req.query;
+    friendWishesOnSpot(spot, req.query.username, res);
   });
 
 }
 
 //helper functions
 //mark whether the spot is your wish spot
-var yourWishOnSpot = (spot) => {
+var yourWishOnSpot = (spot, username, res) => {
   var findWishQuery = 
-    `SELECT wishes.spotid, spots.name FROM wishes 
+    `SELECT * FROM wishes 
     INNER JOIN users 
     ON wishes.username=users.username
     INNER JOIN spots 
     ON wishes.spotid=spots.id
-    WHERE users.username = '${req.user.username}'
+    WHERE users.username = '${username}'
     AND spots.name = '${spot.name}'
     AND spots.latitude = '${spot.latitude}'
     AND spots.longitude = '${spot.longitude}';`;
@@ -444,14 +461,15 @@ var yourWishOnSpot = (spot) => {
   return Wishes.rawQuery(findWishQuery)
   .then(found => {
     if (found.length > 0) {
+      console.log('found', found);
       spot.yourWish = true;
       spot.wishStatus = found[0].status;
       spot.wishFulfilledby = found[0].requestee;
-      sendBackJSON(res, spot, 'sending spot');
+      // sendBackJSON(res, spot, 'sending spot');
       return spot;
     } else {
       spot.yourWish = false;
-      sendBackJSON(res, spot, 'sending spot');
+      // sendBackJSON(res, spot, 'sending spot');
       return spot;
     }
   })
@@ -461,24 +479,49 @@ var yourWishOnSpot = (spot) => {
 }
 
 //find friends who wish this spot
-var friendWishesOnSpot = (spot) => {
+var friendWishesOnSpot = (spot, username, res) => {
   var friendWishQuery = 
-    `SELECT * FROM wishes 
-    INNER JOIN friends  
+    `SELECT friends.friendname, wishes.status AS fulfilFriendWish FROM wishes 
+    INNER JOIN friends
+    ON wishes.username=friends.friendname
     INNER JOIN users 
     ON friends.username=users.username
     INNER JOIN spots 
     ON wishes.spotid=spots.id
-    WHERE users.username = '${req.user.username}'
+    WHERE users.username = '${username}'
     AND spots.name = '${spot.name}'
     AND spots.latitude = '${spot.latitude}'
-    AND spots.longitude = '${spot.longitude}';`;
+    AND spots.longitude = '${spot.longitude}'
+    AND (wishes.status = 'open' OR wishes.requestee = '${username}');`;
 
   return Wishes.rawQuery(friendWishQuery)
   .then(friendWishes => {
-    return friendWishes;
+    console.log('friendWishes', friendWishes);
+    spot.friendWish = friendWishes;
+
+    for (var i = 0; i < friendWishes.length; i++) {
+      if (friendWishes[i].fulfilfriendwish === 'accepted') {
+        spot.fulfilfriendwish = true;
+        // sendBackJSON(res, spot, 'sending spot'); 
+        return spot;
+      }
+    }
+
+    spot.fulfilfriendwish = false;
+    // sendBackJSON(res, spot, 'sending spot');    
+    return spot;
   })
   .catch(err => {
     console.log(err);
   })
+}
+
+var getOtherFriendSpot = (username) => {
+  var friendWishQuery = 
+  `SELECT * FROM spots 
+  INNER JOIN spots_users
+  ON spots.id=spots_users.spotid
+  INNER JOIN users 
+  ON friends.username=users.username
+  WHERE users.username = '${username}';`;
 }
