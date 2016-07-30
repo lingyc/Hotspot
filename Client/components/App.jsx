@@ -52,6 +52,15 @@ class App extends React.Component {
     })
   }
 
+  postAcceptWish(spotObj) {
+    let that = this;
+    $.post('/api/acceptWishes', spotObj, function(data, err) {
+      console.log('acceptWishes')
+    }).then(function(result) {
+      that.getSpots();
+    })
+  }
+
   render() {
     return (
       <div>

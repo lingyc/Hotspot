@@ -5,9 +5,9 @@ const pgp = require('pg-promise')({
 });
 
 let connectionString = 'postgres://127.0.0.1:5432/hotspots';
-// if (process.env.DATABASE_URL) {
-//   connectionString = process.env.DATABASE_URL;
-// }
+if (process.env.DATABASE_URL) {
+  connectionString = process.env.DATABASE_URL;
+}
 
 const pg = pgp(connectionString);
 
