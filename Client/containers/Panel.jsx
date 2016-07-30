@@ -61,9 +61,18 @@ Aint no friend requests
 
     </div>
 } else {
-      panelItems = this.props.friendRequests.map((person) => {
+      panelItems = <div>  
+   <div >
+   <input className = 'friendToAdd 'type='text' placeholder='Add a Friend'/>
+   <button className='button' onClick={this.submitFriendReq.bind(this)}>Send Request</button>
+   </div>
+<div>
+      {this.props.friendRequests.map((person) => {
         return (<FriendModel item={person} />);
-      })
+      })}
+      </div>
+
+      </div>
 
 }
     }
