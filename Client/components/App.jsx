@@ -37,12 +37,27 @@ class App extends React.Component {
     })
   }
 
+  getSpots() {
+    let that = this;
+    $.get('/api/spots', function(data, err) {
+      console.log('hi');
+    })
+  }
+
+  postSpots(spotObj) {
+    $.post('/api/spots', spotObj, function(data, err) {
+      console.log('hii')
+    })
+  }
+
   render() {
     return (
       <div>
         <Nav />
         <Map collection={this.state.collection}
-        getUpdate={this.getUpdate.bind(this)}/>
+        getUpdate={this.getUpdate.bind(this)}
+        getSpots={this.getSpots.bind(this)}
+        postSpots={this.postSpots.bind(this)}/>
         <Panel />
       </div>
     );

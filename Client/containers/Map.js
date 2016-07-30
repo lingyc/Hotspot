@@ -47,8 +47,10 @@ class Map extends React.Component {
       layerGroup.clearLayers();
       layerGroup = L.layerGroup().addTo(mainMap)
     }
+
     //creates a uniqueId for already rated items
-    var uniqueIds = this.props.totalCollection.map(id => id.name + id.latitude.toString().slice(0,2) + id.longitude.toString().slice(0,2))
+    let collection = this.props.totalCollection.concat(this.state.temp_collection);
+    var uniqueIds = collection.map(id => id.name + id.latitude.toString().slice(0,2) + id.longitude.toString().slice(0,2))
 
     //render user search results
     nextProps.searchResults.forEach(yelpResultEntry => {
@@ -230,7 +232,7 @@ class Map extends React.Component {
           //also call function to send info 
           let latlng = marker._latlng;
           let rating = 0;
-          Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng, rating);
+          // Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng, rating);
           marker.closePopup();
         })
       })
