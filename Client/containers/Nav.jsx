@@ -69,11 +69,11 @@ console.log(friendRequest);
   }
 
 
+//  <div ><input className = 'friendToAdd 'type='text' placeholder='Add a Friend'/><button className='button' onClick={this.submitFriendReq.bind(this)}>Send Request</button></div>
 
   render() {
     return (
       <nav className="navbar navbar-dark bg-inverse">
-          <div ><input className = 'friendToAdd 'type='text' placeholder='Add a Friend'/><button className='button' onClick={this.submitFriendReq.bind(this)}>Send Request</button></div>
           <input onChange={this.handleChange.bind(this)}type="text" placeholder="search here"/>
           <button className= 'button' onClick={this.submitSearch.bind(this)}>search</button>
           <div onClick={this.collectionClick.bind(this)} className='btn btn-default btn-lg' >Collection</div>

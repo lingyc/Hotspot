@@ -7,6 +7,7 @@ import FilterItem from '../components/FilterItem';
 import FriendModel from '../components/FriendModel';
 import * as Actions from '../actions';
 import CollectionDetailModel from '../components/CollectionDetailModel';
+import request from 'superagent';
 
 const Menu = require('react-burger-menu').slide;
 
@@ -19,6 +20,32 @@ class Panel extends React.Component {
 console.log('panel has mounted!!!');
   }
 
+ submitFriendReq(e) {
+    e.preventDefault();
+
+    let friendRequest = {
+      requestee: document.getElementsByClassName('friendToAdd')[0].value
+    }
+console.log(friendRequest);
+    const data = new Promise((resolve, reject) => {
+        request.post('/api/friendRequest')
+        .send(friendRequest)
+        .end((err, res) => {
+          if (err) {
+            console.log(err)
+            return reject(err);
+          }
+          //;
+          console.log(res)
+          return resolve(res);
+        });
+      });
+
+
+  }
+
+
+
   render() {
     let panelItems;
 
@@ -27,8 +54,12 @@ console.log(this.props.panelMode)
 if (this.props.panelMode === 'friendRequests'){
    
    if (this.props.friendRequests.length===0){
-  
-    panelItems=<div>Aint no friend requests</div>
+
+    panelItems=<div>
+  <div ><input className = 'friendToAdd 'type='text' placeholder='Add a Friend'/><button className='button' onClick={this.submitFriendReq.bind(this)}>Send Request</button></div>
+Aint no friend requests
+
+    </div>
 } else {
       panelItems = this.props.friendRequests.map((person) => {
         return (<FriendModel item={person} />);
