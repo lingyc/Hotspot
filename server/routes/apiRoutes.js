@@ -31,10 +31,20 @@ export default function(app) {
         }
         spotsReturn = spots;
 
+        return getOtherFriendSpot(req.user.username)
+        .then(friendSpots => {
+          var friendSpots = friendSpots.map(friendSpot => {
+            friendSpot.friendWishOnly = true;
+            return friendSpot;
+          });
+          console.log('friendSpots', friendSpots);
+          var userAndFriendSpots = spots.concat(friendSpots);
+          return requestMultipleYelp(userAndFriendSpots.map((spot) => {
+            return generateYelpNewBusParam(spot.name, spot.longitude, spot.latitude, spot.friendWishOnly);
+          }));
+        })
 
-        return requestMultipleYelp(spots.map((spot) => {
-          return generateYelpNewBusParam(spot.name, spot.longitude, spot.latitude);
-        }));
+
       })
       .then((yelpResults) => {
         console.log('yelpresults looking for busid location', yelpResults);
@@ -56,7 +66,7 @@ export default function(app) {
           } else {
             spot.yelpData = match[0];
           }
-          
+          console.log('new spot', spot);
           return yourWishOnSpot(spot, req.user.username)
           .then(wishSpot => {
             return friendWishesOnSpot(wishSpot, req.query.username);
@@ -65,6 +75,7 @@ export default function(app) {
       })
       .then((augmentedSpots) => {
         //add spots your friend wished
+        console.log('augmentedSpots', augmentedSpots);
         sendBackJSON(res, augmentedSpots, 'got all spots')
       })
       .catch((err) => console.log(err));
@@ -333,7 +344,7 @@ export default function(app) {
         // return Spot.find({name: req.body.name, latitude: req.body.latitude, longitude: req.body.longitude})
         .then(spot => {
           console.log('spot', spot);
-          return SpotsUsers.findOrCreate({spotid: spot[0].id, userid: req.body.id})
+          return SpotsUsers.findOrCreate({spotid: spot[0].id, userid: req.user.id})
           .then(spotuser => {
             console.log('spotuser', spotuser);
             return Wishes.create({username: req.user.username, spotid: spotuser[0].spotid, status: 'open', requestee: 'none'})
@@ -442,6 +453,10 @@ export default function(app) {
     friendWishesOnSpot(spot, req.query.username, res);
   });
 
+  app.get('/api/test3', (req, res) => {
+    console.log('req.query for test3', req.query);
+    getOtherFriendSpot(req.query.username, res);
+  });
 }
 
 //helper functions
@@ -517,11 +532,27 @@ var friendWishesOnSpot = (spot, username, res) => {
 }
 
 var getOtherFriendSpot = (username) => {
-  var friendWishQuery = 
-  `SELECT * FROM spots 
-  INNER JOIN spots_users
-  ON spots.id=spots_users.spotid
-  INNER JOIN users 
-  ON friends.username=users.username
-  WHERE users.username = '${username}';`;
+  return Users.find({username: username})
+  .then(user => {
+    console.log('user', user);
+    var friendWishQuery = 
+    `SELECT DISTINCT spots.name, spots.latitude, spots.longitude FROM spots
+    INNER JOIN wishes
+    ON wishes.spotid=spots.id
+    INNER JOIN users
+    ON users.username=wishes.username  
+    INNER JOIN friends
+    ON friends.friendname=users.username
+    WHERE friends.username = '${username}'
+    AND wishes.status = 'open'
+    AND wishes.username != '${username}';`;
+
+    return Spot.rawQuery(friendWishQuery)
+    .then(friendSpots => {
+      return friendSpots;
+    })
+  })
+  .catch(err => {
+    console.log(err);
+  })
 }
