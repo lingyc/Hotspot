@@ -38,26 +38,26 @@ console.log(friendRequest);
           //;
           console.log('response test',res.text);
           if (res.text.indexOf('exist')!==-1){
-            $(".doesntExist").fadeIn(2000);
-            $(".doesntExist").fadeOut(2000);
+            $(".doesntExist").fadeIn(1000);
+            $(".doesntExist").fadeOut(1000);
             //document.getElementsByClassName("doesntExist")[0].style.display='inline';
             console.log('doesnt exist')
           } else if (res.text.indexOf('request sent')!==-1 ){
-            $(".requestSent").fadeIn(2000);
-            $(".requestSent").fadeOut(2000);
+            $(".requestSent").fadeIn(1000);
+            $(".requestSent").fadeOut(1000);
             //document.getElementsByClassName("requestSent")[0].style.display='inline';
 
             console.log('request  sent!!')
           } else if (res.text.indexOf('already send')!==-1 ){
 
-             $(".alreadySent").fadeIn(2000);
-            $(".alreadySent").fadeOut(2000);
+             $(".alreadySent").fadeIn(1000);
+            $(".alreadySent").fadeOut(1000);
             //document.getElementsByClassName("alreadySent")[0].style.display='inline';
 
             console.log('request already sent')
           } else {
-            $(".alreadyAFriend").fadeIn(2000);
-            $(".alreadyAFriend").fadeOut(2000);
+            $(".alreadyAFriend").fadeIn(1000);
+            $(".alreadyAFriend").fadeOut(1000);
             document.getElementsByClassName("alreadyAFriend")[0].style.display='inline';
           }
           return resolve(res);
@@ -81,23 +81,23 @@ if (this.props.panelMode === 'friendRequests'){
     panelItems=<div>
   <div ><input className = 'friendToAdd 'type='text' placeholder='Add a Friend'/>
   <button className='button' onClick={this.submitFriendReq.bind(this)}>Send Request</button></div>
-<div style= {{display:"none"}} className='alreadyAFriend'>Already a friend </div>
-<div style= {{display:"none"}} className='doesntExist'>Doesnt exist   </div>
-<div style= {{display:"none"}} className='requestSent'>Request Sent   </div>
-<div style= {{display:"none"}} className='alreadySent'>Already sent a friend request  </div>
+<div style= {{display:"none",color:"white"}} className='alreadyAFriend'>   Already a friend </div>
+<div style= {{display:"none",color:"white"}} className='doesntExist'>   This Person hasn't signed up   </div>
+<div style= {{display:"none",color:"white"}} className='requestSent'>   Request Sent!   </div>
+<div style= {{display:"none",color:"white"}} className='alreadySent'>   Already sent a friend request  </div>
 
 <p style={{color:"white"}}>Aint no friend requests</p>
 
     </div>
-} else {
+} else {//
       panelItems = <div>  
    <div >
    <input className = 'friendToAdd 'type='text' placeholder='Add a Friend'/>
    <button className='button' onClick={this.submitFriendReq.bind(this)}>Send Request</button>
-<div style= {{display:"none"}} className='alreadyAFriend'>Already a friend </div>
-<div style= {{display:"none"}} className='doesntExist'>Doesnt exist   </div>
-<div style= {{display:"none"}} className='requestSent'>Request Sent   </div>
-<div style= {{display:"none"}} className='alreadySent'>Already sent a friend request  </div>
+<div style= {{display:"none",color:"white"}} className='alreadyAFriend'>   Already a friend </div>
+<div style= {{display:"none",color:"white"}} className='doesntExist'>   This Person hasn't signed up   </div>
+<div style= {{display:"none",color:"white"}} className='requestSent'>   Request Sent!   </div>
+<div style= {{display:"none",color:"white"}} className='alreadySent'>   Already sent a friend request  </div>
    </div>
 <div>
       {this.props.friendRequests.map((person) => {
