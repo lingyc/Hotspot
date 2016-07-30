@@ -6,12 +6,9 @@ import Promise from 'bluebird';
 const endpoints = {
   logout: '/logout',
   spots: '/api/spots',
-<<<<<<< a02fc1b07e8413352fec09987a38696e8239ca5e
   friendReqs:'/api/pendingFriendRequest',
-  getFriends:'/api/friends'
-=======
+  getFriends:'/api/friends',
   wishes: '/api/spots/wishes'
->>>>>>> Enable click for wish list
 };
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';

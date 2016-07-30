@@ -29,7 +29,6 @@ class Map extends React.Component {
     super(props);
     this.state = {
       temp_collection: [],
-      //should populate on initialization
       temp_wishList: []
     };
   }
@@ -43,7 +42,7 @@ class Map extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // console.log('componentWillReceiveProps');
+    console.log('componentWillReceiveProps');
     if (layerGroup) {
       layerGroup.clearLayers();
       layerGroup = L.layerGroup().addTo(mainMap)
@@ -63,7 +62,7 @@ class Map extends React.Component {
 
   tempClickLocationSubmit(name, latitude, longitude, rating, image) {
   // Create object to make DB query
-    // console.log('tempClickLocationSubmit');
+    console.log('tempClickLocationSubmit');
     const spotToAdd = {
       name: name,
       latitude: latitude,
@@ -80,21 +79,18 @@ class Map extends React.Component {
   }
 
   tempClickWishListSubmit(name, latitude, longitude) {
-    //pass down the lat/lng information, so the back-end can match and store
-    // console.log('tempClickWishList, ', latitude, longitude);
     let nameLatLng = [name, latitude, longitude];
     let temp = this.state.temp_wishList.concat([nameLatLng])
-    //check uniq array of arrays
-    let obj = {};
+
+    let ob = {};
     let res = [];
-    for (let i = 0; i < temp.length; i++) {
+    for (let i =0; i < temp.length; i++) {
       let tag = "" + temp[i][0] + temp[i][1] + temp[i][2];
       obj[tag] = temp[i]
     }
     for (let item in obj) {
       res.push(obj[item]);
     }
-    //update the state of temp wishes
     this.setState({
       temp_wishList: res
     });
@@ -110,7 +106,7 @@ class Map extends React.Component {
   }
 
   renderMap() {
-    // console.log('lmapbox', L.mapbox);
+    console.log('lmapbox', L.mapbox);
     mainMap = L.mapbox.map('map-one', 'mapbox.streets')
       .setView(defaultCoord, 16);
 
@@ -137,9 +133,9 @@ class Map extends React.Component {
     })
 
     this.addPointsLayer(mainMap);
-    //add wish layer
+    ////////add wish layer///////////////////////////
     // this.addWishLayer(mainMap);
-    /////////////////////////////////////////////////////////////
+    ////////add wish layer///////////////////////////
     layerGroup = L.layerGroup().addTo(mainMap)
 
     initialize = false;
@@ -163,13 +159,11 @@ class Map extends React.Component {
       var content = '<h2>' + feature.properties.title + '<\/h2>' +
       '<img src="' + feature.properties.image + '" alt="">' +
       `<img id="wishImage" src="${wishImage}" alt="">`;
-      //bind popup
+      //wish icon on click, change icon
       marker.bindPopup(content);
       marker.on('mouseover', function(e) {
         this.openPopup();
       });
-      //on popupopen and image click of wishimage
-      //change icon
       marker.on('popupopen', function(e) {
         $(`#wishImage`).click(function(event) {
           console.log('Image clicked', marker);
@@ -185,13 +179,13 @@ class Map extends React.Component {
           // Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
           marker.closePopup();
         })
-      })
+      });
     });
 
-    // console.log('this.state.temp_collection', this.state.temp_collection);
-    // console.log('this.props.totalCollection', this.props.totalCollection);
+    console.log('this.state.temp_collection', this.state.temp_collection);
+    console.log('this.props.totalCollection', this.props.totalCollection);
     let collection = this.props.totalCollection.concat(this.state.temp_collection);
-    // console.log('total collection', this.props.totalCollection);
+    console.log('total collection', this.props.totalCollection);
     // If any filters have been selected and a filtered collection
     // exists, send that into the map instead
     if (this.props.filteredCollection.length > 0) {
@@ -203,8 +197,7 @@ class Map extends React.Component {
     restaurantPoints.setGeoJSON(formatGeoJSON(collection));
   }
 
-  //Helper to add wish layer
-
+  /////////////// ADD WISH LAYER/////////////////////////////////
   addWishLayer(map) {
     var that = this;
     if (!initialize) {
@@ -265,6 +258,7 @@ class Map extends React.Component {
     restaurantPoints.setGeoJSON(formatGeoJSON(collection));
   }
 
+
   // Helpers for interacting with users live location
   getUserLocation() {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -275,13 +269,11 @@ class Map extends React.Component {
   foundRestaurant(res) {
     // console.log('found a place', res, res.feature.text, res.feature.center); // -122, 33 long / lat
     // var onClick = (event) => { Actions.clickLocationSubmit(res.feature.text) };
-    var that = this;
     var pointQuery = L.mapbox.featureLayer().addTo(layerGroup);
-    // console.log('pointQuery', pointQuery);
+    console.log('pointQuery', pointQuery);
     pointQuery.on('layeradd', function(point) {
       // console.log('actions', Actions);
       var marker = point.layer;
-      // console.log('this is a marker!!!!!!  ', marker);
       var feature = marker.feature;
       marker.setIcon(L.icon(feature.properties.icon));
       var content = '<h2>' + feature.properties.title + '<\/h2>' +
@@ -290,9 +282,13 @@ class Map extends React.Component {
       `<input type="radio" name="goBack${pointQuery._leaflet_id}"> Never ever ever<br>` +
       'go back<br>' +
       `<input type="button" id="fistBump${pointQuery._leaflet_id}" value="Thumbs!!!!"></form>` +
-      '<img src="' + feature.properties.image + '" alt="">' + 
+      '<img src="' + feature.properties.image + '" alt="">' +
       `<img id="wishImage" src="${wishImage}" alt="">`;
-      //event listener for content
+      
+      marker.bindPopup(content)
+      marker.on('mouseover', function(e) {
+        this.openPopup();
+      });
       marker.on('popupopen', function(e) {
         $(`#wishImage`).click(function(event) {
           console.log('Image clicked', marker);
@@ -309,18 +305,13 @@ class Map extends React.Component {
           marker.closePopup();
         })
       })
-      //binding content to the marker
-      marker.bindPopup(content)
-      marker.on('mouseover', function(e) {
-        this.openPopup();
-      });
     });
 
     var coordinates = res.feature.center;
     var pickedPlace = geoJSONPoint(coordinates[0], coordinates[1], res.feature.text, fistBump, res.feature.image || testImage);
 
     pointQuery.setGeoJSON(pickedPlace);
-    // pointQuery.openPopup();
+    pointQuery.openPopup();
     
 
     // Add listener for submission
@@ -407,7 +398,6 @@ function mapDispatchToProps(dispatch) {
 //   }
 // ];
 
-
 ////////// TEMPLATES FOR GEOPOINT and GEOSET in geoJSON FORMAT //////////
 var geoJSONPoint = (longitude, latitude, name, thumb, image) => {
   return {
@@ -486,7 +476,6 @@ var geoSuccess = (position) => {
 var currentMapView = () => {
   return mainMap.getCenter();
 };
-
 
 var formatResObj = (yelpResultEntry) => {
   return {
