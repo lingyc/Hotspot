@@ -73,7 +73,7 @@ console.log(friendRequest);
   render() {
     return (
       <nav className="navbar navbar-dark bg-inverse row">
-          <div className="col s5">
+          <div className="col s6">
             <input id='mainSearchBar' onChange={this.handleChange.bind(this)}type="text" placeholder="Search here"/>
             <button className='button btn btn-default btn-lg top' onClick={this.submitSearch.bind(this)}>Search</button>
             <div onClick={this.showResults.bind(this)} className='btn btn-default btn-lg top'>Show Search Results</div>

@@ -5,8 +5,8 @@ body {
 
 .map {
   position: absolute;
-  /*top: 12%;*/
-  top: 60%;
+  top: 12%;
+  /*top: 60%;*/
   bottom: 0;
   width: 100%;
 }
