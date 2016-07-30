@@ -23,17 +23,19 @@ var endpointNewPlace = 'https://api.yelp.com/v2/search';
 var endpointBusID = 'https://api.yelp.com/v2/business/';
 
 // Generate parameters for a new business
-export var generateYelpNewBusParam = function (name, longitude, latitude) {
+export var generateYelpNewBusParam = function (name, longitude, latitude, friendWishOnly) {
   console.log('generateYelpNewBusParam called')
   return {
     term: name,
     limit: 1,
-    ll: latitude + ',' + longitude
+    ll: latitude + ',' + longitude,
+    friendWishOnly: friendWishOnly
   };
 };
 
 // Yelp call
 export var requestYelp = function (setParameters, busId, searchBar) {
+  var friendWishOnly = setParameters.friendWishOnly
   console.log('requestYelp called')
   var httpMethod = 'GET';
 
@@ -91,12 +93,12 @@ export var requestYelp = function (setParameters, busId, searchBar) {
       var data = JSON.parse(body);
       // console.log('returning data', data);
       if (busId) {
-        resolve(parseYelpData(data));
+        resolve(parseYelpData(data, friendWishOnly));
       } else if (data.businesses.length > 0) {
         if (searchBar) {
-          resolve(data.businesses.map(business => parseYelpData(business)));
+          resolve(data.businesses.map(business => parseYelpData(business, friendWishOnly)));
         } else {
-          resolve(parseYelpData(data.businesses[0]));
+          resolve(parseYelpData(data.businesses[0], friendWishOnly));
         }
       } else {
         resolve();
@@ -123,7 +125,7 @@ export var requestMultipleYelp = function(yelpParams) {
 };
 
 // Parse required data out of Yelp's response data
-export var parseYelpData = function (business) {
+export var parseYelpData = function (business, friendWishOnly) {
   console.log('businessss',business);
   let cuisine;
   if (business.categories && business.categories[0]) {
@@ -142,7 +144,8 @@ export var parseYelpData = function (business) {
     image: imageUrl,
     businessId: businessId,
     latitude: business.location.coordinate.latitude,
-    longitude: business.location.coordinate.longitude
+    longitude: business.location.coordinate.longitude,
+    friendWishOnly: friendWishOnly
   };
 
   return parsed;
