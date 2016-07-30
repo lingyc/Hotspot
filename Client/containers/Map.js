@@ -64,6 +64,7 @@ class Map extends React.Component {
 
   tempClickLocationSubmit(name, latitude, longitude, rating, image) {
   // Create object to make DB query
+    let that = this;
     console.log('tempClickLocationSubmit');
     const spotToAdd = {
       name: name,
@@ -74,10 +75,19 @@ class Map extends React.Component {
         image: image
       }
     };
-    var newCollection = this.state.temp_collection.concat([spotToAdd]);
+    //make a db query on each click for thumbs up/down
+    that.props.postSpots({name: name, latitude: latitude, longitude: longitude});
+    // var newCollection = this.state.temp_collection.concat([spotToAdd]);
+    //get updated data, and setState
+    let newCollection = that.props.getSpots();
     this.setState({
       temp_collection: newCollection
     })
+  }
+
+  tempClickWishListSubmit(name, latitude, longitude) {
+    let that = this;
+    that.props.getUpdate({name: name, latitude: latitude, longitude: longitude})
   }
 
   mapSearchCoord(e) {

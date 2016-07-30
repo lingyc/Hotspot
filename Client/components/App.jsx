@@ -41,6 +41,10 @@ class App extends React.Component {
     let that = this;
     $.get('/api/spots', function(data, err) {
       console.log('hi');
+    }).then(function(result) {
+      this.setState({
+        collection: result
+      })
     })
   }
 
