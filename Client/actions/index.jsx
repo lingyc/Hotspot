@@ -6,7 +6,8 @@ import Promise from 'bluebird';
 const endpoints = {
   logout: '/logout',
   spots: '/api/spots',
-  friendReqs:'/api/pendingFriendRequest'
+  friendReqs:'/api/pendingFriendRequest',
+  getFriends:'/api/friends'
 };
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
@@ -23,7 +24,7 @@ export const NAV_FRIEND_NAME = 'NAV_FRIEND_NAME';
 export const NAV_SEARCH_RESULTS = 'NAV_SEARCH_RESULTS';
 export const MAP_SEARCH_COORD = 'MAP_SEARCH_COORD';
 export const MAP_SEARCH_ZOOM = 'MAP_SEARCH_ZOOM';
-
+export const FETCH_FRIENDS ='FETCH_FRIENDS'
 export function mapSearchZoom(zoomLevel) {
   let meters;
   let zoomstore = {
@@ -267,7 +268,6 @@ export function clickLocationSubmit(name, latitude, longitude, rating) {
   };
 }
 
-
 export function fetchCollection() {
   // This function should only be called once on startup
   // Query database for user's entire collection
@@ -281,13 +281,28 @@ export function fetchCollection() {
 }
 
 
+export function fetchCurrentFriends() {
+  // This function should only be called once on startup
+  // Query database for user's friends
+  console.log('fetchFriends')
+  const currFriends = request.get(endpoints.getFriends);
+$.get("http://127.0.0.1:8732/api/friends",function(a,b){
+    console.log('these are all my friendsssssss!!!',a,b);
+  })
+  return {
+    type: FETCH_FRIENDS,
+    payload: currFriends
+  };
+}
+
+
 export function fetchFriendRequests() {
   // This function should only be called once on startup
-  // Query database for user's friend requests;
+  // Query database for user's friendRequests;
   console.log('fetchFriendRequests')
   const friendRequests = request.get(endpoints.friendReqs);
-  $.get("http://127.0.0.1:8732/api/friendRequest",function(a,b){
-    console.log(a,b);
+  $.get("http://127.0.0.1:8732/api/pendingFriendRequest",function(a,b){
+    console.log('these are all my friend requests',a,b);
   })
   return {
     type: FETCH_FRIENDREQS,

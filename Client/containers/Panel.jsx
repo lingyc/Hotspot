@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import CollectionModel from '../components/CollectionModel';
 import ResultModel from '../components/ResultModel';
 import FilterItem from '../components/FilterItem';
+import FriendModel from '../components/FriendModel';
 import * as Actions from '../actions';
 import CollectionDetailModel from '../components/CollectionDetailModel';
 
@@ -14,6 +15,7 @@ class Panel extends React.Component {
   componentDidMount() {
     this.props.actions.fetchCollection();
     this.props.actions.fetchFriendRequests();
+    this.props.actions.fetchCurrentFriends();
 console.log('panel has mounted!!!');
   }
 
@@ -23,15 +25,13 @@ console.log('panel has mounted!!!');
     this.props.actions.createFilters(this.props.totalCollection, this.props.filters);
 console.log(this.props.panelMode)
 if (this.props.panelMode === 'friendRequests'){
-  console.log('friendRequests panel being called',this.props.friendRequests)
 
       panelItems = this.props.friendRequests.map((person) => {
-        return (<div>{person.requestor}</div>);
+        return (<FriendModel item={person} />);
       });
     }
 
 else if (this.props.panelMode === 'results'){
-    console.log('results panel being called')
 
       panelItems = this.props.searchResults.map((restaurant) => {
         return (<ResultModel item={restaurant}
@@ -39,7 +39,6 @@ else if (this.props.panelMode === 'results'){
           key={restaurant.name}/>);
       });
     } else if (this.props.panelMode === 'filter') {
-          console.log('Filter panel being called')
 
       panelItems = this.props.filters.map((filter) => {
         return (<FilterItem filter={filter}
@@ -49,13 +48,11 @@ else if (this.props.panelMode === 'results'){
                             key={filter}/>);
       });
     } else if (this.props.filteredCollection.length !== 0) {
-                console.log('line 53 panel being called')
 
       panelItems = this.props.filteredCollection.map((restaurant) => {
         return (<CollectionModel item={restaurant} key={restaurant.name}/>);
       });
     } else if (this.props.panelMode==='collection') {
-                      console.log('collection being called')
 
       panelItems = this.props.totalCollection.map((restaurant) => {
         return (<CollectionModel item={restaurant}
@@ -63,7 +60,6 @@ else if (this.props.panelMode === 'results'){
           key={restaurant.name}/>);
       });
     }
-    console.log(panelItems,this.props.totalCollection,this.props.searchResults);
     return (
       <Menu id={ 'panel' }
             right
