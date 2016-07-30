@@ -69,7 +69,7 @@ export default function(app) {
           console.log('new spot', spot);
           return yourWishOnSpot(spot, req.user.username)
           .then(wishSpot => {
-            return friendWishesOnSpot(wishSpot, req.query.username);
+            return friendWishesOnSpot(wishSpot, req.user.username);
           })
         });
       })
@@ -373,7 +373,7 @@ export default function(app) {
       ON users.username=friends.username
       INNER JOIN spots
       ON wishes.spotid=spots.id
-      WHERE users.username = '${req.query.username}';`;
+      WHERE users.username = '${req.user.username}';`;
 
     Wishes.rawQuery(friendWishQuery)
     .then(friendWishes => {
@@ -395,7 +395,7 @@ export default function(app) {
         ON users.username=friends.username
       INNER JOIN spots
         ON wishes.spotid=spots.id
-        WHERE users.username = '${req.body.username}'
+        WHERE users.username = '${req.user.username}'
         AND friends.friendname = '${req.body.friendname}'
         AND spots.latitude = '${req.body.latitude}'
         AND spots.longitude = '${req.body.longitude}'
@@ -407,7 +407,7 @@ export default function(app) {
       var wishUpdate = 
         `UPDATE wishes 
         SET status = '${req.body.wishstatus}', 
-          requestee = '${req.body.username}'
+          requestee = '${req.user.username}'
         WHERE id = '${wish[0].id}';`;
 
       return Wishes.rawQuery(wishUpdate)
