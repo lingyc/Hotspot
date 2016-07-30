@@ -27,9 +27,10 @@ export default function(app) {
         if (spots.length === 0) {
           spotsReturn = [];
           // return sendBackJSON(res, [], 'no spots');
-          return [];
+          // return [];
+        } else {
+          spotsReturn = spots;
         }
-        spotsReturn = spots;
 
         return getOtherFriendSpot(req.user.username)
         .then(friendSpots => {
@@ -38,8 +39,8 @@ export default function(app) {
             return friendSpot;
           });
           console.log('friendSpots', friendSpots);
-          var userAndFriendSpots = spots.concat(friendSpots);
-          return requestMultipleYelp(userAndFriendSpots.map((spot) => {
+          spotsReturn = spotsReturn.concat(friendSpots);
+          return requestMultipleYelp(spotsReturn.map((spot) => {
             return generateYelpNewBusParam(spot.name, spot.longitude, spot.latitude, spot.friendWishOnly);
           }));
         })
@@ -534,7 +535,7 @@ var friendWishesOnSpot = (spot, username, res) => {
 var getOtherFriendSpot = (username) => {
   return Users.find({username: username})
   .then(user => {
-    console.log('user', user);
+    console.log('calling getOtherFriendSpot user', user);
     var friendWishQuery = 
     `SELECT DISTINCT spots.name, spots.latitude, spots.longitude FROM spots
     INNER JOIN wishes
@@ -549,6 +550,7 @@ var getOtherFriendSpot = (username) => {
 
     return Spot.rawQuery(friendWishQuery)
     .then(friendSpots => {
+      console.log('logging friendSpots', friendSpots);
       return friendSpots;
     })
   })
