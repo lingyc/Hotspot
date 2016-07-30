@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 
 // Globl map
-var mainMap, restaurantPoints, layerGroup, wishPoints;
+var mainMap, restaurantPoints, layerGroup;
 var initialize = true;
 
 ////////// TEST IMAGES TODO - REMOVE FOR FINAL //////////
@@ -216,8 +216,7 @@ class Map extends React.Component {
           }))
           //also call function to send info 
           let latlng = marker._latlng;
-          // that.tempClickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
-          // Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
+          Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
           marker.closePopup();
         })
       })
@@ -347,7 +346,15 @@ var geoJSONSet = () => {
 function formatGeoJSON(array) {
   const geoPointArray = array.map((spot) => {
     // console.log('spot is', spot);
-    let ratingImg = spot.rating === '5' ? thumbUp : thumbDown;
+    if (spot.yourWish && spot.friendWish !== [] && spot.wishStatus === 'pending') {
+      let ratingImg = heartRed;
+    } else if (spot.yourWish && spot.wishStatus === 'pending') {
+      let ratingImg = heartEmpty;
+    } else if (spot.yourWish && spot.wishStatus === 'fulfilled') {
+      let ratingImg = giftImage;
+    } else {
+      let ratingImg = spot.rating === '5' ? thumbUp : thumbDown;
+    } 
     return geoJSONPoint(spot.longitude, spot.latitude, spot.name, ratingImg, spot.yelpData.image);
   });
   return [

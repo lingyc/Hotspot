@@ -7,7 +7,8 @@ const endpoints = {
   logout: '/logout',
   spots: '/api/spots',
   friendReqs:'/api/pendingFriendRequest',
-  getFriends:'/api/friends'
+  getFriends:'/api/friends',
+  wishes:'/api/wishes'
 };
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
@@ -240,6 +241,11 @@ export function deleteCollectionItem(item) {
   };
 }
 
+//send a wish submit
+export function clickWishListSubmit(name, latitude, longitude) {
+
+}
+
 export function clickLocationSubmit(name, latitude, longitude, rating) {
   // Create object to make DB query
   const spotToAdd = {
@@ -313,10 +319,6 @@ export function fetchFriendRequests() {
     payload: friendRequests
   };
 }
-
-
-
-
 
 export function createFilters(collection, filters) {
 
