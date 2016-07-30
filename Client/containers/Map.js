@@ -23,6 +23,7 @@ var heartRed = './component/map/Assets/heartRed.png';
 var starEmpty = './component/map/Assets/starEmpty.png';
 var starFill = './component/map/Assets/starFill.png';
 var wishImage = './component/map/Assets/wishIcon.png';
+var heartPink = './component/map/Assets/heartPink.png';
 
 class Map extends React.Component {
   constructor(props) {
@@ -156,10 +157,12 @@ class Map extends React.Component {
       marker.setIcon(L.icon(feature.properties.icon));
       var content = '<h2>' + feature.properties.title + '<\/h2>' +
       '<img src="' + feature.properties.image + '" alt="">' +
-      `<img id="wishImage" src="${wishImage}" alt="">`;
+      `<img id="wishImage" src="${wishImage}" alt="">` + 
+      ((marker.feature.properties.icon.iconUrl == starFill) ? `<img id="giftImage" src="${giftImage}"` : '');
       //wish icon on click, change icon
       marker.bindPopup(content);
       marker.on('mouseover', function(e) {
+        console.log(marker.feature.properties.icon.iconUrl);
         this.openPopup();
       });
       marker.on('popupopen', function(e) {
@@ -223,16 +226,16 @@ class Map extends React.Component {
       var marker = point.layer;
       var feature = marker.feature;
       marker.setIcon(L.icon(feature.properties.icon));
-
-      var content = '<p style="font-size:28px">' + feature.properties.title + '<\/p><br>' +
-      '<img class ="hotspotImage" src="' + feature.properties.image + '" alt="">'+
-      '<h2 style="font-size:20px">Would you go here?</h2><br>' +
-
-      `<input style="height:10px;width:10px" type="radio" name="goBack${pointQuery._leaflet_id}" required>Definitely!<br> ` +
-      `<input style="height:10px;width:10px" type="radio" name="goBack${pointQuery._leaflet_id}">Never!<br> ` +
-      '<br>' +
-      `<input type="button" id="fistBump${pointQuery._leaflet_id}" value="Rate!"></form>` 
-      ;
+      var content = '<h2>' + feature.properties.title + '<\/h2>' +
+      '<form>I would<br>' +
+      `<input type="radio" name="goBack${pointQuery._leaflet_id}" required> Definitely and absolutely<br>` +
+      `<input type="radio" name="goBack${pointQuery._leaflet_id}"> Never ever ever<br>` +
+      'go back<br>' +
+      `<input type="button" id="fistBump${pointQuery._leaflet_id}" value="Thumbs!!!!"></form>` +
+      '<img src="' + feature.properties.image + '" alt="">' +
+      `<img id="wishImage" src="${wishImage}" alt="">` +
+      ((marker.feature.properties.icon.iconUrl == starFill) ? `<img id="giftImage" src="${giftImage}"` : '');
+      
       marker.bindPopup(content)
       marker.on('mouseover', function(e) {
         this.openPopup();
@@ -381,10 +384,10 @@ function formatGeoJSON(array) {
   const geoPointArray = array.map((spot) => {
     // console.log('spot is', spot);
     var ratingImg;
-    if (spot.yourWish && spot.friendWish !== [] && spot.wishStatus === 'pending') {
+    if (spot.yourWish && spot.friendWish.length && spot.wishStatus === 'open') {
       ratingImg = heartRed;
     } else if (spot.yourWish && spot.wishStatus === 'open') {
-      ratingImg = heartEmpty;
+      ratingImg = heartPink;
     } else if (spot.yourWish && spot.wishStatus === 'accepted') {
       ratingImg = giftImage;
     //else if it is not your wish but your friends wish

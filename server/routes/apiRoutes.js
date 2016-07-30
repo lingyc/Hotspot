@@ -23,7 +23,7 @@ export default function(app) {
     console.log('user', req.user);
     Spot.getAllForUser(req.user)
       .then((spots) => {
-        console.log('spotssss',spots);
+        // console.log('spotssss',spots);
         if (spots.length === 0) {
           spotsReturn = [];
           // return sendBackJSON(res, [], 'no spots');
@@ -38,7 +38,7 @@ export default function(app) {
             friendSpot.friendWishOnly = true;
             return friendSpot;
           });
-          console.log('friendSpots', friendSpots);
+          // console.log('friendSpots', friendSpots);
           spotsReturn = spotsReturn.concat(friendSpots);
           return requestMultipleYelp(spotsReturn.map((spot) => {
             return generateYelpNewBusParam(spot.name, spot.longitude, spot.latitude, spot.friendWishOnly);
@@ -48,7 +48,7 @@ export default function(app) {
 
       })
       .then((yelpResults) => {
-        console.log('yelpresults looking for busid location', yelpResults);
+        // console.log('yelpresults looking for busid location', yelpResults);
         if (yelpResults.length === 0) {
           return [];
         }
@@ -58,7 +58,7 @@ export default function(app) {
             let lowerLength = Math.min([spot.length, result.length]);
             return result.name.indexOf(spot.name.slice(lowerLength)) !== -1;
           });
-          console.log('yelp stuff', match);
+          // console.log('yelp stuff', match);
           if (match.length === 0) {
             spot.yelpData = {
               cuisine: null,
@@ -67,7 +67,7 @@ export default function(app) {
           } else {
             spot.yelpData = match[0];
           }
-          console.log('new spot', spot);
+          // console.log('new spot', spot);
           return yourWishOnSpot(spot, req.user.username)
           .then(wishSpot => {
             return friendWishesOnSpot(wishSpot, req.user.username);
@@ -76,7 +76,7 @@ export default function(app) {
       })
       .then((augmentedSpots) => {
         //add spots your friend wished
-        console.log('augmentedSpots', augmentedSpots);
+        // console.log('augmentedSpots', augmentedSpots);
         sendBackJSON(res, augmentedSpots, 'got all spots')
       })
       .catch((err) => console.log(err));
@@ -113,7 +113,7 @@ export default function(app) {
       }
     })
     .then((spotuser) => {
-      console.log('created new spot', spotuser);
+      // console.log('created new spot', spotuser);
       sendBackJSON(res, req.body, 'created new spot')
     })
     .catch((err) => {
@@ -165,7 +165,7 @@ export default function(app) {
       } else {
         return Friends.rawQuery(friendQuery)
         .then(friend => {
-          console.log('friend',friend);
+          // console.log('friend',friend);
           if (friend.length === 0) {
             //another query to see if friend request already exists
             return FriendRequests.find({requestor: req.user.username, requestee: req.body.requestee})
@@ -173,7 +173,7 @@ export default function(app) {
               if (request.length === 0) {
                 return FriendRequests.create({requestor: req.user.username, requestee: req.body.requestee, response: 'pending'})
                 .then((request) => {
-                  console.log('request stored', request)
+                  // console.log('request stored', request)
                   res.send('friend request sent');
                 })
               } else {
@@ -337,20 +337,20 @@ export default function(app) {
     Wishes.rawQuery(findWishQuery)
     .then((foundWish) => {
       if (foundWish.length > 0) {
-        console.log('foundWish', foundWish);
+        // console.log('foundWish', foundWish);
         res.send('wish already exists');
       } else {
-        console.log('wish not found', foundWish);
+        // console.log('wish not found', foundWish);
         return Spot.findOrCreate({name: req.body.name, latitude: req.body.latitude, longitude: req.body.longitude})
         // return Spot.find({name: req.body.name, latitude: req.body.latitude, longitude: req.body.longitude})
         .then(spot => {
-          console.log('spot', spot);
+          // console.log('spot', spot);
           return SpotsUsers.findOrCreate({spotid: spot[0].id, userid: req.user.id})
           .then(spotuser => {
-            console.log('spotuser', spotuser);
+            // console.log('spotuser', spotuser);
             return Wishes.create({username: req.user.username, spotid: spotuser[0].spotid, status: 'open', requestee: 'none'})
             .then(wish => {
-              console.log('wish created');
+              // console.log('wish created');
               sendBackJSON(res, wish, 'wish created');
               return wish;
             })
@@ -378,7 +378,7 @@ export default function(app) {
 
     Wishes.rawQuery(friendWishQuery)
     .then(friendWishes => {
-      console.log('friendWishes', friendWishes);
+      // console.log('friendWishes', friendWishes);
       sendBackJSON(res, friendWishes, 'sending new friend');
     })
     .catch((err) => {
@@ -404,7 +404,7 @@ export default function(app) {
 
     Wishes.rawQuery(acceptWishQuery)
     .then(wish => {
-      console.log('wish', wish);
+      console.log('wishwish', wish);
       var wishUpdate = 
         `UPDATE wishes 
         SET status = '${req.body.wishstatus}', 
@@ -417,7 +417,7 @@ export default function(app) {
       })
     })
     .catch((err) => {
-      console.log(err);
+      console.log('wishwish, ', err);
       sendBackJSON(res, err, 'error');
     });
   });
@@ -440,7 +440,7 @@ export default function(app) {
 
 
   app.get('/api/test', (req, res) => {
-    console.log('req.query', req.query);
+    // console.log('req.query', req.query);
     var spot = req.query;
     yourWishOnSpot(spot, req.query.username, res)
     .then(wishSpot => {
@@ -449,13 +449,13 @@ export default function(app) {
   });
 
   app.get('/api/test2', (req, res) => {
-    console.log('req.query for test2', req.query);
+    // console.log('req.query for test2', req.query);
     var spot = req.query;
     friendWishesOnSpot(spot, req.query.username, res);
   });
 
   app.get('/api/test3', (req, res) => {
-    console.log('req.query for test3', req.query);
+    // console.log('req.query for test3', req.query);
     getOtherFriendSpot(req.query.username, res);
   });
 }
@@ -477,7 +477,7 @@ var yourWishOnSpot = (spot, username, res) => {
   return Wishes.rawQuery(findWishQuery)
   .then(found => {
     if (found.length > 0) {
-      console.log('found', found);
+      // console.log('found', found);
       spot.yourWish = true;
       spot.wishStatus = found[0].status;
       spot.wishFulfilledby = found[0].requestee;
@@ -512,7 +512,7 @@ var friendWishesOnSpot = (spot, username, res) => {
 
   return Wishes.rawQuery(friendWishQuery)
   .then(friendWishes => {
-    console.log('friendWishes', friendWishes);
+    // console.log('friendWishes', friendWishes);
     spot.friendWish = friendWishes;
 
     for (var i = 0; i < friendWishes.length; i++) {
@@ -535,7 +535,7 @@ var friendWishesOnSpot = (spot, username, res) => {
 var getOtherFriendSpot = (username) => {
   return Users.find({username: username})
   .then(user => {
-    console.log('calling getOtherFriendSpot user', user);
+    // console.log('calling getOtherFriendSpot user', user);
     var friendWishQuery = 
     `SELECT DISTINCT spots.name, spots.latitude, spots.longitude FROM spots
     INNER JOIN wishes
@@ -550,7 +550,7 @@ var getOtherFriendSpot = (username) => {
 
     return Spot.rawQuery(friendWishQuery)
     .then(friendSpots => {
-      console.log('logging friendSpots', friendSpots);
+      // console.log('logging friendSpots', friendSpots);
       return friendSpots;
     })
   })
