@@ -17,7 +17,7 @@ img {
 
 /* Color/shape of burger icon bars */
 .bm-burger-bars {
-  background: #7ba;
+  background: rgba(240,95,64,0.8);
 }
 /* General sidebar styles */
 .bm-menu {
@@ -34,7 +34,7 @@ img {
 }
 .leaflet-popup-content {
   color:white;
-  background-color: #7ba;
+  background-color: rgba(240,95,64,0.8);
   
 }
 .leaflet-popup-content-wrapper{
@@ -57,7 +57,7 @@ nav.navbar {
 }
 
 .button {
-  background-color: #4CAF50; /* Green */
+  background-color: rgba(240,95,64,0.8); /* Green */
   border: none;
   color: white;
   padding: 12px 20px;
@@ -88,7 +88,7 @@ nav.navbar {
 }
 
 .btn.search {
-  background-color: #F05F40;
+  background-color: rgba(240,95,64,0.8);
   color: white;
 }
 
