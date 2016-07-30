@@ -72,15 +72,23 @@ console.log(friendRequest);
 
   render() {
     return (
-      <nav className="navbar navbar-dark bg-inverse">
-          <input onChange={this.handleChange.bind(this)}type="text" placeholder="Search here"/>
-          <button className= 'button' onClick={this.submitSearch.bind(this)}>Search</button>
-          <div onClick={this.collectionClick.bind(this)} className='btn btn-default btn-lg' >Collection</div>
-          <div onClick={this.filterClick.bind(this)} className='btn btn-default btn-lg'>Filter</div>
-          <div onClick={this.showResults.bind(this)} className='btn btn-default btn-lg'>Show Search Results</div>
-          <div onClick={this.friendReqClick.bind(this)} className='btn btn-default btn-lg' >Friend Requests</div>
+      <nav className="navbar navbar-dark bg-inverse ourNav">
 
-          <a className='btn btn-default btn-lg' href="/logout">Sign Out</a>
+        <div className="row bar">
+          <div className="col-md-6">
+            <input className='navbarSearch' onChange={this.handleChange.bind(this)}type="text" placeholder="Search here"/>
+            <div className='btn btn-default btn-lg search' onClick={this.submitSearch.bind(this)}>Search</div>
+            <div className='btn btn-default btn-lg search' onClick={this.showResults.bind(this)}>Show Search Results</div>
+          </div>
+
+          <div className="col-md-6">
+            <div onClick={this.collectionClick.bind(this)} className='btn btn-default btn-lg' >Collection</div>
+            <div onClick={this.filterClick.bind(this)} className='btn btn-default btn-lg'>Filter</div>
+            <div onClick={this.friendReqClick.bind(this)} className='btn btn-default btn-lg' >Friend Requests</div>
+            <a className='btn btn-default btn-lg' href="/logout">Sign Out</a>
+          </div>
+        </div>
+
       </nav>
     );
   }
