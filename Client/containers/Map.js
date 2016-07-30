@@ -187,12 +187,13 @@ class Map extends React.Component {
     // Add listener for submission
     var that = this;
     $('.leaflet-popup-content').on('click', '#fistBump' + pointQuery._leaflet_id, function() {
+
       console.log('clicked')
       var radios = document.getElementsByName('goBack' + pointQuery._leaflet_id);
       var rating;
       radios[0].checked === true ? rating = 5 : rating = 0;
       Actions.clickLocationSubmit(res.feature.text, coordinates[1], coordinates[0], rating);
-      that.tempClickLocationSubmit(res.feature.text, coordinates[1], coordinates[0], rating, res.image);
+      that.tempClickLocationSubmit(res.feature.text, coordinates[1], coordinates[0], rating, res.feature.image);
       // console.log('calling mainMap.removeLayer(pointQuery)', pointQuery);
       mainMap.removeLayer(pointQuery);
       // that.addPointsLayer(mainMap);

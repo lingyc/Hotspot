@@ -10,7 +10,8 @@ module.exports = {
   entry: './Client/index.js',
   output: {
     path: PATHS.compiled,
-    filename: 'app.bundle.js'
+    filename: 'app.bundle.js',
+    favicon:"https://upload.wikimedia.org/wikipedia/commons/1/1e/Tom's_Restaurant,_NYC.jpg"
   },
   module: {
     loaders: [
