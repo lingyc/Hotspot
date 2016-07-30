@@ -145,12 +145,12 @@ class Map extends React.Component {
       marker.on('popupopen', function(e) {
         $(`#wishImage`).click(function(event) {
           console.log('Image clicked', feature);
-          marker.setIcon(L.icon({
-            iconUrl: starEmpty,
-            iconSize: [35, 35],
-            iconAnchor: [35, 17],
-            popupAnchor: [-17, -17]
-          }))
+          // marker.setIcon(L.icon({
+          //   iconUrl: starEmpty,
+          //   iconSize: [35, 35],
+          //   iconAnchor: [35, 17],
+          //   popupAnchor: [-17, -17]
+          // }))
           //also call function to send info 
           let latlng = marker._latlng;
           // that.tempClickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
@@ -208,12 +208,12 @@ class Map extends React.Component {
       marker.on('popupopen', function(e) {
         $(`#wishImage`).click(function(event) {
           console.log('Image clicked', marker);
-          marker.setIcon(L.icon({
-            iconUrl: starEmpty,
-            iconSize: [35, 35],
-            iconAnchor: [35, 17],
-            popupAnchor: [-17, -17]
-          }))
+          // marker.setIcon(L.icon({
+          //   iconUrl: starEmpty,
+          //   iconSize: [35, 35],
+          //   iconAnchor: [35, 17],
+          //   popupAnchor: [-17, -17]
+          // }))
           //also call function to send info 
           let latlng = marker._latlng;
           let rating = 0;
@@ -329,8 +329,7 @@ var geoJSONPoint = (longitude, latitude, name, thumb, image) => {
         iconSize: [35, 35],
         iconAnchor: [35, 17],
         popupAnchor: [-17, -17]
-      },
-      rating: 
+      }
     }
   };
 };
@@ -348,14 +347,15 @@ var geoJSONSet = () => {
 function formatGeoJSON(array) {
   const geoPointArray = array.map((spot) => {
     // console.log('spot is', spot);
+    let ratingImg;
     if (spot.yourWish && spot.friendWish !== [] && spot.wishStatus === 'pending') {
-      let ratingImg = heartRed;
+      ratingImg = heartRed;
     } else if (spot.yourWish && spot.wishStatus === 'pending') {
-      let ratingImg = heartEmpty;
+      ratingImg = heartEmpty;
     } else if (spot.yourWish && spot.wishStatus === 'fulfilled') {
-      let ratingImg = giftImage;
+      ratingImg = giftImage;
     } else {
-      let ratingImg = spot.rating === '5' ? thumbUp : thumbDown;
+      ratingImg = spot.rating === '5' ? thumbUp : thumbDown;
     } 
     return geoJSONPoint(spot.longitude, spot.latitude, spot.name, ratingImg, spot.yelpData.image);
   });
