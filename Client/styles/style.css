@@ -5,7 +5,7 @@ body {
 
 .map {
   position: absolute;
-  top: 10%;
+  top: 12%;
   bottom: 0;
   width: 100%;
 }
@@ -17,12 +17,11 @@ img {
 
 /* Color/shape of burger icon bars */
 .bm-burger-bars {
-  background: #87b;
+  background: #7ba;
 }
-
 /* General sidebar styles */
 .bm-menu {
-  background: #87b;
+  background: #7ba;
   padding: 2.5em 1.5em 0;
   font-size: 1.15em;
 }
@@ -36,8 +35,8 @@ img {
 
 .bm-menu-wrap {
   position: absolute;
-  top: 68px;
-  right: 0;
+  top: 100px;
+  right: 100;
 }
 
 .btn {
@@ -46,6 +45,16 @@ img {
 
 nav.navbar {
   margin-bottom: 0;
-  border-bottom: 5px solid #87b;
   height: 70px;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
 }
