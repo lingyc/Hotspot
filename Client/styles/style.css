@@ -5,7 +5,8 @@ body {
 
 .map {
   position: absolute;
-  top: 12%;
+  /*top: 12%;*/
+  top: 60%;
   bottom: 0;
   width: 100%;
 }
@@ -39,32 +40,35 @@ img {
   right: 100;
 }
 
-.btn {
-  margin: 9px 30px;
+.btn.top {
+  margin: 9px 10px;
+  text-transform: none;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-weight: 100;
+  font-size: 18px;
 }
 
 nav.navbar {
   margin-bottom: 0;
   height: 70px;
+  background-color: white;
 }
 
-.button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 12px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 19px;
-    border-radius:10%;
+.button{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  /*padding: 12px 20px;*/
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 19px;
+  border-radius:10%;
 }
 
-input {
-width: 152px;
-height: 44px;
-border-radius:10%;
-font-size:19px;
-
-
+#mainSearchBar {
+  width: 200px;
+  font-size:19px;
+  margin-left: 30px;
 }
