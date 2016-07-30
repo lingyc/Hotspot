@@ -134,6 +134,7 @@ export var parseYelpData = function (business) {
   var imageUrl = business.image_url;
   var businessId = business.id;
   var parsed = {
+    address:business.location.display_address.join(','),
     rating:business.rating,
     url:business.url,
     name: business.name,
