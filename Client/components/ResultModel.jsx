@@ -10,11 +10,13 @@ import React from 'react';
 // $('#restaurant');
 
 var ResultModel = ({item}) => {
+    var url=item.url
+
   return (
   <div id='restaurant' className='restaurant card' >
     <img className='card-img-top' src={item.image} />
     <div className='card-block'>
-      <h4 className='card-title'>{item.name}</h4>
+      <h4 className='card-title'><a href={url} target="_blank">{item.name}</a></h4>
     </div>
     <ul className='list-group list-group-flush'>
       <li className='list-group-item'>Rating: TBD(?)</li>
