@@ -57,7 +57,7 @@ nav.navbar {
 }
 
 .button {
-  background-color: rgba(240,95,64,0.8); /* Green */
+  background-color: silver; /* Green */
   border: none;
   color: white;
   padding: 12px 20px;
@@ -65,6 +65,7 @@ nav.navbar {
   text-decoration: none;
   display: inline-block;
   font-size: 19px;
+  border-radius:10%;
 }
 
 .navbarSearch {
