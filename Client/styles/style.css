@@ -68,3 +68,16 @@ font-size:19px;
 
 
 }
+#starEmpty {
+  height: 30px;
+  width: auto;
+  margin-top: 5px;
+  padding-top: 5px;
+}
+
+#wishImage {
+  height: 30px;
+  width: auto;
+  marigin-top: 5px;
+  padding-top: 5px;
+}

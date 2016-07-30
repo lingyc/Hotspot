@@ -6,8 +6,12 @@ import Promise from 'bluebird';
 const endpoints = {
   logout: '/logout',
   spots: '/api/spots',
+<<<<<<< a02fc1b07e8413352fec09987a38696e8239ca5e
   friendReqs:'/api/pendingFriendRequest',
   getFriends:'/api/friends'
+=======
+  wishes: '/api/spots/wishes'
+>>>>>>> Enable click for wish list
 };
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
@@ -25,20 +29,57 @@ export const NAV_SEARCH_RESULTS = 'NAV_SEARCH_RESULTS';
 export const MAP_SEARCH_COORD = 'MAP_SEARCH_COORD';
 export const MAP_SEARCH_ZOOM = 'MAP_SEARCH_ZOOM';
 export const FETCH_FRIENDS ='FETCH_FRIENDS'
+
+
+export function clickWishListSubmit(name, latitude, longitude, rating) {
+  // Create object to make DB query
+  const wishToAdd = {
+    name: name,
+    latitude: latitude,
+    longitude: longitude,
+    rating: rating
+  };
+
+  // Add type and image from returned request
+  console.log('new spot', wishToAdd);
+  // const data = request.post(endpoints.spots).send(spotToAdd).end();
+  // const data = request.post(endpoints.spots).send(spotToAdd);
+
+  const data = new Promise((resolve, reject) => {
+    request.post(endpoints.wishes)
+      .send(wishToAdd)
+      .end((err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(res);
+      });
+  });
+
+  console.log('sending data', data);
+  return {
+    type: MAP_CONFIRM_POINT,
+    payload: data
+  };
+}
+
 export function mapSearchZoom(zoomLevel) {
   let meters;
   let zoomstore = {
-    20 : 100,
-    19 : 200,
-    18 : 400,
-    17 : 800,
-    16 : 1600,
-    15 : 3200,
-    14 : 6400,
-    13 : 12800,
-    12 : 25600
+    20 : 12,
+    19 : 25,
+    18 : 50,
+    17 : 100,
+    16 : 200,
+    15 : 400,
+    14 : 800,
+    13 : 1600,
+    12 : 3200,
+    11 : 6400,
+    10 : 12800,
+    9  : 25600
   }
-  if (zoomLevel < 12) {
+  if (zoomLevel < 9) {
     meters = 40000;
   } else {
     meters = zoomstore[zoomLevel];
@@ -273,11 +314,18 @@ export function fetchCollection() {
   // Query database for user's entire collection
   console.log('fetchCollection')
   const collection = request.get(endpoints.spots);
-
+  // const wishCollection = request.get(endpoints.wishes);
   return {
     type: FETCH_COLLECTION,
     payload: collection
-  };
+  }
+  // return {
+  //   type: FETCH_COLLECTION,
+  //   payload: {
+  //     collection: collection,
+  //     wishCollection: wishCollection
+  //   }
+  // }
 }
 
 
