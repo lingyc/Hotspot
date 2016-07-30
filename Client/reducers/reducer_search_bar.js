@@ -7,7 +7,7 @@ const initialState = {
   searchInput: '',
   searchResults: [],
   coord: {lat: 37.784005, lng: -122.401551},
-  meter: 1600
+  meter: 200
 };
 
 export default function(state = initialState, action) {

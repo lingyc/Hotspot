@@ -7,7 +7,8 @@ const endpoints = {
   logout: '/logout',
   spots: '/api/spots',
   friendReqs:'/api/pendingFriendRequest',
-  getFriends:'/api/friends'
+  getFriends:'/api/friends',
+  wishes:'/api/wishes'
 };
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
@@ -25,20 +26,24 @@ export const NAV_SEARCH_RESULTS = 'NAV_SEARCH_RESULTS';
 export const MAP_SEARCH_COORD = 'MAP_SEARCH_COORD';
 export const MAP_SEARCH_ZOOM = 'MAP_SEARCH_ZOOM';
 export const FETCH_FRIENDS ='FETCH_FRIENDS'
+
 export function mapSearchZoom(zoomLevel) {
   let meters;
   let zoomstore = {
-    20 : 100,
-    19 : 200,
-    18 : 400,
-    17 : 800,
-    16 : 1600,
-    15 : 3200,
-    14 : 6400,
-    13 : 12800,
-    12 : 25600
+    20 : 12,
+    19 : 25,
+    18 : 50,
+    17 : 100,
+    16 : 200,
+    15 : 400,
+    14 : 800,
+    13 : 1600,
+    12 : 3200,
+    11 : 6400,
+    10 : 12800,
+    9  : 25600
   }
-  if (zoomLevel < 12) {
+  if (zoomLevel < 9) {
     meters = 40000;
   } else {
     meters = zoomstore[zoomLevel];
@@ -49,6 +54,16 @@ export function mapSearchZoom(zoomLevel) {
     payload: meters
   }
 }
+
+export function getUpdate() {
+  console.log('calling getUpdate');
+  let that = this;
+  $.get('/api/wishes', function(req, res) {
+    console.log('getting update wishes');
+    that.props.actions.fetchCollection();
+  })
+}
+
 export function mapSearchCoord(coord) {
   return {
     type: MAP_SEARCH_COORD,
@@ -236,6 +251,34 @@ export function deleteCollectionItem(item) {
   };
 }
 
+//send a wish submit
+export function clickWishListSubmit(name, latitude, longitude, rating) {
+  const spotToWish = {
+    name: name,
+    latitude: latitude,
+    longitude: longitude,
+    rating: rating
+  }
+  console.log('new wish, ', spotToWish);
+
+  const data = new Promise((resolve, reject) => {
+    request.post(endpoints.wishes)
+      .send(spotToWish)
+      .end((err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(res);
+      });
+  });
+
+  console.log('sending wish data', data);
+  return {
+    type: MAP_CONFIRM_POINT,
+    payload: data
+  }
+}
+
 export function clickLocationSubmit(name, latitude, longitude, rating) {
   // Create object to make DB query
   const spotToAdd = {
@@ -273,11 +316,11 @@ export function fetchCollection() {
   // Query database for user's entire collection
   console.log('fetchCollection')
   const collection = request.get(endpoints.spots);
-
+  // const wishCollection = request.get(endpoints.wishes);
   return {
     type: FETCH_COLLECTION,
     payload: collection
-  };
+  }
 }
 
 
@@ -309,10 +352,6 @@ export function fetchFriendRequests() {
     payload: friendRequests
   };
 }
-
-
-
-
 
 export function createFilters(collection, filters) {
 

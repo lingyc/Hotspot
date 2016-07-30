@@ -2,7 +2,8 @@ import { MAP_CONFIRM_POINT } from '../actions/index';
 import { FETCH_COLLECTION } from '../actions/index';
 
 const initialState = {
-  collection: []
+  collection: [],
+  wishCollection: []
 };
 
 export default function(state = initialState, action) {
