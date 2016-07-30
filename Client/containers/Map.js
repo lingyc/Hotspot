@@ -34,14 +34,21 @@ class Map extends React.Component {
   }
 
   componentDidMount() {
+    console.log('component mount, this.state.collection, ',this.state.collection);
     this.props.actions.fetchCollection()
       .then((results) => {
         this.renderMap();
         this.getUserLocation(mainMap);
       });
+    // this.props.getSpots()
+    //   .then((results) => {
+    //     this.renderMap();
+    //     this.getUserLocation(mainMap);
+    //   })
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('nextprops, ', nextProps)
     console.log('componentWillReceiveProps');
     if (layerGroup) {
       layerGroup.clearLayers();
@@ -49,7 +56,8 @@ class Map extends React.Component {
     }
 
     //creates a uniqueId for already rated items
-    let collection = this.props.totalCollection.concat(this.state.temp_collection);
+    console.log('this.state.collection in component will receive props, ', this.state.collection);
+    let collection = nextProps.collection;
     var uniqueIds = collection.map(id => id.name + id.latitude.toString().slice(0,2) + id.longitude.toString().slice(0,2))
 
     //render user search results
@@ -64,7 +72,6 @@ class Map extends React.Component {
 
   tempClickLocationSubmit(name, latitude, longitude, rating, image) {
   // Create object to make DB query
-    let that = this;
     console.log('tempClickLocationSubmit');
     const spotToAdd = {
       name: name,
@@ -76,18 +83,17 @@ class Map extends React.Component {
       }
     };
     //make a db query on each click for thumbs up/down
-    that.props.postSpots({name: name, latitude: latitude, longitude: longitude});
+    this.props.postSpots(spotToAdd);
     // var newCollection = this.state.temp_collection.concat([spotToAdd]);
     //get updated data, and setState
-    let newCollection = that.props.getSpots();
-    this.setState({
-      temp_collection: newCollection
-    })
+    // this.props.getSpots();
+    // this.setState({
+    //   temp_collection: newCollection
+    // })
   }
 
   tempClickWishListSubmit(name, latitude, longitude) {
-    let that = this;
-    that.props.getUpdate({name: name, latitude: latitude, longitude: longitude})
+    this.props.getUpdate({name: name, latitude: latitude, longitude: longitude})
   }
 
   mapSearchCoord(e) {
@@ -168,7 +174,7 @@ class Map extends React.Component {
           // }))
           //also call function to send info 
           let latlng = marker._latlng;
-          // that.tempClickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
+          that.tempClickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
           // Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
           console.log(that);
           var wishData = {
@@ -176,18 +182,18 @@ class Map extends React.Component {
             latitude: latlng.lat, 
             longitude: latlng.lng
           }
-          let updatedCollection = that.props.getUpdate(wishData);
-          that.setState({
-            collection: updatedCollection  
-          })
+          // let updatedCollection = that.props.getUpdate(wishData);
+          // that.setState({
+          //   collection: updatedCollection  
+          // })
           marker.closePopup();
         })
       });
     });
 
-    console.log('this.state.temp_collection', this.state.temp_collection);
-    console.log('this.props.totalCollection', this.props.totalCollection);
-    let collection = this.props.totalCollection.concat(this.state.temp_collection);
+    // console.log('this.state.temp_collection', this.state.temp_collection);
+    console.log('this.props.collection', this.props.collection);
+    var collection = this.props.collection;
     console.log('total collection', this.props.totalCollection);
     // If any filters have been selected and a filtered collection
     // exists, send that into the map instead
@@ -241,7 +247,7 @@ class Map extends React.Component {
           // }))
           //also call function to send info 
           let latlng = marker._latlng;
-          let rating = 0;
+          that.tempClickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
           // Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng, rating);
           marker.closePopup();
         })
@@ -253,7 +259,7 @@ class Map extends React.Component {
 
     pointQuery.setGeoJSON(pickedPlace);
     pointQuery.openPopup();
-    
+
 
     // Add listener for submission
     var that = this;
@@ -263,9 +269,10 @@ class Map extends React.Component {
       var radios = document.getElementsByName('goBack' + pointQuery._leaflet_id);
       var rating;
       radios[0].checked === true ? rating = 5 : rating = 0;
-      Actions.clickLocationSubmit(res.feature.text, coordinates[1], coordinates[0], rating);
+      // Actions.clickLocationSubmit(res.feature.text, coordinates[1], coordinates[0], rating);
       that.tempClickLocationSubmit(res.feature.text, coordinates[1], coordinates[0], rating, res.feature.image);
       // console.log('calling mainMap.removeLayer(pointQuery)', pointQuery);
+      
       mainMap.removeLayer(pointQuery);
       // that.addPointsLayer(mainMap);
     })
@@ -379,6 +386,9 @@ function formatGeoJSON(array) {
       ratingImg = heartEmpty;
     } else if (spot.yourWish && spot.wishStatus === 'accepted') {
       ratingImg = giftImage;
+    //else if it is not your wish but your friends wish
+    } else if (spot.friendWishOnly) {
+      ratingImg = starFill;
     } else {
       ratingImg = spot.rating === '5' ? thumbUp : thumbDown;
     } 

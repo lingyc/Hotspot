@@ -16,9 +16,8 @@ class App extends React.Component {
 
   componentDidMount() {
     var that = this;
-    this.setState({
-      collection: this.props.totalCollection
-    })
+    this.getSpots();
+    console.log('states during app mount, ', that.state.collection);
   }
 
   getUpdate(wish) {
@@ -29,11 +28,7 @@ class App extends React.Component {
       // console.log('api/wishes called, ', data)
       // console.log('error: ', err)
     }).then(function(result) {
-      console.log('Krishannn, ', result);
-      console.log(that.state.collection);
-      that.setState({
-        collection: result
-      })
+      that.getSpots();
     })
   }
 
@@ -42,15 +37,18 @@ class App extends React.Component {
     $.get('/api/spots', function(data, err) {
       console.log('hi');
     }).then(function(result) {
-      this.setState({
-        collection: result
+      that.setState({
+        collection: result.data
       })
     })
   }
 
   postSpots(spotObj) {
+    let that = this;
     $.post('/api/spots', spotObj, function(data, err) {
       console.log('hii')
+    }).then(function(result) {
+      that.getSpots();
     })
   }
 
