@@ -12,6 +12,7 @@ import Users from '../db/Users';
 export default function(app) {
   // RESTFUl API for retrieving spots from the db
   app.get('/api/spots', (req, res) => {
+
     let spotsReturn;
     if (!req.user) {
       req.user = {
@@ -22,6 +23,7 @@ export default function(app) {
     console.log('user', req.user);
     Spot.getAllForUser(req.user)
       .then((spots) => {
+        console.log('spotssss',spots);
         if (spots.length === 0) {
           spotsReturn = [];
           // return sendBackJSON(res, [], 'no spots');

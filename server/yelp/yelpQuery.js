@@ -124,7 +124,7 @@ export var requestMultipleYelp = function(yelpParams) {
 
 // Parse required data out of Yelp's response data
 export var parseYelpData = function (business) {
-  console.log('business',business);
+  console.log('businessss',business);
   let cuisine;
   if (business.categories && business.categories[0]) {
     cuisine = business.categories[0][0];
@@ -134,6 +134,7 @@ export var parseYelpData = function (business) {
   var imageUrl = business.image_url;
   var businessId = business.id;
   var parsed = {
+    rating:business.rating,
     url:business.url,
     name: business.name,
     cuisine: cuisine,
