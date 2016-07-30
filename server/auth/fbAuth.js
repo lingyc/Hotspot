@@ -2,7 +2,7 @@ import { Strategy as FacebookStrategy } from 'passport-facebook';
 import passport from 'passport';
 
 const FB = {
-  APP_ID: '1813878368846537',
+  APP_ID: 1813878368846537,
   APP_SECRET: '593aa0c997cd308c58587825095f4264',
   CALLBACK: 'http://localhost:8732/auth/facebook/callback'
 };
@@ -10,9 +10,9 @@ const FB = {
 console.log(FB);
 export const facebookAuthConfig = function(User) {
   passport.use(new FacebookStrategy({
-    clientID: FB.APP_ID,
-    clientSecret: FB.APP_SECRET,
-    callbackURL: FB.CALLBACK,
+    clientID: '1813878368846537',
+    clientSecret: '593aa0c997cd308c58587825095f4264',
+    callbackURL: 'http://localhost:8732/auth/facebook/callback',
     enableProof: true,
     profileFields: ['id', 'emails', 'name']
   }, function(accessToken, refreshToken, profile, done) {
