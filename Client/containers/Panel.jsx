@@ -25,19 +25,29 @@ console.log('panel has mounted!!!');
     this.props.actions.createFilters(this.props.totalCollection, this.props.filters);
 console.log(this.props.panelMode)
 if (this.props.panelMode === 'friendRequests'){
-
+   
+   if (this.props.friendRequests.length===0){
+  
+    panelItems=<div>Aint no friend requests</div>
+} else {
       panelItems = this.props.friendRequests.map((person) => {
         return (<FriendModel item={person} />);
-      });
+      })
+
+}
     }
 
 else if (this.props.panelMode === 'results'){
-
+if (this.props.searchResults.length===0){
+  
+    panelItems=<div>SEARCH SOMETHING!!!</div>
+} else {
       panelItems = this.props.searchResults.map((restaurant) => {
         return (<ResultModel item={restaurant}
           viewCollectionItem={this.props.actions.viewCollectionItem}
           key={restaurant.name}/>);
       });
+    }
     } else if (this.props.panelMode === 'filter') {
 
       panelItems = this.props.filters.map((filter) => {
@@ -53,15 +63,21 @@ else if (this.props.panelMode === 'results'){
         return (<CollectionModel item={restaurant} key={restaurant.name}/>);
       });
     } else if (this.props.panelMode==='collection') {
-
+if (this.props.totalCollection.length===0){
+  
+    panelItems=<div>Add some places to your collection!!!</div>
+} else {
       panelItems = this.props.totalCollection.map((restaurant) => {
         return (<CollectionModel item={restaurant}
           viewCollectionItem={this.props.actions.viewCollectionItem}
           key={restaurant.name}/>);
       });
+     }
     }
     return (
-      <Menu id={ 'panel' }
+    
+      <Menu style={{color:'blue'}}
+      id={ 'panel' }
             right
             noOverlay
             customBurgerIcon={ false }
@@ -70,6 +86,7 @@ else if (this.props.panelMode === 'results'){
         {panelItems}
 
       </Menu>
+
     );
   }
 }
