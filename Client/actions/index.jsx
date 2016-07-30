@@ -54,6 +54,16 @@ export function mapSearchZoom(zoomLevel) {
     payload: meters
   }
 }
+
+export function getUpdate() {
+  console.log('calling getUpdate');
+  let that = this;
+  $.get('/api/wishes', function(req, res) {
+    console.log('getting update wishes');
+    that.props.actions.fetchCollection();
+  })
+}
+
 export function mapSearchCoord(coord) {
   return {
     type: MAP_SEARCH_COORD,
@@ -262,7 +272,7 @@ export function clickWishListSubmit(name, latitude, longitude, rating) {
       });
   });
 
-  console.log('sending data', data);
+  console.log('sending wish data', data);
   return {
     type: MAP_CONFIRM_POINT,
     payload: data

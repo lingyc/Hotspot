@@ -18,8 +18,8 @@ var thumbUp = './component/map/Assets/thumbup.png';
 var fistBump = 'http://emojipedia-us.s3.amazonaws.com/cache/2c/08/2c080d6b97f0416f9d914718b32a2478.png';
 var testImage = 'http://img4.wikia.nocookie.net/__cb20140321012355/spiritedaway/images/1/1f/Totoro.gif';
 var giftImage = './component/map/Assets/giftImage.png';
-var heartEmpty = './componet/map/Assets/heartEmpty.png';
-var heartRed = './componet/map/Assets/heartRed.png';
+var heartEmpty = './component/map/Assets/heartEmpty.png';
+var heartRed = './component/map/Assets/heartRed.png';
 var starEmpty = './component/map/Assets/starEmpty.png';
 var starFill = './component/map/Assets/starFill.png';
 var wishImage = './component/map/Assets/wishIcon.png';
@@ -28,7 +28,8 @@ class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      temp_collection: []
+      temp_collection: [],
+      collection: this.props.collection
     };
   }
 
@@ -131,6 +132,7 @@ class Map extends React.Component {
     restaurantPoints = L.mapbox.featureLayer().addTo(map);
 
     restaurantPoints.on('layeradd', function(point) {
+      // var that = this;
       var marker = point.layer;
       var feature = marker.feature;
       marker.setIcon(L.icon(feature.properties.icon));
@@ -143,6 +145,7 @@ class Map extends React.Component {
         this.openPopup();
       });
       marker.on('popupopen', function(e) {
+        // var that = this;
         $(`#wishImage`).click(function(event) {
           console.log('Image clicked', feature);
           // marker.setIcon(L.icon({
@@ -154,7 +157,17 @@ class Map extends React.Component {
           //also call function to send info 
           let latlng = marker._latlng;
           // that.tempClickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
-          Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
+          // Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
+          console.log(that);
+          var wishData = {
+            name: feature.properties.title,
+            latitude: latlng.lat, 
+            longitude: latlng.lng
+          }
+          let updatedCollection = that.props.getUpdate(wishData);
+          that.setState({
+            collection: updatedCollection  
+          })
           marker.closePopup();
         })
       });
@@ -347,12 +360,12 @@ var geoJSONSet = () => {
 function formatGeoJSON(array) {
   const geoPointArray = array.map((spot) => {
     // console.log('spot is', spot);
-    let ratingImg;
+    var ratingImg;
     if (spot.yourWish && spot.friendWish !== [] && spot.wishStatus === 'pending') {
       ratingImg = heartRed;
-    } else if (spot.yourWish && spot.wishStatus === 'pending') {
+    } else if (spot.yourWish && spot.wishStatus === 'open') {
       ratingImg = heartEmpty;
-    } else if (spot.yourWish && spot.wishStatus === 'fulfilled') {
+    } else if (spot.yourWish && spot.wishStatus === 'accepted') {
       ratingImg = giftImage;
     } else {
       ratingImg = spot.rating === '5' ? thumbUp : thumbDown;
