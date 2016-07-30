@@ -242,8 +242,31 @@ export function deleteCollectionItem(item) {
 }
 
 //send a wish submit
-export function clickWishListSubmit(name, latitude, longitude) {
+export function clickWishListSubmit(name, latitude, longitude, rating) {
+  const spotToWish = {
+    name: name,
+    latitude: latitude,
+    longitude: longitude,
+    rating: rating
+  }
+  console.log('new wish, ', spotToWish);
 
+  const data = new Promise((resolve, reject) => {
+    request.post(endpoints.wishes)
+      .send(spotToWish)
+      .end((err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(res);
+      });
+  });
+
+  console.log('sending data', data);
+  return {
+    type: MAP_CONFIRM_POINT,
+    payload: data
+  }
 }
 
 export function clickLocationSubmit(name, latitude, longitude, rating) {

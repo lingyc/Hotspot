@@ -144,7 +144,7 @@ class Map extends React.Component {
       });
       marker.on('popupopen', function(e) {
         $(`#wishImage`).click(function(event) {
-          console.log('Image clicked', marker);
+          console.log('Image clicked', feature);
           marker.setIcon(L.icon({
             iconUrl: starEmpty,
             iconSize: [35, 35],
@@ -154,7 +154,7 @@ class Map extends React.Component {
           //also call function to send info 
           let latlng = marker._latlng;
           // that.tempClickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
-          // Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
+          Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
           marker.closePopup();
         })
       });
@@ -216,7 +216,8 @@ class Map extends React.Component {
           }))
           //also call function to send info 
           let latlng = marker._latlng;
-          Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
+          let rating = 0;
+          Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng, rating);
           marker.closePopup();
         })
       })
@@ -328,7 +329,8 @@ var geoJSONPoint = (longitude, latitude, name, thumb, image) => {
         iconSize: [35, 35],
         iconAnchor: [35, 17],
         popupAnchor: [-17, -17]
-      }
+      },
+      rating: 
     }
   };
 };
