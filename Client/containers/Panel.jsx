@@ -57,7 +57,7 @@ if (this.props.panelMode === 'friendRequests'){
 
     panelItems=<div>
   <div ><input className = 'friendToAdd 'type='text' placeholder='Add a Friend'/><button className='button' onClick={this.submitFriendReq.bind(this)}>Send Request</button></div>
-Aint no friend requests
+<p style={{color:"white"}}>Aint no friend requests</p>
 
     </div>
 } else {
