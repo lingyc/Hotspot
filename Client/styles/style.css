@@ -32,7 +32,11 @@ img {
   padding: 0.8em;
   overflow-y: scroll;
 }
-
+.leaflet-popup-content {
+  color:white;
+  background-color: #7ba;
+  
+}
 .bm-menu-wrap {
   position: absolute;
   top: 100px;
@@ -100,6 +104,14 @@ nav.navbar {
 .row.bar {
   margin-top: 17px;
 }
-/*.btn.ourNav, .navbarSearch {
-  margin-top: 20px;
-}*/
+
+.thumbsuppp{
+background:url('https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcREZwX6K9I9YN6qi0cY__zDwqCZ4baaqA9MkzObv_1xD3VoL__aA5SkDQ');
+color:red;
+background-color: red;
+}
+
+.thumbsdown{
+
+
+}
