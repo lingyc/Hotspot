@@ -7,8 +7,7 @@ const endpoints = {
   logout: '/logout',
   spots: '/api/spots',
   friendReqs:'/api/pendingFriendRequest',
-  getFriends:'/api/friends',
-  wishes: '/api/spots/wishes'
+  getFriends:'/api/friends'
 };
 
 export const NAV_CLICK_COLLECTION = 'NAV_CLICK_COLLECTION';
@@ -26,39 +25,6 @@ export const NAV_SEARCH_RESULTS = 'NAV_SEARCH_RESULTS';
 export const MAP_SEARCH_COORD = 'MAP_SEARCH_COORD';
 export const MAP_SEARCH_ZOOM = 'MAP_SEARCH_ZOOM';
 export const FETCH_FRIENDS ='FETCH_FRIENDS'
-
-
-export function clickWishListSubmit(name, latitude, longitude, rating) {
-  // Create object to make DB query
-  const wishToAdd = {
-    name: name,
-    latitude: latitude,
-    longitude: longitude,
-    rating: rating
-  };
-
-  // Add type and image from returned request
-  console.log('new spot', wishToAdd);
-  // const data = request.post(endpoints.spots).send(spotToAdd).end();
-  // const data = request.post(endpoints.spots).send(spotToAdd);
-
-  const data = new Promise((resolve, reject) => {
-    request.post(endpoints.wishes)
-      .send(wishToAdd)
-      .end((err, res) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(res);
-      });
-  });
-
-  console.log('sending data', data);
-  return {
-    type: MAP_CONFIRM_POINT,
-    payload: data
-  };
-}
 
 export function mapSearchZoom(zoomLevel) {
   let meters;
@@ -316,13 +282,6 @@ export function fetchCollection() {
     type: FETCH_COLLECTION,
     payload: collection
   }
-  // return {
-  //   type: FETCH_COLLECTION,
-  //   payload: {
-  //     collection: collection,
-  //     wishCollection: wishCollection
-  //   }
-  // }
 }
 
 

@@ -28,8 +28,7 @@ class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      temp_collection: [],
-      temp_wishList: []
+      temp_collection: []
     };
   }
 
@@ -78,24 +77,6 @@ class Map extends React.Component {
     })
   }
 
-  tempClickWishListSubmit(name, latitude, longitude) {
-    let nameLatLng = [name, latitude, longitude];
-    let temp = this.state.temp_wishList.concat([nameLatLng])
-
-    let ob = {};
-    let res = [];
-    for (let i =0; i < temp.length; i++) {
-      let tag = "" + temp[i][0] + temp[i][1] + temp[i][2];
-      obj[tag] = temp[i]
-    }
-    for (let item in obj) {
-      res.push(obj[item]);
-    }
-    this.setState({
-      temp_wishList: res
-    });
-  }
-
   mapSearchCoord(e) {
     // e.preventDefault();
     this.props.actions.mapSearchCoord(e);
@@ -133,9 +114,6 @@ class Map extends React.Component {
     })
 
     this.addPointsLayer(mainMap);
-    ////////add wish layer///////////////////////////
-    // this.addWishLayer(mainMap);
-    ////////add wish layer///////////////////////////
     layerGroup = L.layerGroup().addTo(mainMap)
 
     initialize = false;
@@ -196,68 +174,6 @@ class Map extends React.Component {
     // console.log('formatted points are', formattedPoints);
     restaurantPoints.setGeoJSON(formatGeoJSON(collection));
   }
-
-  /////////////// ADD WISH LAYER/////////////////////////////////
-  addWishLayer(map) {
-    var that = this;
-    if (!initialize) {
-      // console.log('mainMap.removeLayer(restaurantPoints);');
-      mainMap.removeLayer(wishPoints);
-    }
-    // console.log('restaurantPoints', restaurantPoints);
-    wishPoints = L.mapbox.featureLayer().addTo(map);
-
-    wishPoints.on('layeradd', function(point) {
-      var marker = point.layer;
-      var feature = marker.feature;
-      marker.setIcon(L.icon(feature.properties.icon));
-      var content = '<h2>' + feature.properties.title + '<\/h2>' +
-      '<img src="' + feature.properties.image + '" alt="">' +
-      //should show a gift icon to gift friend's wish
-      //and also a list of friends that wish this location
-      `<img id="giftImage" src="${giftImage}" alt="">`;
-      //bind popup
-      marker.bindPopup(content);
-      marker.on('mouseover', function(e) {
-        this.openPopup();
-      });
-      //on popupopen and image click of wishimage
-      //change icon
-      marker.on('popupopen', function(e) {
-        $(`#giftImage`).click(function(event) {
-          console.log('Image clicked', marker);
-          //on gift to friend's wish, should change icon
-          //however, this approach wouldn't work with multiple friends wishes
-          marker.setIcon(L.icon({
-            iconUrl: heartRed,
-            iconSize: [35, 35],
-            iconAnchor: [35, 17],
-            popupAnchor: [-17, -17]
-          }))
-          //also call function to send info 
-          let latlng = marker._latlng;
-          that.tempClickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
-          // Actions.clickWishListSubmit(feature.properties.title, latlng.lat, latlng.lng);
-          marker.closePopup();
-        })
-      })
-    });
-
-    // console.log('this.state.temp_collection', this.state.temp_collection);
-    // console.log('this.props.totalCollection', this.props.totalCollection);
-    let collection = this.props.totalCollection.concat(this.state.temp_collection);
-    // console.log('total collection', this.props.totalCollection);
-    // If any filters have been selected and a filtered collection
-    // exists, send that into the map instead
-    if (this.props.filteredCollection.length > 0) {
-      collection = this.props.filteredCollection;
-    }
-    // console.log('set geojson on', restaurantPoints, 'with', collection);
-    const formattedPoints = formatGeoJSON(collection);
-    // console.log('formatted points are', formattedPoints);
-    restaurantPoints.setGeoJSON(formatGeoJSON(collection));
-  }
-
 
   // Helpers for interacting with users live location
   getUserLocation() {
@@ -347,8 +263,7 @@ function mapStateToProps(state) {
     filters: state.FilterSelectedRestaurants.filters,
     totalCollection: state.CollectionRestaurantsFilters.collection,
     filteredCollection: state.FilterSelectedRestaurants.filteredRestaurants,
-    searchResults: state.SearchBar.searchResults,
-    wishCollection: state.Collection
+    searchResults: state.SearchBar.searchResults
   };
 }
 

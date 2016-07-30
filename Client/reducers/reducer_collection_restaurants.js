@@ -11,15 +11,12 @@ export default function(state = initialState, action) {
     case MAP_CONFIRM_POINT:
       return {
         ...state,
-        // collection: state.collection.concat(action.payload.collection.body.data)
         collection: state.collection.concat(action.payload.body.data)
       };
     case FETCH_COLLECTION:
       return {
         ...state,
         collection: action.payload.body.data
-        // collection: action.payload.collection.body.data,
-        // wishCollection: action.payload.wishCollection.body.data
       };
     default:
       return state;
